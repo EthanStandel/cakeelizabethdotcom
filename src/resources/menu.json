@@ -1,0 +1,105 @@
+{
+  "name": "Home",
+  "href": "/",
+  "phone": "207 370-4008",
+  "social": [
+    {
+      "name": "Facebook",
+      "href": "https://www.facebook.com/cakeelizabeth/",
+      "icon": "facebook"
+    },
+    {
+      "name": "Instagram",
+      "href": "https://www.instagram.com/cakeelizabethmaine/",
+      "icon": "instagram"
+    }
+  ],
+  "children": [
+    {
+      "name": "Contact",
+      "children": [
+        {
+          "name": "Contact us",
+          "href": "/contact"
+        },
+        {
+          "name": "Classes",
+          "href": "/classes"
+        },
+        {
+          "name": "Schedule your tasting",
+          "href": "/schedule-your-tasting"
+        }
+      ]
+    },
+    {
+      "name": "Cakes",
+      "children": [
+        {
+          "name": "Cake flavors",
+          "href": "/cake-pricing-flavors"
+        },
+        {
+          "name": "Cake pricing",
+          "href": "/cake-pricing"
+        },
+        {
+          "name": "Children's cakes",
+          "href": "/childrens-cake"
+        },
+        {
+          "name": "Birthday cakes",
+          "href": "/birthday-cakes"
+        },
+        {
+          "name": "Shower cakes",
+          "href": "/shower-cakes"
+        },
+        {
+          "name": "Special occasion cakes",
+          "href": "/special-occasion-cakes"
+        },
+        {
+          "name": "Scuplted cakes",
+          "href": "/sculpted-cakes"
+        },
+        {
+          "name": "Naughty cakes",
+          "href": "/naughty-cakes"
+        },
+        {
+          "name": "Religious cakes",
+          "href": "/religious-cakes"
+        },
+        {
+          "name": "Holiday cakes",
+          "href": "/holiday-cakes"
+        },
+        {
+          "name": "Dessert bars",
+          "href": "/dessert-bars"
+        }
+      ]
+    },
+    {
+      "name": "Cupcakes",
+      "href": "/cupcakes"
+    },
+    {
+      "name": "Weddings",
+      "href": "/weddings"
+    },
+    {
+      "name": "Cake pops & cookies",
+      "href": "/cake-pops-cookies"
+    },
+    {
+      "name": "Blog",
+      "href": "/blog"
+    },
+    {
+      "name": "About us",
+      "href": "/about-us"
+    }
+  ]
+}

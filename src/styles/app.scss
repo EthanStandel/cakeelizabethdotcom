@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+:root {
+  --app-width: 80%;
+	--primary-color: mediumspringgreen;
+}
+
+// mobile variables
+@media only screen and (max-width: 750px) {
+  :root {
+    --app-width: 95%;
+  }
+}

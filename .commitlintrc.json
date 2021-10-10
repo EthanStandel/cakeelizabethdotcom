@@ -1,0 +1,9 @@
+{
+  "extends": ["@commitlint/config-conventional"],
+  "formatter": "@commitlint/format",
+  "rules": {
+    "scope-enum": [
+      2, "always", [ "client" ]
+    ]
+  }
+}
