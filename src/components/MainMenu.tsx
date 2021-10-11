@@ -102,7 +102,11 @@ const MobileStickyMenu = ({ structure }: Props) => {
               onClick={() => setOpen(!open)}
             />
             <div className={classes.mobileImageContainer}>
-              <Image alt={structure.name} src={logo} />
+              <Link href={structure.href!}>
+                <a className={classes.logo}>
+                  <Image alt={structure.name} src={logo} />
+                </a>
+              </Link>
             </div>
           </div>
         </div>

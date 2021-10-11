@@ -6,12 +6,20 @@
 
 :root {
   --app-width: 80%;
-	--primary-color: mediumspringgreen;
+  --primary-color: mediumspringgreen;
+  --secondary-color: aquamarine;
+  --text-color: dimgray;
 }
 
-// mobile variables
-@media only screen and (max-width: 750px) {
+@include mobile {
   :root {
     --app-width: 95%;
   }
+}
+
+.app h2 {
+  text-transform: uppercase;
+  font-size: 2em;
+  margin: 1rem auto;
+  text-align: center;
 }

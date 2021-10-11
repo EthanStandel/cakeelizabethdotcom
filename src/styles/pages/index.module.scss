@@ -1,0 +1,22 @@
+.bannerImageContainer {
+  overflow: hidden;
+  > div {
+    min-width: 100%;
+    max-height: 500px;
+    img {
+      object-fit: cover;
+    }
+  }
+}
+
+.cakeTypeCards {
+  display: flex;
+  gap: max(2em, 10%);
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.quote {
+  height: 300px;
+}

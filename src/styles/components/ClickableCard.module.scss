@@ -1,0 +1,42 @@
+.root {
+  --box-shadow-density: .25;
+  display: block;
+  width: 300px;
+  height: 400px;
+  border-radius: var(--chakra-radii-md);
+  box-shadow: 5px 5px 10px 5px rgba(black, var(--box-shadow-density));
+  transition: box-shadow .15s;
+
+  @include mobile {
+    width: 100%;
+  }
+  
+  &:hover, &:focus-within {
+    --box-shadow-density: .5;
+    outline: none;
+  }
+
+
+  &>:first-child {
+    width: 100% !important;
+  }
+
+  img {
+    object-fit: cover;
+    object-position: 0% 0%;
+    border-top-left-radius: var(--chakra-radii-md);
+    border-top-right-radius: var(--chakra-radii-md);
+  }
+}
+
+.container {
+  height: 100px;
+  padding: .5rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &>p {
+    text-align: center;
+  }
+}

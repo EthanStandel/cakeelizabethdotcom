@@ -98,8 +98,17 @@
       "href": "/blog"
     },
     {
-      "name": "About us",
-      "href": "/about-us"
+      "name": "About",
+      "children": [
+        {
+          "name": "About us",
+          "href": "/about-us"
+        },
+        {
+          "name": "About this website",
+          "href": "/about-website"
+        }
+      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 .root {
   background: var(--primary-color) !important;
-  color: dimgray;
+  color: var(--text-color);
   z-index: 4;
   width: 100%;
   position: sticky;
@@ -36,7 +36,7 @@
   max-width: 100%;
   flex-wrap: wrap;
 
-  @media only screen and (max-width: 750px) {
+  @include mobile {
     flex-direction: column;
   }
 
@@ -63,7 +63,7 @@
   margin: 1rem;
   flex-grow: 1;
   white-space: nowrap;
-  @media only screen and (min-width: 750px) {
+  @include desktop {
     &:first-child {
       margin-left: 0;
     }
@@ -114,7 +114,7 @@
 
 .mobileMenu {
   margin: .5rem 0;
-  border-color: dimgray !important;
+  border-color: var(--text-color) !important;
   background-color: transparent !important;
 }
 
