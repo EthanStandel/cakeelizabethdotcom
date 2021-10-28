@@ -13,7 +13,7 @@ interface Props {
   content: typeof content;
 }
 
-const page: NextPage<Props> = ({ content }) => {
+const Page: NextPage<Props> = ({ content }) => {
   return (
     <div>
       <div className={classes.bannerImageContainer}>
@@ -45,4 +45,4 @@ const page: NextPage<Props> = ({ content }) => {
 
 export const getStaticProps = getStaticPropsFactory(content, content.title);
 
-export default page;
+export default Page;
