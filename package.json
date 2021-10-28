@@ -9,7 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build-image-manifest": "node ./scripts/build-image-manifest.js"
   },
   "dependencies": {
     "@animxyz/core": "^0.6.4",
