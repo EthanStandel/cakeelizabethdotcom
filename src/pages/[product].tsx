@@ -4,19 +4,20 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 
 import contentClient from "../clients/contentClient";
+import MdRenderer from "../components/MdRenderer";
 import appClasses from "../styles/pages/app.module.scss";
 import classes from "../styles/pages/product.module.scss";
 
 interface ProductContent {
   productTitle: string;
-  spielParagraphs: Array<string>;
 }
 interface ProductPageProps {
   content: ProductContent;
   images: Array<string>;
+  productDetailsMd: string;
 }
 
-const Page = ({ content, images }: ProductPageProps) => {
+const Page = ({ content, images, productDetailsMd }: ProductPageProps) => {
   const [displayImg, _setDisplayImg] = useState(0);
   const mainImgRef = useRef<null | HTMLImageElement>(null);
   const setDisplayImg = (index: number) => {
@@ -39,10 +40,7 @@ const Page = ({ content, images }: ProductPageProps) => {
             />
           </div>
           <div className={classes.spielContainer}>
-            <h2>{content.productTitle}</h2>
-            {content.spielParagraphs.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
+            <MdRenderer input={productDetailsMd} />
           </div>
         </div>
         <div className={classes.imagesContainer}>
@@ -71,9 +69,22 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       params.product
     );
 
+    const productDetailsMd = await contentClient.getContentForPage<string>(
+      params.product,
+      "product-details.md",
+      "text"
+    );
+
     const images = await contentClient.getImagesForPage(params.product);
 
-    return { props: { content, images, pageTitle: content.productTitle } };
+    return {
+      props: {
+        content,
+        productDetailsMd,
+        images,
+        pageTitle: content.productTitle,
+      },
+    };
   } catch {
     return { notFound: true };
   }
