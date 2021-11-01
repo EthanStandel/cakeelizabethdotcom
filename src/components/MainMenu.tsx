@@ -125,9 +125,9 @@ const MenuItems = ({ structure }: Props) => {
   return (
     <ul className={classes.menuItems}>
       {structure.children?.map((item) => {
-        const selectedItem = item.children?.find(
-          (subitem) => subitem.href === asPath
-        );
+        const selectedItem =
+          item.href === asPath ||
+          item.children?.find((subitem) => subitem.href === asPath);
         return (
           <li className={classes.rootMenuItem} key={item.name}>
             {item.children ? (
@@ -156,7 +156,12 @@ const MenuItems = ({ structure }: Props) => {
               </ChakraMenu>
             ) : (
               <Link href={item.href!}>
-                <a key={item.name}>{item.name}</a>
+                <a
+                  className={selectedItem ? classes.selected : ""}
+                  key={item.name}
+                >
+                  {item.name}
+                </a>
               </Link>
             )}
           </li>
