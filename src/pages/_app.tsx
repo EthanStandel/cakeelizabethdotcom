@@ -13,18 +13,24 @@ import menu from "../resources/menu.json";
 const App = ({
   Component,
   pageProps: { pageTitle, ...pageProps },
-}: AppProps) => (
-  <ChakraProvider>
-    <Head>
-      <link rel="icon" href="/favicon.png" />
-      <title>{pageTitle ? `${pageTitle} | ` : ""} Cake Elizabeth</title>
-    </Head>
-    <div className="app">
-      <MainMenu structure={menu} />
-      <Component {...pageProps} />
-      <Footer content={footerContent} />
-    </div>
-  </ChakraProvider>
-);
+}: AppProps) => {
+  if (!pageTitle) {
+    throw new Error("You forgot to add a pageTitle prop!");
+  }
+
+  return (
+    <ChakraProvider>
+      <Head>
+        <link rel="icon" href="/favicon.png" />
+        <title>{pageTitle ? `${pageTitle} | ` : ""} Cake Elizabeth</title>
+      </Head>
+      <div className="app">
+        <MainMenu structure={menu} />
+        <Component {...pageProps} />
+        <Footer content={footerContent} />
+      </div>
+    </ChakraProvider>
+  );
+};
 
 export default App;

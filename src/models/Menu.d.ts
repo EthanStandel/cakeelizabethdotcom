@@ -9,6 +9,7 @@ export interface SocialMenuItem extends MenuItem {
 }
 
 export interface Menu extends MenuItem {
+  logo: string;
   phone: string;
   social: Array<SocialMenuItem>;
 }

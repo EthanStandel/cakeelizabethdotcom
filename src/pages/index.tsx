@@ -1,23 +1,21 @@
-import type { NextPage } from "next";
-import Image from "next/image";
+import type { GetServerSideProps, NextPage } from "next";
 
+import type IndexContent from "../../public/resources/pages/index/content.json";
+import contentClient from "../clients/contentClient";
 import ClickableCard from "../components/ClickableCard";
 import QuoteCarousel from "../components/QuoteCarousel";
-import BannerImg from "../resources/pages/index/banner.jpg";
-import content from "../resources/pages/index/content.json";
 import appClasses from "../styles/pages/app.module.scss";
 import classes from "../styles/pages/index.module.scss";
-import getStaticPropsFactory from "../utils/getStaticPropsFactory";
 
 interface Props {
-  content: typeof content;
+  content: typeof IndexContent;
 }
 
 const Page: NextPage<Props> = ({ content }) => {
   return (
     <div>
       <div className={classes.bannerImageContainer}>
-        <Image alt={content.bannerAlt} src={BannerImg} />
+        <img alt={content.bannerAlt} src="/resources/other/banner.jpg" />
       </div>
       <div className={appClasses.pageContainer}>
         <div className={appClasses.contentContainer}>
@@ -43,6 +41,12 @@ const Page: NextPage<Props> = ({ content }) => {
   );
 };
 
-export const getStaticProps = getStaticPropsFactory(content, content.title);
+export const getServerSideProps: GetServerSideProps = async () => {
+  const content = await contentClient.getContentForPage<typeof IndexContent>(
+    "index"
+  );
+
+  return { props: { content, pageTitle: content.title } };
+};
 
 export default Page;

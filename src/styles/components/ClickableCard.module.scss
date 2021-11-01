@@ -1,20 +1,14 @@
 .root {
-  --box-shadow-density: .25;
+  @include clickable-shadow;
   display: block;
   width: 300px;
   height: 400px;
   border-radius: var(--chakra-radii-md);
-  box-shadow: 5px 5px 10px 5px rgba(black, var(--box-shadow-density));
-  transition: box-shadow .15s;
 
   @include mobile {
     width: 100%;
   }
-  
-  &:hover, &:focus-within {
-    --box-shadow-density: .5;
-    outline: none;
-  }
+
 
 
   &>:first-child {

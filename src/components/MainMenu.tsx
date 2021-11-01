@@ -11,14 +11,12 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
-import Image from "next/image";
 import Link from "next/link";
 import { IconType } from "react-icons";
 import { FaFacebookSquare, FaInstagramSquare } from "react-icons/fa";
 
 import useIsMobileView from "../hooks/useIsMobileView";
 import { Menu } from "../models/Menu";
-import logo from "../resources/logo.png";
 import classes from "../styles/components/MainMenu.module.scss";
 import appClasses from "../styles/pages/app.module.scss";
 
@@ -65,7 +63,7 @@ const MainMenu = ({ structure }: Props) => {
             <div className={classes.logoContainer}>
               <Link href={structure.href!}>
                 <a className={classes.logo}>
-                  <Image alt={structure.name} src={logo} />
+                  <img alt={structure.name} src={structure.logo} />
                 </a>
               </Link>
             </div>
@@ -104,7 +102,7 @@ const MobileStickyMenu = ({ structure }: Props) => {
             <div className={classes.mobileImageContainer}>
               <Link href={structure.href!}>
                 <a className={classes.logo}>
-                  <Image alt={structure.name} src={logo} />
+                  <img alt={structure.name} src={structure.logo} />
                 </a>
               </Link>
             </div>
