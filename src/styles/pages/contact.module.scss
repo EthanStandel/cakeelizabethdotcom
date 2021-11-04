@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+
+  > * {
+    // I have no idea...
+    z-index: 0;
+  }
+}
+
+.submit {
+  width: 100%;
+  margin-top: 1em;
+  > button {
+    @include mobile {
+      width: 100%;
+    }
+  }
+}

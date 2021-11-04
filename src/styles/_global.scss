@@ -12,15 +12,15 @@
 
 @mixin clickable-shadow {
   --box-shadow-density: .25;
-  box-shadow: 5px 5px 10px 5px rgba(black, var(--box-shadow-density));
+  box-shadow: 5px 5px 10px 5px rgba(black, var(--box-shadow-density)) !important;
   transition: box-shadow .15s;
+  outline: none !important;
 
   &:hover, &:focus-within {
     --box-shadow-density: .5;
-    outline: none;
   }
 
   &:active {
-    --box-shadow-density: .75;
+    --box-shadow-density: .75 !important;
   }
 }

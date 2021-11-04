@@ -1,0 +1,8 @@
+.root {
+  @include clickable-shadow;
+  transition: all .15s;
+  background: var(--primary-color) !important;
+  &:hover, &:active, &:focus {
+    background: var(--secondary-color) !important;
+  }
+}

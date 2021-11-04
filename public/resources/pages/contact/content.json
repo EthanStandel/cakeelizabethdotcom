@@ -1,0 +1,11 @@
+{
+  "pageTitle": "Contact us",
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "phoneNumber": "Phone number",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send"
+  }
+}
