@@ -44,15 +44,18 @@ const Input = ({
       {label && <FormLabel>{label}</FormLabel>}
       <InputGroup>
         {left && (
-          <InputLeftElement pointerEvents="none">{left}</InputLeftElement>
+          <InputLeftElement pointerEvents="none" boxSize="2em" fontSize="1.5em">
+            {left}
+          </InputLeftElement>
         )}
         {textarea ? (
           <Textarea
             {...(inputProps as TextareaProps)}
             className={classes.textarea}
+            size="lg"
           />
         ) : (
-          <CkInput {...(inputProps as InputProps)} />
+          <CkInput {...(inputProps as InputProps)} size="lg" />
         )}
         {right && (
           <InputRightElement pointerEvents="none">{right}</InputRightElement>
