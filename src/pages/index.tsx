@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 
 import type IndexContent from "../../public/resources/pages/index/content.json";
 import contentClient from "../clients/contentClient";
@@ -41,7 +41,7 @@ const Page: NextPage<Props> = ({ content }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const content = await contentClient.getContentForPage<typeof IndexContent>(
     "index"
   );

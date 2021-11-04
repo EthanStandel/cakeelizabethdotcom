@@ -1,6 +1,6 @@
 import { Icon } from "@chakra-ui/react";
 import { Form, Formik, FormikConfig } from "formik";
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import {
   FaEnvelope,
   FaPhoneAlt,
@@ -92,7 +92,7 @@ const Page = (content: Content) => (
   </div>
 );
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const props = await contentClient.getContentForPage<Content>("contact");
   return { props };
 };

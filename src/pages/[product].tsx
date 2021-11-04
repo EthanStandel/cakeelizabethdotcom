@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-import { GetServerSideProps } from "next";
+import { GetStaticProps, GetStaticPaths } from "next";
 import Image from "next/image";
 
 import contentClient from "../clients/contentClient";
@@ -60,7 +60,7 @@ const Page = ({ content, images, productDetailsMd }: ProductPageProps) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     if (!params?.product || typeof params.product !== "string") {
       throw new Error("Not a product page");
@@ -89,5 +89,23 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     return { notFound: true };
   }
 };
+
+export const getStaticPaths: GetStaticPaths = () => ({
+  paths: [
+    { params: { product: "birthday-cakes" } },
+    { params: { product: "cake-pops-cookies" } },
+    { params: { product: "childrens-cake" } },
+    { params: { product: "cupcakes" } },
+    { params: { product: "dessert-bars" } },
+    { params: { product: "holiday-cakes" } },
+    { params: { product: "naughty-cakes" } },
+    { params: { product: "religious-cakes" } },
+    { params: { product: "sculpted-cakes" } },
+    { params: { product: "shower-cakes" } },
+    { params: { product: "special-occasion-cakes" } },
+    { params: { product: "weddings" } },
+  ],
+  fallback: false,
+});
 
 export default Page;
