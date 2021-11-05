@@ -20,14 +20,14 @@ type Props = FieldAttributes<unknown> & {
   right?: React.ReactChild;
   label?: string;
   textarea?: boolean;
-  isRequired?: boolean;
+  required?: boolean;
 };
 
 const Input = ({
   left,
   right,
   label,
-  isRequired = false,
+  required = false,
   textarea = false,
   ...fieldProps
 }: Props) => {
@@ -40,8 +40,13 @@ const Input = ({
   };
 
   return (
-    <FormControl isRequired={isRequired}>
-      {label && <FormLabel>{label}</FormLabel>}
+    <FormControl>
+      {label && (
+        <FormLabel>
+          {label}
+          {required && <span className={classes.required}>{" *"}</span>}
+        </FormLabel>
+      )}
       <InputGroup>
         {left && (
           <InputLeftElement pointerEvents="none" boxSize="2em" fontSize="1.5em">

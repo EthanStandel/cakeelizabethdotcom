@@ -18,3 +18,18 @@
     }
   }
 }
+
+.pageSplit {
+  width: 100%;
+  display: flex;
+  gap: 2em;
+  > :first-child {
+    width: 60%;
+  }
+}
+
+.contactBlock {
+  >:not(:first-child) {
+    margin-bottom: 1em;
+  }
+}
