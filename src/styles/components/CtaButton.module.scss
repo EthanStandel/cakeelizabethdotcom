@@ -6,3 +6,11 @@
     background: var(--secondary-color) !important;
   }
 }
+
+.hidden {
+  visibility: hidden;
+}
+
+.spinner {
+  position: absolute;
+}

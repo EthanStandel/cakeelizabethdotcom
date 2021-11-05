@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Image from "next/image";
 
-import contentClient from "../clients/contentClient";
+import staticContentClient from "../clients/staticContentClient";
 import MdRenderer from "../components/MdRenderer";
 import appClasses from "../styles/pages/app.module.scss";
 import classes from "../styles/pages/product.module.scss";
@@ -65,17 +65,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     if (!params?.product || typeof params.product !== "string") {
       throw new Error("Not a product page");
     }
-    const content = await contentClient.getContentForPage<ProductContent>(
+    const content = await staticContentClient.getContentForPage<ProductContent>(
       params.product
     );
 
-    const productDetailsMd = await contentClient.getContentForPage<string>(
-      params.product,
-      "product-details.md",
-      "text"
-    );
+    const productDetailsMd =
+      await staticContentClient.getContentForPage<string>(
+        params.product,
+        "product-details.md",
+        "text"
+      );
 
-    const images = await contentClient.getImagesForPage(params.product);
+    const images = await staticContentClient.getImagesForPage(params.product);
 
     return {
       props: {

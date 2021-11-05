@@ -1,14 +1,16 @@
 import { GetStaticProps } from "next";
 
 import type content from "../../public/resources/pages/about-website/content.json";
-import contentClient from "../clients/contentClient";
+import staticContentClient from "../clients/staticContentClient";
 
 type Content = typeof content;
 
 const Page = () => <></>;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const props = await contentClient.getContentForPage<Content>("about-website");
+  const props = await staticContentClient.getContentForPage<Content>(
+    "about-website"
+  );
   return { props };
 };
 

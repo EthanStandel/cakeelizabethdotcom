@@ -1,7 +1,7 @@
 import type { GetStaticProps, NextPage } from "next";
 
 import type IndexContent from "../../public/resources/pages/index/content.json";
-import contentClient from "../clients/contentClient";
+import staticContentClient from "../clients/staticContentClient";
 import ClickableCard from "../components/ClickableCard";
 import QuoteCarousel from "../components/QuoteCarousel";
 import appClasses from "../styles/pages/app.module.scss";
@@ -42,9 +42,9 @@ const Page: NextPage<Props> = ({ content }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const content = await contentClient.getContentForPage<typeof IndexContent>(
-    "index"
-  );
+  const content = await staticContentClient.getContentForPage<
+    typeof IndexContent
+  >("index");
 
   return { props: { content, pageTitle: content.title } };
 };

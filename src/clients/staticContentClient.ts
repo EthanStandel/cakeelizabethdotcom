@@ -5,7 +5,7 @@ import environment from "../environment";
 // Used when the Node-context needs to make requests to "/"
 const client = axios.create({ baseURL: environment.serviceAddress });
 
-const contentClient = {
+const staticContentClient = {
   get: (...args: Parameters<typeof client["get"]>) => client.get(...args),
 
   getContentForPage: async <T>(
@@ -20,4 +20,4 @@ const contentClient = {
     (await client.get(`/resources/pages/${page}/imageManifest.json`)).data,
 };
 
-export default contentClient;
+export default staticContentClient;

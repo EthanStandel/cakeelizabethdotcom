@@ -23,8 +23,14 @@
   width: 100%;
   display: flex;
   gap: 2em;
-  > :first-child {
-    width: 60%;
+  @include desktop {
+    > :first-child {
+      width: 60%;
+    }
+  }
+
+  @include mobile {
+    flex-direction: column-reverse;
   }
 }
 
