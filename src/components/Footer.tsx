@@ -1,4 +1,4 @@
-import classes from "../styles/components/Footer.module.scss";
+import classes from "../styles/components/Footer.module.sass";
 
 interface Props {
   content: { label: string };

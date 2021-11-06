@@ -20,8 +20,8 @@ import staticContentClient from "../clients/staticContentClient";
 import CtaButton from "../components/CtaButton";
 import Input from "../components/Input";
 import { ContactForm } from "../models/ContactForm";
-import appClasses from "../styles/pages/app.module.scss";
-import classes from "../styles/pages/contact.module.scss";
+import appClasses from "../styles/pages/app.module.sass";
+import classes from "../styles/pages/contact.module.sass";
 import contactFormValidator from "../validation/contactFormValidator";
 
 type Content = typeof content;

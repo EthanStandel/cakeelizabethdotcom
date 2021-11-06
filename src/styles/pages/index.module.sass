@@ -1,0 +1,20 @@
+.bannerImageContainer
+    min-width: 100%
+    
+    img
+      height: 500px
+      width: 100%
+      object-fit: cover
+
+      @include mobile
+        height: 300px
+
+.cakeTypeCards
+  display: grid
+  gap: 2em
+  justify-items: center
+  grid-template-columns: repeat(auto-fill ,minmax(300px, 1fr))
+  width: 100%
+
+.quote
+  height: 300px

@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
-import classes from "../styles/components/ClickableCard.module.scss";
+import classes from "../styles/components/ClickableCard.module.sass";
 
 interface Props {
   image: string | StaticImageData;

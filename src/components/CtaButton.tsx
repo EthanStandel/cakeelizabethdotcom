@@ -1,6 +1,6 @@
 import { Button, Spinner } from "@chakra-ui/react";
 
-import classes from "../styles/components/CtaButton.module.scss";
+import classes from "../styles/components/CtaButton.module.sass";
 
 type Props = Parameters<typeof Button>[0] & { loading?: boolean };
 

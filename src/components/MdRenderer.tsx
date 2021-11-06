@@ -6,7 +6,7 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 
-import classes from "../styles/components/MdRenderer.module.scss";
+import classes from "../styles/components/MdRenderer.module.sass";
 
 const processor = unified()
   .use(remarkParse)

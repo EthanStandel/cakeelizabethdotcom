@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useField, FieldAttributes } from "formik";
 
-import classes from "../styles/components/Input.module.scss";
+import classes from "../styles/components/Input.module.sass";
 
 type Props = FieldAttributes<unknown> & {
   left?: React.ReactChild;

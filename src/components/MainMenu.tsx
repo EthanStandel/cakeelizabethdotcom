@@ -17,8 +17,8 @@ import { FaFacebookSquare, FaInstagramSquare } from "react-icons/fa";
 
 import useIsMobileView from "../hooks/useIsMobileView";
 import { Menu } from "../models/Menu";
-import classes from "../styles/components/MainMenu.module.scss";
-import appClasses from "../styles/pages/app.module.scss";
+import classes from "../styles/components/MainMenu.module.sass";
+import appClasses from "../styles/pages/app.module.sass";
 
 export interface Props {
   structure: Menu;

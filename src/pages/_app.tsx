@@ -1,5 +1,5 @@
 import "@animxyz/core";
-import "../styles/app.scss";
+import "../styles/app.sass";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import { AppProps } from "next/app";

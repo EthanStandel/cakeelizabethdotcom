@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import classes from "../styles/components/QuoteCarousel.module.scss";
-import appClasses from "../styles/pages/app.module.scss";
+import classes from "../styles/components/QuoteCarousel.module.sass";
+import appClasses from "../styles/pages/app.module.sass";
 
 import Carousel from "./Carousel";
 

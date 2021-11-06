@@ -5,8 +5,8 @@ import Image from "next/image";
 
 import staticContentClient from "../clients/staticContentClient";
 import MdRenderer from "../components/MdRenderer";
-import appClasses from "../styles/pages/app.module.scss";
-import classes from "../styles/pages/product.module.scss";
+import appClasses from "../styles/pages/app.module.sass";
+import classes from "../styles/pages/product.module.sass";
 
 interface ProductContent {
   productTitle: string;

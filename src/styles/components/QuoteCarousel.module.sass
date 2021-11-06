@@ -1,0 +1,26 @@
+.quote
+  display: flex
+  flex-direction: column
+  justify-content: space-around
+  height: 400px
+  background-color: var(--primary-color)
+
+
+  p
+    font-weight: 500
+    color: var(--text-color)
+
+p.text
+  font-size: 2.5em
+  font-style: italic
+
+p.name
+  font-size: 2em
+  text-align: right
+
+@include mobile
+  p.text
+    font-size: 1.25em
+
+  p.name
+    font-size: 1em

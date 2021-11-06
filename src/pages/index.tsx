@@ -4,8 +4,8 @@ import type IndexContent from "../../public/resources/pages/index/content.json";
 import staticContentClient from "../clients/staticContentClient";
 import ClickableCard from "../components/ClickableCard";
 import QuoteCarousel from "../components/QuoteCarousel";
-import appClasses from "../styles/pages/app.module.scss";
-import classes from "../styles/pages/index.module.scss";
+import appClasses from "../styles/pages/app.module.sass";
+import classes from "../styles/pages/index.module.sass";
 
 interface Props {
   content: typeof IndexContent;
