@@ -95,10 +95,6 @@
       "href": "/cake-pops-cookies"
     },
     {
-      "name": "Blog",
-      "href": "/blog"
-    },
-    {
       "name": "About",
       "children": [
         {
