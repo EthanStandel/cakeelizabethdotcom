@@ -23,7 +23,9 @@ const App = ({
     </Head>
     <div className="app">
       <MainMenu structure={menu} />
-      <Component {...pageProps} />
+      <div className="page">
+        <Component {...pageProps} />
+      </div>
       <Footer content={footerContent} />
     </div>
   </ChakraProvider>

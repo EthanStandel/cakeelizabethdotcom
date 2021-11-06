@@ -27,6 +27,7 @@
     bottom: 0;
     background: var(--primary-color);
     height: 1px;
+    transform: translateY(-1px);
     width: 100%;
     margin-bottom: -1px;
     box-shadow: 5px -1.5em 20px 5px rgba(black, .5);
