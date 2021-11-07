@@ -130,6 +130,7 @@ const MobileStickyMenu = ({ structure }: Props) => {
 
 const MenuItems = ({ structure }: Props) => {
   const { asPath } = useRouter();
+  const isMobileView = useIsMobileView();
   return (
     <ul className={classes.menuItems}>
       {structure.children?.map((item) => {
@@ -139,7 +140,7 @@ const MenuItems = ({ structure }: Props) => {
         return (
           <li className={classes.rootMenuItem} key={item.name}>
             {item.children ? (
-              <ChakraMenu>
+              <ChakraMenu placement={isMobileView ? "bottom" : undefined}>
                 <MenuButton
                   as="button"
                   className={`${selectedItem ? classes.selected : ""} ${

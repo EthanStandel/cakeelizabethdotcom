@@ -25,16 +25,8 @@
       "href": "/weddings"
     },
     {
-      "name": "More cakes",
+      "name": "Cakes",
       "children": [
-        {
-          "name": "Cake flavors",
-          "href": "/cake-pricing-flavors"
-        },
-        {
-          "name": "Cake pricing",
-          "href": "/cake-pricing"
-        },
         {
           "name": "Children's cakes",
           "href": "/childrens-cake"
@@ -70,7 +62,7 @@
       ]
     },
     {
-      "name": "More sweets",
+      "name": "Sweets",
       "children": [
         {
           "name": "Cupcakes",
@@ -87,15 +79,28 @@
       ]
     },
     {
+      "name": "Info",
+      "children": [
+        {
+          "name": "Cake flavors",
+          "href": "/cake-pricing-flavors"
+        },
+        {
+          "name": "Cake pricing",
+          "href": "/cake-pricing"
+        },
+        {
+          "name": "Delivery & order policies",
+          "href": "/delivery-and-order-policies"
+        }
+      ]
+    },
+    {
       "name": "About",
       "children": [
         {
           "name": "About us",
           "href": "/about-us"
-        },
-        {
-          "name": "Delivery & order policies",
-          "href": "/delivery-and-order-policies"
         },
         {
           "name": "About this website",
