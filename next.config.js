@@ -4,6 +4,13 @@ module.exports = {
   sassOptions: {
     prependData: '@use "src/styles/global" as *',
   },
+  redirects: (async () => [
+    {
+      source: "/schedule-your-tasting",
+      destination: "/contact",
+      permanent: true,
+    }
+  ]),
   webpack: (config) => {
     config.module.rules.push({
       test: /\.html$/i,

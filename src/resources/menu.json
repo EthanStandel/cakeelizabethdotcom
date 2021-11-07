@@ -17,24 +17,15 @@
   ],
   "children": [
     {
-      "name": "Contact",
-      "children": [
-        {
-          "name": "Contact us",
-          "href": "/contact"
-        },
-        {
-          "name": "Classes",
-          "href": "/classes"
-        },
-        {
-          "name": "Schedule your tasting",
-          "href": "/schedule-your-tasting"
-        }
-      ]
+      "name": "Contact us",
+      "href": "/contact"
     },
     {
-      "name": "Cakes",
+      "name": "Weddings",
+      "href": "/weddings"
+    },
+    {
+      "name": "More cakes",
       "children": [
         {
           "name": "Cake flavors",
@@ -75,24 +66,25 @@
         {
           "name": "Holiday cakes",
           "href": "/holiday-cakes"
-        },
-        {
-          "name": "Dessert bars",
-          "href": "/dessert-bars"
         }
       ]
     },
     {
-      "name": "Cupcakes",
-      "href": "/cupcakes"
-    },
-    {
-      "name": "Weddings",
-      "href": "/weddings"
-    },
-    {
-      "name": "Cake pops & cookies",
-      "href": "/cake-pops-cookies"
+      "name": "More sweets",
+      "children": [
+        {
+          "name": "Cupcakes",
+          "href": "/cupcakes"
+        },
+        {
+          "name": "Dessert bars",
+          "href": "/dessert-bars"
+        },
+        {
+          "name": "Cake pops & cookies",
+          "href": "/cake-pops-cookies"
+        }
+      ]
     },
     {
       "name": "About",
