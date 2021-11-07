@@ -10,6 +10,7 @@
     "build": "concurrently \"next dev\" \"next build\" --kill-others",
     "start": "next start",
     "lint": "next lint",
+    "generate-sitemap-and-robots": "next-sitemap",
     "generate-licenses": "npm-license-generator --out-path ./public/resources/pages/about-website/licenses.html",
     "build-image-manifest": "node ./scripts/build-image-manifest.js"
   },
@@ -25,6 +26,7 @@
     "formik": "^2.2.9",
     "framer-motion": "^3.10.6",
     "next": "^12.0.2",
+    "next-sitemap": "^1.6.203",
     "npm-license-generator": "^1.1.0",
     "prettier": "^2.4.1",
     "react": "17.0.2",
