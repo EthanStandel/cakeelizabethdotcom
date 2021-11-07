@@ -100,18 +100,24 @@ const Page = (content: Content) => {
                       </div>
                     </Form>
                   </Formik>
+                  <XyzTransition xyz="small-25% fade stagger">
+                    {latestSubmissionResult === "error" && (
+                      <div>
+                        <SubmissionStatusBox
+                          content={content}
+                          submissionResult={latestSubmissionResult}
+                        />
+                      </div>
+                    )}
+                  </XyzTransition>
                 </div>
               )}
-              {!!latestSubmissionResult && (
+              {latestSubmissionResult === "success" && (
                 <div>
-                  <InfoBox state={latestSubmissionResult}>
-                    <span
-                      className={appClasses.htmlRoot}
-                      dangerouslySetInnerHTML={{
-                        __html: content.formResult[latestSubmissionResult],
-                      }}
-                    />
-                  </InfoBox>
+                  <SubmissionStatusBox
+                    content={content}
+                    submissionResult={latestSubmissionResult}
+                  />
                 </div>
               )}
             </XyzTransition>
@@ -139,6 +145,23 @@ const Page = (content: Content) => {
     </div>
   );
 };
+
+const SubmissionStatusBox = ({
+  content,
+  submissionResult,
+}: {
+  content: Content;
+  submissionResult: "success" | "error";
+}) => (
+  <InfoBox state={submissionResult}>
+    <span
+      className={appClasses.htmlRoot}
+      dangerouslySetInnerHTML={{
+        __html: content.formResult[submissionResult],
+      }}
+    />
+  </InfoBox>
+);
 
 export const getStaticProps: GetStaticProps = async () => {
   const props = await staticContentClient.getContentForPage<Content>("contact");
