@@ -1,6 +1,7 @@
-## Thanks for visiting the new cakeelizabeth.com!
+## Thanks for visiting the new Cake Elizabeth Website!
 
-Hi, my name's Ethan!\
+Hi, my name's Ethan!
+
 I'm the husband of Kristina, the owner. I'm an avid technology enthusiast as well as a software engineer. It's always 
 been Kristina's dream to be able to own and run her own bakery and I always promised her that I would own the website
 and technical assets and so here we are! Before this version was built, the site was lovingly maintained by 
