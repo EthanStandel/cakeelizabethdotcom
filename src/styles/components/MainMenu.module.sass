@@ -32,9 +32,13 @@
 
   @include mobile
     flex-direction: column
+    transform: translateY(-50%)
 
   li 
     list-style-type: none
+
+.menuButton + *
+  z-index: 4 !important
 
 .selected
   font-weight: bold !important
@@ -49,6 +53,8 @@
     font-weight: 500
 
   margin: 1rem
+  @include mobile
+    margin: .5rem
   flex-grow: 1
   white-space: nowrap
   @include desktop

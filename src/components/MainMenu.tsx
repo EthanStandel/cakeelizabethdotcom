@@ -142,7 +142,9 @@ const MenuItems = ({ structure }: Props) => {
               <ChakraMenu>
                 <MenuButton
                   as="button"
-                  className={selectedItem ? classes.selected : ""}
+                  className={`${selectedItem ? classes.selected : ""} ${
+                    classes.menuButton
+                  }`}
                 >
                   {item.name}
                   {item.children && <ChevronDownIcon h="1.5em" w="1.5em" />}
