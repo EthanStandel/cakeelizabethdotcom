@@ -6,7 +6,7 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 
-import classes from "../styles/components/MdRenderer.module.sass";
+import classes from "../styles/pages/app.module.sass";
 
 const processor = unified()
   .use(remarkParse)
@@ -25,7 +25,7 @@ const MdRenderer = ({
   as?: "div" | "span";
 }) => (
   <Component
-    className={classes.root}
+    className={classes.htmlRoot}
     dangerouslySetInnerHTML={{ __html: processMd(input) }}
   />
 );

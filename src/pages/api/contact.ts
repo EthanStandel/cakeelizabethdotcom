@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import mailClient from "../../clients/mailClient";
+import environment from "../../environment";
 import { ContactForm } from "../../models/ContactForm";
 import contactFormValidator from "../../validation/contactFormValidator";
 
@@ -16,6 +17,12 @@ const endpoint = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!contactFormValidator.validate(body)) {
     return res.status(400).json({ status: "bad_request" });
   }
+
+  if (environment.mail.turnOffMail) {
+    // fake return to avoid real mail invocations
+    return res.status(200).json({ status: "ok" });
+  }
+
   const mailSuccess = await mailClient.sendContactForm(body);
   if (mailSuccess) {
     return res.status(200).json({ status: "ok" });
