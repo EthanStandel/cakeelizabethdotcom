@@ -17,6 +17,10 @@
   ],
   "children": [
     {
+      "name": "Home",
+      "href": "/"
+    },
+    {
       "name": "Contact us",
       "href": "/contact"
     },
