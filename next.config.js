@@ -9,6 +9,11 @@ module.exports = {
       source: "/schedule-your-tasting",
       destination: "/contact",
       permanent: true,
+    },
+    {
+      source: "/cake-pricing-flavors",
+      destination: "/cake-flavors",
+      permanent: true
     }
   ]),
   webpack: (config) => {

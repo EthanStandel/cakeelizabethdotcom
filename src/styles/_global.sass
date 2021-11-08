@@ -6,9 +6,11 @@
   @media only screen and (min-width: 1024px)
     @content
 
-@mixin clickable-shadow
+@mixin shadow
   --box-shadow-density: .25
   box-shadow: 5px 5px 10px 5px rgba(black, var(--box-shadow-density)) !important
+
+@mixin clickable-shadow
   transition: box-shadow .15s
   outline: none !important
 
