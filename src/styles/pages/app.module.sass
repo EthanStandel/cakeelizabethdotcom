@@ -37,8 +37,17 @@
     font-size: 1.2em
     text-transform: uppercase
 
-  p + p
+  p, ol, ul
     margin-top: 1em
+    margin-bottom: 1em
+
+  ol, ul
+    list-style: inside
+  
+  ol, ol > li
+    list-style-type: decimal
+  ul, ul > li
+    list-style-type: disc
 
   a
     color: blue

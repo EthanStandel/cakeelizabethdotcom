@@ -15,9 +15,15 @@ interface ProductPageProps {
   content: ProductContent;
   images: Array<string>;
   productDetailsMd: string;
+  extendedInfo: string;
 }
 
-const Page = ({ content, images, productDetailsMd }: ProductPageProps) => {
+const Page = ({
+  content,
+  images,
+  productDetailsMd,
+  extendedInfo,
+}: ProductPageProps) => {
   const [displayImg, _setDisplayImg] = useState(0);
   const mainImgRef = useRef<null | HTMLImageElement>(null);
   const setDisplayImg = (index: number) => {
@@ -55,6 +61,11 @@ const Page = ({ content, images, productDetailsMd }: ProductPageProps) => {
             </button>
           ))}
         </div>
+        {extendedInfo && (
+          <div className={classes.extendedInfo}>
+            <MdRenderer input={extendedInfo} />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -78,11 +89,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     const images = await staticContentClient.getImagesForPage(params.product);
 
+    const extendedInfo = await staticContentClient
+      .getContentForPage(params.product, "extended-product-info.md", "text")
+      // most products don't have this
+      .catch(() => "");
+
     return {
       props: {
         content,
         productDetailsMd,
         images,
+        extendedInfo,
         pageTitle: content.productTitle,
       },
     };
