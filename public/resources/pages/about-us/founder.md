@@ -1,0 +1,5 @@
+## About the founder
+
+Patricia, the founder of Cake Elizabeth has been baking cakes for the public for ten years now and opened the brick and mortar shop on 851 Sawyer Street in South Portland that stands today. With roots in Interior Design, Patricia took her college electives in cake decoration to a whole new level when she moved to Maine. She finds inspiration all around her and has specifically produced flavors based around her youngest son’s favorite cookie, the Oreo, and her eldest son’s love of peanut butter.
+
+Her Colombian upbringing is what helps Patricia add a cultural touch to her baking and she has many traditional recipes, passed down from her Mother and Grandmother like Black Fruitcake, a traditional wedding cake in South America. But whatever your ﬂavor, Patricia always exceeded expectations and delighted your taste buds with her heavenly creations and gorgeous decorations. She made wishes come true at Cake Elizabeth!
