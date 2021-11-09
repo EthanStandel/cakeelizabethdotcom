@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 
 import type content from "../../public/resources/pages/cake-flavors/content.json";
-import staticContentClient from "../clients/staticContentClient";
+import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
 import MdRenderer from "../components/MdRenderer";
 import appClasses from "../styles/pages/app.module.sass";
 import classes from "../styles/pages/cake-flavors.module.sass";
@@ -48,19 +48,11 @@ const FlavorGroup = ({
 );
 
 export const getStaticProps: GetStaticProps = async () => {
-  const props = await staticContentClient.getContentForPage<Content>(
-    "cake-flavors"
-  );
+  const client = staticPageContentClientFactory("cake-flavors");
+  const content = await client.getContent<Content>();
+  const bodyContent = await client.getContent<string>("body-content.md");
 
-  const bodyContent = await staticContentClient.getContentForPage<string>(
-    "cake-flavors",
-    "body-content.md",
-    "text"
-  );
-
-  return {
-    props: { ...props, bodyContent },
-  };
+  return { props: { ...content, bodyContent } };
 };
 
 export default Page;

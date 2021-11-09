@@ -1,14 +1,15 @@
 import type { GetStaticProps, NextPage } from "next";
 
-import type IndexContent from "../../public/resources/pages/index/content.json";
-import staticContentClient from "../clients/staticContentClient";
+import type content from "../../public/resources/pages/index/content.json";
+import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
 import ClickableCard from "../components/ClickableCard";
 import QuoteCarousel from "../components/QuoteCarousel";
 import appClasses from "../styles/pages/app.module.sass";
 import classes from "../styles/pages/index.module.sass";
 
+type Content = typeof content;
 interface Props {
-  content: typeof IndexContent;
+  content: Content;
 }
 
 const Page: NextPage<Props> = ({ content }) => {
@@ -42,9 +43,8 @@ const Page: NextPage<Props> = ({ content }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const content = await staticContentClient.getContentForPage<
-    typeof IndexContent
-  >("index");
+  const client = staticPageContentClientFactory("index");
+  const content = await client.getContent<Content>();
 
   return { props: { content, pageTitle: content.title } };
 };

@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Image from "next/image";
 
-import staticContentClient from "../clients/staticContentClient";
+import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
 import MdRenderer from "../components/MdRenderer";
 import appClasses from "../styles/pages/app.module.sass";
 import classes from "../styles/pages/product.module.sass";
@@ -14,14 +14,14 @@ interface ProductContent {
 interface ProductPageProps {
   content: ProductContent;
   images: Array<string>;
-  productDetailsMd: string;
+  productDetails: string;
   extendedInfo: string;
 }
 
 const Page = ({
   content,
   images,
-  productDetailsMd,
+  productDetails,
   extendedInfo,
 }: ProductPageProps) => {
   const [displayImg, _setDisplayImg] = useState(0);
@@ -46,7 +46,7 @@ const Page = ({
             />
           </div>
           <div className={classes.spielContainer}>
-            <MdRenderer input={productDetailsMd} />
+            <MdRenderer input={productDetails} />
           </div>
         </div>
         <div className={classes.imagesContainer}>
@@ -76,28 +76,22 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     if (!params?.product || typeof params.product !== "string") {
       throw new Error("Not a product page");
     }
-    const content = await staticContentClient.getContentForPage<ProductContent>(
-      params.product
+
+    const client = staticPageContentClientFactory(params.product);
+    const content = await client.getContent<ProductContent>();
+    const productDetails = await client.getContent<string>(
+      "product-details.md"
     );
-
-    const productDetailsMd =
-      await staticContentClient.getContentForPage<string>(
-        params.product,
-        "product-details.md",
-        "text"
-      );
-
-    const images = await staticContentClient.getImagesForPage(params.product);
-
-    const extendedInfo = await staticContentClient
-      .getContentForPage(params.product, "extended-product-info.md", "text")
+    const images = await client.getContent("imageManifest.json");
+    const extendedInfo = await client
+      .getContent("extended-product-info.md")
       // most products don't have this
       .catch(() => "");
 
     return {
       props: {
         content,
-        productDetailsMd,
+        productDetails,
         images,
         extendedInfo,
         pageTitle: content.productTitle,

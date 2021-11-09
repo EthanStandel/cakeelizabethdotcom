@@ -16,7 +16,7 @@ import { MdChatBubble } from "react-icons/md";
 
 import type content from "../../public/resources/pages/contact/content.json";
 import apiClient from "../clients/apiClient";
-import staticContentClient from "../clients/staticContentClient";
+import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
 import CtaButton from "../components/CtaButton";
 import InfoBox from "../components/InfoBox";
 import Input from "../components/Input";
@@ -164,8 +164,10 @@ const SubmissionStatusBox = ({
 );
 
 export const getStaticProps: GetStaticProps = async () => {
-  const props = await staticContentClient.getContentForPage<Content>("contact");
-  return { props };
+  const client = staticPageContentClientFactory("contact");
+  const content = await client.getContent<Content>();
+
+  return { props: { ...content } };
 };
 
 export default Page;

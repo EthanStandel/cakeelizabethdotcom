@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 
 import type content from "../../public/resources/pages/cake-pricing/content.json";
-import staticContentClient from "../clients/staticContentClient";
+import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
 import MdRenderer from "../components/MdRenderer";
 import appClasses from "../styles/pages/app.module.sass";
 import classes from "../styles/pages/cake-pricing.module.sass";
@@ -24,16 +24,11 @@ const Page = ({ bodyContent, imgAlt }: Content) => (
 );
 
 export const getStaticProps: GetStaticProps = async () => {
-  const props = await staticContentClient.getContentForPage<Content>(
-    "cake-pricing"
-  );
+  const client = staticPageContentClientFactory("cake-pricing");
+  const content = await client.getContent<Content>();
+  const bodyContent = await client.getContent<string>("body-content.md");
 
-  const bodyContent = await staticContentClient.getContentForPage<Content>(
-    "cake-pricing",
-    "body-content.md",
-    "text"
-  );
-  return { props: { ...props, bodyContent } };
+  return { props: { ...content, bodyContent } };
 };
 
 export default Page;

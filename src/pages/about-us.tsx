@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 
 import type content from "../../public/resources/pages/about-us/content.json";
-import staticContentClient from "../clients/staticContentClient";
+import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
 import MdRenderer from "../components/MdRenderer";
 import classes from "../styles/pages/about-us.module.sass";
 import appClasses from "../styles/pages/app.module.sass";
@@ -46,22 +46,12 @@ const Page = (content: Content) => (
 );
 
 export const getStaticProps: GetStaticProps = async () => {
-  const props = await staticContentClient.getContentForPage<Content>(
-    "about-us"
-  );
+  const client = staticPageContentClientFactory("about-us");
+  const content = await client.getContent<Content>();
+  const owner = await client.getContent<Content>("owner.md");
+  const founder = await client.getContent<Content>("founder.md");
 
-  const owner = await staticContentClient.getContentForPage<Content>(
-    "about-us",
-    "owner.md",
-    "text"
-  );
-
-  const founder = await staticContentClient.getContentForPage<Content>(
-    "about-us",
-    "founder.md",
-    "text"
-  );
-  return { props: { ...props, owner, founder } };
+  return { props: { ...content, owner, founder } };
 };
 
 export default Page;
