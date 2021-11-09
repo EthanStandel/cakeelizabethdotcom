@@ -7,7 +7,7 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "next dev",
-    "build": "concurrently \"next dev\" \"next build\" --kill-others",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "generate-sitemap-and-robots": "next-sitemap",
@@ -54,7 +54,6 @@
     "@types/sanitize-html": "^2.5.0",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
-    "concurrently": "^6.3.0",
     "conventional-changelog-atom": "^2.0.8",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
