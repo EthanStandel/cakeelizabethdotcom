@@ -10,9 +10,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "all-generators": "npm run generate-sitemap-and-robots && npm run generate-licenses && npm run generate-image-manifests",
     "generate-sitemap-and-robots": "next-sitemap",
     "generate-licenses": "npm-license-generator --out-path ./public/resources/pages/about-website/licenses.html",
-    "build-image-manifest": "node ./scripts/build-image-manifest.js"
+    "generate-image-manifests": "node ./scripts/build-image-manifest.js"
   },
   "dependencies": {
     "@animxyz/core": "^0.6.4",
