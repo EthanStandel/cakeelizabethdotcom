@@ -34,7 +34,6 @@ Texas (enough to share)
 - __Black forest – chocolate cake- vanilla buttercream and cherries__ (dark chocolate cake topped with a creamy vanilla bean frosting and garnished with cherries.)
 - __Vanilla – Blueberry__ (moist golden cake sprinkled with blueberries with real fruit buttercream icing.)
 
-Minimum order of 1 dozen per flavor.\
-Cake Elizabeth now offers cheesecakes,  beautiful Bundt pan cakes, and Dessert bars. Please call for flavors and pricing.
+Minimum order of 1 dozen per flavor.
 
 ### Please call for pricing

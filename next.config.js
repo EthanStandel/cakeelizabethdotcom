@@ -14,6 +14,11 @@ module.exports = {
       source: "/cake-pricing-flavors",
       destination: "/cake-flavors",
       permanent: true
+    },
+    {
+      source: "/delivery-and-order-policies",
+      destination: "/order-policies",
+      permanent: true,
     }
   ]),
   webpack: (config) => {

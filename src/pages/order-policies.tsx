@@ -1,6 +1,6 @@
 import { GetStaticProps } from "next";
 
-import type content from "../../public/resources/pages/delivery-and-order-policies/content.json";
+import type content from "../../public/resources/pages/order-policies/content.json";
 import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
 import MdRenderer from "../components/MdRenderer";
 import appClasses from "../styles/pages/app.module.sass";
@@ -16,7 +16,7 @@ const Page = ({ bodyContent }: Content) => (
 );
 
 export const getStaticProps: GetStaticProps = async () => {
-  const client = staticPageContentClientFactory("delivery-and-order-policies");
+  const client = staticPageContentClientFactory("order-policies");
   const content = await client.getContent<Content>();
   const bodyContent = await client.getContent<string>("body-content.md");
 
