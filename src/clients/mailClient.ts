@@ -18,6 +18,7 @@ const mailClient = {
         // TODO: maybe export this string as a template to a content file
         subject: `${form.name} reached out via the contact form!`,
         html: emailBuilder(form),
+        replyTo: { name: form.name, email: form.email },
       });
 
       if (statusCode.is2xx(response.statusCode)) {
