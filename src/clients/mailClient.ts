@@ -12,6 +12,9 @@ mailer.setApiKey(environment.mail.apiKey);
 const mailClient = {
   sendContactForm: async (form: ContactForm) => {
     try {
+      if (environment.mail.turnOffMail) {
+        return true;
+      }
       const [response] = await mailer.send({
         from: environment.mail.from as string,
         to: environment.mail.target,

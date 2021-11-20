@@ -13,6 +13,7 @@ import {
   FaUserTag,
 } from "react-icons/fa";
 import { MdChatBubble } from "react-icons/md";
+import { formatPhoneNumber } from "react-phone-number-input";
 
 import type content from "../../public/resources/pages/contact/content.json";
 import apiClient from "../clients/apiClient";
@@ -51,10 +52,13 @@ const Page = (content: Content) => {
                     }}
                     validationSchema={contactFormValidator.schema}
                     validateOnMount
-                    onSubmit={async (form: ContactForm) => {
+                    onSubmit={async ({ phoneNumber, ...form }: ContactForm) => {
                       setLatestSubmissionResult(null);
                       setSubmitting(true);
-                      const success = await apiClient.submitContactForm(form);
+                      const success = await apiClient.submitContactForm({
+                        ...form,
+                        phoneNumber: formatPhoneNumber(phoneNumber),
+                      });
                       setLatestSubmissionResult(success ? "success" : "error");
                       setSubmitting(false);
                     }}
@@ -76,6 +80,8 @@ const Page = (content: Content) => {
                         name="phoneNumber"
                         left={<Icon color="gray.300" as={FaPhoneAlt} />}
                         label={content.form.phoneNumber}
+                        phoneNumber
+                        type="tel"
                       />
                       <Input
                         name="subject"

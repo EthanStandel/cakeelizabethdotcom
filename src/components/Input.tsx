@@ -12,6 +12,9 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { useField, FieldAttributes } from "formik";
+import PhoneNumberInput, {
+  Props as PhoneNumberInputProps,
+} from "react-phone-number-input/input";
 
 import classes from "../styles/components/Input.module.sass";
 
@@ -20,7 +23,9 @@ type Props = FieldAttributes<unknown> & {
   right?: React.ReactChild;
   label?: string;
   textarea?: boolean;
+  phoneNumber?: boolean;
   required?: boolean;
+  name: string;
 };
 
 const Input = ({
@@ -29,14 +34,16 @@ const Input = ({
   label,
   required = false,
   textarea = false,
-  ...fieldProps
+  phoneNumber = false,
+  name,
+  ...otherProps
 }: Props) => {
-  const [field, meta] = useField(fieldProps);
+  const [field, meta, { setValue }] = useField<string>(name);
   const inputProps = {
     errorBorderColor: "crimson",
     isInvalid: meta.error && meta.touched,
-    ...fieldProps,
     ...field,
+    ...otherProps,
   };
 
   return (
@@ -56,8 +63,17 @@ const Input = ({
         {textarea ? (
           <Textarea
             {...(inputProps as TextareaProps)}
-            className={classes.textarea}
+            className={classes.padded}
             size="lg"
+          />
+        ) : phoneNumber ? (
+          <PhoneNumberInput
+            defaultCountry="US"
+            inputComponent={CkInput}
+            size="lg"
+            className={classes.padded}
+            {...(inputProps as PhoneNumberInputProps)}
+            onChange={(input: string) => setValue(input ?? "")}
           />
         ) : (
           <CkInput {...(inputProps as InputProps)} size="lg" />
