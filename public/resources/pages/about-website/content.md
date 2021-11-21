@@ -1,5 +1,6 @@
 ---
 pageTitle: 'About this site'
+description: 'This site is handwritten using NextJS with other open source tooling and deployed using Vercel.'
 ---
 
 ## Thanks for visiting the new Cake Elizabeth Website!

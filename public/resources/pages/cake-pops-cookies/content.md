@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Cake pops & cookies'
+description: 'At Cake Elizabeth, we create custom cookies & cake-pops that are the perfect treat for any event.'
 ---
 
 ## Cake Pops & Cookies

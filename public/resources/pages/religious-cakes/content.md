@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Religious Cakes'
+description: 'Let blessed events shine in the memories of your guests with a cake that marks this momentous day. We make heavenly cakes for Christenings, Confirmations, First Communions, Passover, Bar, and Bat Mitzvahs!'
 ---
 
 ## Religious Cakes

@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Children''s Cakes'
+description: 'The sky is the limit when it comes to birthday cakes, we can customize, shape, color and match your cake to your event and your child’s fantasy.'
 ---
 
 ## Children’s Cakes

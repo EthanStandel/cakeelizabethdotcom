@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Cupcakes'
+description: 'Cupcakes are versatile and informal. They are a great grab and go option for large gatherings, a perfect portion for weddings or birthday parties.'
 data:
   extendedContent: |
     ### Cupcake Flavor Combinations

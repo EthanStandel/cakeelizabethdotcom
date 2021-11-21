@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Dessert Bars'
+description: 'We put together assortments of small desserts that will make your event!'
 ---
 
 ## Dessert Bars

@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Cake pricing'
+description: 'Please reach out to us with what you''re looking for and we can give you a quote'
 data:
   imgAlt: 'A wedding cake'
 ---

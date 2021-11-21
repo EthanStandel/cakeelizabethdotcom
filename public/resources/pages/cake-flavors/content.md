@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Cake flavors'
+description: 'We offer a multitude of flavor options and combinations of cake, filling, and icing.'
 data:
   imgAlt: 'A flavorful wedding cake'
   flavorGroups:

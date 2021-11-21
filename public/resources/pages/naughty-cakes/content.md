@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Naughty Cakes'
+description: 'These humor filled creations break social taboos and make an emphatic statement!'
 ---
 
 ## Naughty Cakes

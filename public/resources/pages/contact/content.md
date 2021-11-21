@@ -1,5 +1,6 @@
 ---
   pageTitle: 'Contact us'
+  description: 'Reach out to us here or with an email to info@cakeelizabeth.com'
   data:
     form: 
       name: 'Name'

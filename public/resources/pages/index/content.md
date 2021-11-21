@@ -1,5 +1,6 @@
 ---
   pageTitle: 'Local Maine Cakes'
+  description: 'See why our custom cakes cause a stir in Southern Maine for events of all kinds like wedding cakes, birthday cakes, baby shower cakes, and dessert bars. Baked fresh daily, our cakes offer many heavenly flavors to delight at your event.'
   data:
     bannerAlt: 'Banner cake'
     chooseYourOccasion: 'Choose your occasion'

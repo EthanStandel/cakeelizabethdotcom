@@ -25,6 +25,7 @@ const contentLayerConfig = makeSource({
       bodyType: "mdx",
       fields: {
         pageTitle: { type: "string", required: true },
+        description: { type: "string", required: true },
         data: { type: "json" },
       },
       computedFields,

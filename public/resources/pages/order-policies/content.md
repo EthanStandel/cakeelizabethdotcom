@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Order policies'
+description: 'We take the utmost precautions in building and storing your cake before pick up and will give you detailed instructions on handling and storing it.'
 ---
 
 {/* ### Delivery

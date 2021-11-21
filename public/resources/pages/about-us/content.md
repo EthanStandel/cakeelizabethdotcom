@@ -1,5 +1,6 @@
 ---
   pageTitle: 'About us'
+  description: 'Cake Elizabeth brings over 20 years of cake baking experience to our happy Maine customers.'
   data:
     pattyGordonImgAlt: 'Patty & Gordon'
     pattyImgAlt: 'Patty'

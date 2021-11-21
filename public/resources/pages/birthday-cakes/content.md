@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Birthday Cakes'
+description: 'Birthdays are all about the individual so don''t hold back! Celebrate in style. If you bring us a picture or describe it, we can create it.'
 ---
 
 ## Birthday Cakes
