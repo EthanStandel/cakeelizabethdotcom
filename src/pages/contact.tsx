@@ -15,9 +15,7 @@ import {
 import { MdChatBubble } from "react-icons/md";
 import { formatPhoneNumber } from "react-phone-number-input";
 
-import type content from "../../public/resources/pages/contact/content.json";
 import apiClient from "../clients/apiClient";
-import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
 import CtaButton from "../components/CtaButton";
 import InfoBox from "../components/InfoBox";
 import Input from "../components/Input";
@@ -26,9 +24,10 @@ import appClasses from "../styles/pages/app.module.sass";
 import classes from "../styles/pages/contact.module.sass";
 import contactFormValidator from "../validation/contactFormValidator";
 
-type Content = typeof content;
+import { allPageContents } from ".contentlayer/data";
+import type { PageContent } from ".contentlayer/types";
 
-const Page = (content: Content) => {
+const Page = ({ content }: { content: PageContent }) => {
   const [submitting, setSubmitting] = useState(false);
   const [latestSubmissionResult, setLatestSubmissionResult] = useState<
     "success" | "error" | null
@@ -67,31 +66,31 @@ const Page = (content: Content) => {
                       <Input
                         name="name"
                         left={<Icon color="gray.300" as={FaUserTag} />}
-                        label={content.form.name}
+                        label={content.data.form.name}
                         required
                       />
                       <Input
                         name="email"
                         left={<Icon color="gray.300" as={FaEnvelope} />}
-                        label={content.form.email}
+                        label={content.data.form.email}
                         required
                       />
                       <Input
                         name="phoneNumber"
                         left={<Icon color="gray.300" as={FaPhoneAlt} />}
-                        label={content.form.phoneNumber}
+                        label={content.data.form.phoneNumber}
                         phoneNumber
                         type="tel"
                       />
                       <Input
                         name="subject"
                         left={<Icon color="gray.300" as={MdChatBubble} />}
-                        label={content.form.subject}
+                        label={content.data.form.subject}
                       />
                       <Input
                         name="message"
                         left={<Icon color="gray.300" as={FaFileAlt} />}
-                        label={content.form.message}
+                        label={content.data.form.message}
                         required
                         textarea
                       />
@@ -101,7 +100,7 @@ const Page = (content: Content) => {
                           leftIcon={<Icon as={FaPaperPlane} />}
                           type="submit"
                         >
-                          {content.form.send}
+                          {content.data.form.send}
                         </CtaButton>
                       </div>
                     </Form>
@@ -129,20 +128,20 @@ const Page = (content: Content) => {
             </XyzTransition>
           </div>
           <div className={classes.contactBlock}>
-            <h2>{content.contact.name}</h2>
+            <h2>{content.data.contact.name}</h2>
             <div>
-              <p>{content.contact.address.street}</p>
-              <p>{content.contact.address.cityState}</p>
-              <p>{content.contact.address.zip}</p>
+              <p>{content.data.contact.address.street}</p>
+              <p>{content.data.contact.address.cityState}</p>
+              <p>{content.data.contact.address.zip}</p>
             </div>
             <div>
-              <a href={`tel:${content.contact.phone.literal}`}>
-                {content.contact.phone.display}
+              <a href={`tel:${content.data.contact.phone.literal}`}>
+                {content.data.contact.phone.display}
               </a>
             </div>
             <div>
-              <Link href={content.contact.web.literal}>
-                {content.contact.web.display}
+              <Link href={content.data.contact.web.literal}>
+                {content.data.contact.web.display}
               </Link>
             </div>
           </div>
@@ -156,24 +155,22 @@ const SubmissionStatusBox = ({
   content,
   submissionResult,
 }: {
-  content: Content;
+  content: PageContent;
   submissionResult: "success" | "error";
 }) => (
   <InfoBox state={submissionResult}>
     <span
       className={appClasses.htmlRoot}
       dangerouslySetInnerHTML={{
-        __html: content.formResult[submissionResult],
+        __html: content.data.formResult[submissionResult],
       }}
     />
   </InfoBox>
 );
 
 export const getStaticProps: GetStaticProps = async () => {
-  const client = staticPageContentClientFactory("contact");
-  const content = await client.getContent<Content>();
-
-  return { props: { ...content } };
+  const content = allPageContents.find(({ page }) => page === "contact");
+  return { props: { content } };
 };
 
 export default Page;

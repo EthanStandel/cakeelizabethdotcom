@@ -15,7 +15,10 @@
     "plugin:import/typescript"
   ],
   "rules": {
-    "@next/next/no-img-element": ["off"], // this rule is stupid
+    // evidently doesn't resolve esm, real issues should break builds anyways
+    "import/no-unresolved": ["off"],
+    // this rule is stupid
+    "@next/next/no-img-element": ["off"],
     "no-restricted-globals": ["off"],
     "prettier/prettier": ["error", {}, { "usePrettierrc": true }],
     "import/order": [

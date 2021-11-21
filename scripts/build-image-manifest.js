@@ -12,5 +12,5 @@ pages.forEach(page => {
   if (manifestExists) {
     fs.unlinkSync(pagesDir + page + "/imageManifest.json");
   }
-  fs.writeFileSync(pagesDir + page + "/imageManifest.json", JSON.stringify(images));
+  fs.writeFileSync(pagesDir + page + "/imageManifest.json", JSON.stringify({items: images}));
 });

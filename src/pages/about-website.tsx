@@ -1,17 +1,23 @@
 import { GetStaticProps } from "next";
 import sanitizeHtml from "sanitize-html";
 
-import type content from "../../public/resources/pages/about-website/content.json";
-import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
-import MdRenderer from "../components/MdRenderer";
+import { MdxRenderer } from "../components/ContentRenderers";
+import licenses from "../resources/licenses.html";
 import appClasses from "../styles/pages/app.module.sass";
 
-type Content = typeof content & { licenses: string; bodyContent: string };
+import { allPageContents } from ".contentlayer/data";
+import type { PageContent } from ".contentlayer/types";
 
-const Page = ({ licenses, bodyContent }: Content) => (
+const Page = ({
+  licenses,
+  content,
+}: {
+  licenses: string;
+  content: PageContent;
+}) => (
   <div className={appClasses.pageContainer}>
     <div className={appClasses.contentContainer}>
-      <MdRenderer input={bodyContent} />
+      <MdxRenderer input={content.body} />
       <div
         className={appClasses.htmlRoot}
         dangerouslySetInnerHTML={{ __html: licenses }}
@@ -21,15 +27,8 @@ const Page = ({ licenses, bodyContent }: Content) => (
 );
 
 export const getStaticProps: GetStaticProps = async () => {
-  const client = staticPageContentClientFactory("about-website");
-  const props = await client.getContent<Content>();
-  const bodyContent = await client.getContent<string>("body-content.md");
-  // sanitze because this comes from a generator package and comes with bleh styles
-  const licenses = sanitizeHtml(
-    await client.getContent<string>("licenses.html")
-  );
-
-  return { props: { ...props, licenses, bodyContent } };
+  const content = allPageContents.find(({ page }) => page === "about-website");
+  return { props: { content, licenses: sanitizeHtml(licenses) } };
 };
 
 export default Page;

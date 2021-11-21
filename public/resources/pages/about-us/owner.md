@@ -1,9 +1,0 @@
-## Cake Elizabeth & new ownership
-
-Cake Elizabeth has become a well known establishment in Southern Maine.  Servicing the public with cakes and cupcakes for weddings, birthdays, baby showers, and all of life’s celebrations.  After serving customers for over 20 years, the founder, Patty, wanted to retire with her husband, Gordon, and pass on the torch to younger baking professional, Kristina Griffin.
-
-Kristina has had a passion for baking and cooking since she was 4 years old.  Growing up, she liked to bake for school bake sales, her family, and her friends. When she was offered a class at a vocational school during her years in High School, she was instantly drawn to Culinary Arts.  Within this class, she showed her passion for edible art.  With some research, she learned what course she had to take to obtain her dream of owning her own bakery.  Kristina started her path at Southern Maine Community College where she obtained her Associates in Business Administration.  Within 36 days of graduating from SMCC, she was off to New York where she immediately started her Baking and Pastry degree at the Culinary Institute of America.  At CIA, while she did enjoy all of her classes, she discovered her love for cakes and cake decorating especially and knew what kind of job she would be looking for after graduating.
-
-When she graduated, Kristina settled down in Southern Maine with her husband, Ethan, and started working for a bakery making wedding cakes and cupcakes.  With this experience and the guidance from Patty’s years of advice, Kristina will continue on with Cake Elizabeth’s legacy.
-
-Kristina and her husband, Ethan, bought a home in Saco, Maine in 2020 where they live a simple life with their dog, Primrose, and their cat, Smitty.  Kristina and Ethan enjoy walking their dog together, hiking, riding bikes, and enjoying good food. They like to support local small businesses whenever possible.  

@@ -1,26 +1,22 @@
 import { GetStaticProps } from "next";
 
-import type content from "../../public/resources/pages/order-policies/content.json";
-import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
-import MdRenderer from "../components/MdRenderer";
+import { MdxRenderer } from "../components/ContentRenderers";
 import appClasses from "../styles/pages/app.module.sass";
 
-type Content = typeof content & { bodyContent: string };
+import { allPageContents } from ".contentlayer/data";
+import type { PageContent } from ".contentlayer/types";
 
-const Page = ({ bodyContent }: Content) => (
+const Page = ({ content }: { content: PageContent }) => (
   <div className={appClasses.pageContainer}>
     <div className={appClasses.contentContainer}>
-      <MdRenderer input={bodyContent} />
+      <MdxRenderer input={content.body} />
     </div>
   </div>
 );
 
 export const getStaticProps: GetStaticProps = async () => {
-  const client = staticPageContentClientFactory("order-policies");
-  const content = await client.getContent<Content>();
-  const bodyContent = await client.getContent<string>("body-content.md");
-
-  return { props: { ...content, bodyContent } };
+  const content = allPageContents.find(({ page }) => page === "order-policies");
+  return { props: { content } };
 };
 
 export default Page;

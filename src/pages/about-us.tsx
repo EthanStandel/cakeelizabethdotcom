@@ -1,27 +1,26 @@
 import { GetStaticProps } from "next";
 
-import type content from "../../public/resources/pages/about-us/content.json";
-import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
-import MdRenderer from "../components/MdRenderer";
+import { MdRenderer } from "../components/ContentRenderers";
 import classes from "../styles/pages/about-us.module.sass";
 import appClasses from "../styles/pages/app.module.sass";
 
-type Content = typeof content & { founder: string; owner: string };
+import { allPageContents } from ".contentlayer/data";
+import type { PageContent } from ".contentlayer/types";
 
-const Page = (content: Content) => (
+const Page = ({ content }: { content: PageContent }) => (
   <div className={appClasses.pageContainer}>
     <div className={appClasses.contentContainer}>
       <div className={classes.storyGroup}>
         <div className={classes.text}>
-          <MdRenderer input={content.owner} />
+          <MdRenderer input={content.data.owner} />
         </div>
         <div className={classes.image}>
           <img
-            alt={content.kristinaImgAlt}
+            alt={content.data.kristinaImgAlt}
             src="/resources/pages/about-us/kristina.jpg"
           />
           <img
-            alt={content.kristinaEthanImgAlt}
+            alt={content.data.kristinaEthanImgAlt}
             src="/resources/pages/about-us/kristinaethan.jpg"
           />
         </div>
@@ -29,16 +28,16 @@ const Page = (content: Content) => (
       <div className={classes.storyGroup}>
         <div className={classes.image}>
           <img
-            alt={content.pattyImgAlt}
+            alt={content.data.pattyImgAlt}
             src="/resources/pages/about-us/patty.png"
           />
           <img
-            alt={content.pattyGordonImgAlt}
+            alt={content.data.pattyGordonImgAlt}
             src="/resources/pages/about-us/pattygordon.png"
           />
         </div>
         <div className={classes.text}>
-          <MdRenderer input={content.founder} />
+          <MdRenderer input={content.data.founder} />
         </div>
       </div>
     </div>
@@ -46,12 +45,9 @@ const Page = (content: Content) => (
 );
 
 export const getStaticProps: GetStaticProps = async () => {
-  const client = staticPageContentClientFactory("about-us");
-  const content = await client.getContent<Content>();
-  const owner = await client.getContent<Content>("owner.md");
-  const founder = await client.getContent<Content>("founder.md");
+  const content = allPageContents.find(({ page }) => page === "about-us");
 
-  return { props: { ...content, owner, founder } };
+  return { props: { content } };
 };
 
 export default Page;

@@ -3,13 +3,12 @@ import { useEffect } from "react";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/dist/client/router";
 
-import type content from "../../public/resources/pages/404/content.json";
-import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
 import appClasses from "../styles/pages/app.module.sass";
 
-type Content = typeof content;
+import { allPageContents } from ".contentlayer/data";
+import type { PageContent } from ".contentlayer/types";
 
-const Page = (content: Content) => {
+const Page = ({ content }: { content: PageContent }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -22,17 +21,16 @@ const Page = (content: Content) => {
   return (
     <div className={appClasses.pageContainer}>
       <div className={appClasses.contentContainer}>
-        <h2>{content.text}</h2>
+        <h2>{content.data.text}</h2>
       </div>
     </div>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const client = staticPageContentClientFactory("404");
-  const content = await client.getContent<Content>();
+  const content = allPageContents.find(({ page }) => page === "404");
 
-  return { props: { ...content } };
+  return { props: { content } };
 };
 
 export default Page;

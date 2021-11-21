@@ -1,30 +1,30 @@
 import { GetStaticProps } from "next";
 
-import type content from "../../public/resources/pages/cake-flavors/content.json";
-import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
-import MdRenderer from "../components/MdRenderer";
+import { MdxRenderer } from "../components/ContentRenderers";
 import appClasses from "../styles/pages/app.module.sass";
 import classes from "../styles/pages/cake-flavors.module.sass";
 
-type Content = typeof content & {
-  bodyContent: string;
-};
+import { allPageContents } from ".contentlayer/data";
+import type { PageContent } from ".contentlayer/types";
 
-const Page = (content: Content) => (
+const Page = ({ content }: { content: PageContent }) => (
   <div className={appClasses.pageContainer}>
     <div className={appClasses.contentContainer}>
       <div className={classes.splitGroup}>
         <div className={classes.leftPane}>
-          <MdRenderer input={content.bodyContent} />
-          <FlavorGroup {...content.flavorGroups.cakeFlavors} />
+          <MdxRenderer input={content.body} />
+          <FlavorGroup {...content.data.flavorGroups.cakeFlavors} />
         </div>
         <div className={classes.rightPane}>
-          <img src="/resources/pages/weddings/12.jpg" alt={content.imgAlt} />
+          <img
+            src="/resources/pages/weddings/12.jpg"
+            alt={content.data.imgAlt}
+          />
         </div>
       </div>
       <div className={classes.splitGroup}>
-        <FlavorGroup {...content.flavorGroups.cakeFilling} />
-        <FlavorGroup {...content.flavorGroups.cakeIcing} />
+        <FlavorGroup {...content.data.flavorGroups.cakeFilling} />
+        <FlavorGroup {...content.data.flavorGroups.cakeIcing} />
       </div>
     </div>
   </div>
@@ -48,11 +48,8 @@ const FlavorGroup = ({
 );
 
 export const getStaticProps: GetStaticProps = async () => {
-  const client = staticPageContentClientFactory("cake-flavors");
-  const content = await client.getContent<Content>();
-  const bodyContent = await client.getContent<string>("body-content.md");
-
-  return { props: { ...content, bodyContent } };
+  const content = allPageContents.find(({ page }) => page === "cake-flavors");
+  return { props: { content } };
 };
 
 export default Page;

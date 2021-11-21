@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const { withContentlayer } = require("next-contentlayer");
+
+module.exports = withContentlayer()({
   reactStrictMode: true,
   sassOptions: {
     prependData: '@use "src/styles/global" as *',
@@ -29,4 +31,4 @@ module.exports = {
 
     return config;
   },
-};
+});

@@ -10,15 +10,14 @@ import MainMenu from "../components/MainMenu";
 import footerContent from "../resources/footer.json";
 import menu from "../resources/menu.json";
 
-const App = ({
-  Component,
-  pageProps: { pageTitle, ...pageProps },
-}: AppProps) => (
+const App = ({ Component, pageProps }: AppProps) => (
   <ChakraProvider>
     <Head>
       <link rel="icon" href="/favicon.png" />
       <title>
-        {pageTitle ? `${pageTitle} | Cake Elizabeth` : "Cake Elizabeth"}
+        {pageProps.content.pageTitle
+          ? `${pageProps.content.pageTitle} | Cake Elizabeth`
+          : "Cake Elizabeth"}
       </title>
     </Head>
     <div className="app">

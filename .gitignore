@@ -32,3 +32,10 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+
+# Generated content
+.contentlayer
+licenses.html
+imageManifest.json
+sitemap.xml

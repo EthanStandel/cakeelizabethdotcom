@@ -3,27 +3,19 @@ import { useRef, useState } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Image from "next/image";
 
-import staticPageContentClientFactory from "../clients/staticPageContentClientFactory";
-import MdRenderer from "../components/MdRenderer";
+import { MdRenderer, MdxRenderer } from "../components/ContentRenderers";
 import appClasses from "../styles/pages/app.module.sass";
 import classes from "../styles/pages/product.module.sass";
 
-interface ProductContent {
-  productTitle: string;
-}
+import { allPageContents, allImageManifests } from ".contentlayer/data";
+import type { PageContent } from ".contentlayer/types";
+
 interface ProductPageProps {
-  content: ProductContent;
+  content: PageContent;
   images: Array<string>;
-  productDetails: string;
-  extendedInfo: string;
 }
 
-const Page = ({
-  content,
-  images,
-  productDetails,
-  extendedInfo,
-}: ProductPageProps) => {
+const Page = ({ content, images }: ProductPageProps) => {
   const [displayImg, _setDisplayImg] = useState(0);
   const mainImgRef = useRef<null | HTMLImageElement>(null);
   const setDisplayImg = (index: number) => {
@@ -41,19 +33,19 @@ const Page = ({
         <div className={classes.mainSection}>
           <div ref={mainImgRef} className={classes.mainImgContainer}>
             <img
-              alt={`Selected ${content.productTitle} example`}
+              alt={`Selected ${content.pageTitle} example`}
               src={images[displayImg]}
             />
           </div>
           <div className={classes.spielContainer}>
-            <MdRenderer input={productDetails} />
+            <MdxRenderer input={content.body} />
           </div>
         </div>
         <div className={classes.imagesContainer}>
           {images.map((url, index) => (
             <button key={url} onClick={() => setDisplayImg(index)}>
               <Image
-                alt={`${content.productTitle} exmaple`}
+                alt={`${content.pageTitle} exmaple`}
                 width={150}
                 height={150}
                 src={url}
@@ -61,9 +53,9 @@ const Page = ({
             </button>
           ))}
         </div>
-        {extendedInfo && (
+        {content.data?.extendedContent && (
           <div className={classes.extendedInfo}>
-            <MdRenderer input={extendedInfo} />
+            <MdRenderer input={content.data.extendedContent} />
           </div>
         )}
       </div>
@@ -77,25 +69,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       throw new Error("Not a product page");
     }
 
-    const client = staticPageContentClientFactory(params.product);
-    const content = await client.getContent<ProductContent>();
-    const productDetails = await client.getContent<string>(
-      "product-details.md"
-    );
-    const images = await client.getContent("imageManifest.json");
-    const extendedInfo = await client
-      .getContent("extended-product-info.md")
-      // most products don't have this
-      .catch(() => "");
+    const content = allPageContents.find(({ page }) => page === params.product);
+    const images = allImageManifests.find(
+      ({ page }) => page === params.product
+    )?.items;
 
     return {
-      props: {
-        content,
-        productDetails,
-        images,
-        extendedInfo,
-        pageTitle: content.productTitle,
-      },
+      props: { content, images },
     };
   } catch {
     return { notFound: true };
