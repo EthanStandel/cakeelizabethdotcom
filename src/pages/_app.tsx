@@ -15,7 +15,7 @@ const App = ({ Component, pageProps }: AppProps) => (
     <Head>
       <link rel="icon" href="/favicon.png" />
       <title>
-        {pageProps.content.pageTitle
+        {pageProps.content?.pageTitle
           ? `${pageProps.content.pageTitle} | Cake Elizabeth`
           : "Cake Elizabeth"}
       </title>
