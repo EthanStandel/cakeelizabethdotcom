@@ -10,8 +10,8 @@ import {
   Icon,
   IconButton,
 } from "@chakra-ui/react";
-import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { IconType } from "react-icons";
 import { FaFacebookSquare, FaInstagramSquare } from "react-icons/fa";
 

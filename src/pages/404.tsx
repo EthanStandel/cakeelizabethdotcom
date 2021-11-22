@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import React from "react";
 
 import { GetStaticProps } from "next";
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
 
 import appClasses from "../styles/pages/app.module.sass";
 
@@ -11,7 +11,7 @@ import type { PageContent } from ".contentlayer/types";
 const Page = ({ content }: { content: PageContent }) => {
   const router = useRouter();
 
-  useEffect(() => {
+  React.useEffect(() => {
     router.replace("/");
   });
 

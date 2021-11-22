@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 
 import classes from "../styles/components/QuoteCarousel.module.sass";
 import appClasses from "../styles/pages/app.module.sass";
@@ -11,7 +11,7 @@ interface QuoteModel {
 }
 
 const QuoteCarousel = ({ quotes }: { quotes: Array<QuoteModel> }) => {
-  const [autoPlay, setAutoPlay] = useState(true);
+  const [autoPlay, setAutoPlay] = React.useState(true);
   return (
     <Carousel
       infiniteLoop

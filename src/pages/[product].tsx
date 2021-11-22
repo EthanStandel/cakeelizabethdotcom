@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React from "react";
 
 import { GetServerSideProps } from "next";
 import Image from "next/image";
@@ -21,7 +21,7 @@ interface ProductPageProps {
 }
 
 const Page = ({ content, images }: ProductPageProps) => {
-  const mainImgRef = useRef<null | HTMLImageElement>(null);
+  const mainImgRef = React.useRef<null | HTMLImageElement>(null);
   const router = useRouter();
 
   return (

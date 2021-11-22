@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 
 import { XyzTransition } from "@animxyz/react";
 import { Icon } from "@chakra-ui/react";
@@ -28,8 +28,8 @@ import { allPageContents } from ".contentlayer/data";
 import type { PageContent } from ".contentlayer/types";
 
 const Page = ({ content }: { content: PageContent }) => {
-  const [submitting, setSubmitting] = useState(false);
-  const [latestSubmissionResult, setLatestSubmissionResult] = useState<
+  const [submitting, setSubmitting] = React.useState(false);
+  const [latestSubmissionResult, setLatestSubmissionResult] = React.useState<
     "success" | "error" | null
   >(null);
 
