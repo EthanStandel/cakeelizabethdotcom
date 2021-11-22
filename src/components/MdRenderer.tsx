@@ -1,6 +1,5 @@
 import React from "react";
 
-import { useMDXComponent } from "next-contentlayer/hooks";
 import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
@@ -18,9 +17,8 @@ const processor = unified()
 export const processMd = (input: string) =>
   String(processor.processSync(input));
 
-// use this for plain MD strings
 // eslint-disable-next-line react/display-name
-export const MdRenderer = React.memo(
+const MdRenderer = React.memo(
   ({
     input,
     as: Component = "div",
@@ -35,22 +33,4 @@ export const MdRenderer = React.memo(
   )
 );
 
-// use this for precompiled performant MDX content
-// eslint-disable-next-line react/display-name
-export const MdxRenderer = React.memo(
-  ({
-    input,
-    as: Component = "div",
-  }: {
-    input: { code: string };
-    as?: "div" | "span";
-  }) => {
-    const Renderer = useMDXComponent(input.code);
-
-    return (
-      <Component className={classes.htmlRoot}>
-        <Renderer />
-      </Component>
-    );
-  }
-);
+export default MdRenderer;

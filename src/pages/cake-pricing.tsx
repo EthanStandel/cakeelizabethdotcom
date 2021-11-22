@@ -1,6 +1,6 @@
 import { GetStaticProps } from "next";
 
-import { MdxRenderer } from "../components/ContentRenderers";
+import MdRenderer from "../components/MdRenderer";
 import appClasses from "../styles/pages/app.module.sass";
 import classes from "../styles/pages/cake-pricing.module.sass";
 
@@ -12,7 +12,7 @@ const Page = ({ content }: { content: PageContent }) => (
     <div className={appClasses.contentContainer}>
       <div className={classes.contentGroup}>
         <div className={classes.bodyContent}>
-          <MdxRenderer input={content.body} />
+          <MdRenderer input={content.body.raw} />
         </div>
         <div className={classes.imgContainer}>
           <img

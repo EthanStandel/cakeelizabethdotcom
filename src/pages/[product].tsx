@@ -5,10 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { MdRenderer, MdxRenderer } from "../components/ContentRenderers";
 import ImageCarouselOverlay, {
   imageCarouselRouting,
 } from "../components/ImageCarouselOverlay";
+import MdRenderer from "../components/MdRenderer";
 import appClasses from "../styles/pages/app.module.sass";
 import classes from "../styles/pages/product.module.sass";
 
@@ -33,7 +33,7 @@ const Page = ({ content, images }: ProductPageProps) => {
             <img alt={images[0].alt} src={images[0].src} />
           </div>
           <div className={classes.spielContainer}>
-            <MdxRenderer input={content.body} />
+            <MdRenderer input={content.body.raw} />
           </div>
         </div>
         <div className={classes.imagesContainer}>

@@ -1,6 +1,6 @@
 import { GetStaticProps } from "next";
 
-import { MdRenderer } from "../components/ContentRenderers";
+import MdRenderer from "../components/MdRenderer";
 import classes from "../styles/pages/about-us.module.sass";
 import appClasses from "../styles/pages/app.module.sass";
 

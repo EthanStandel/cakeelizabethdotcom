@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 import sanitizeHtml from "sanitize-html";
 
-import { MdxRenderer } from "../components/ContentRenderers";
+import MdRenderer from "../components/MdRenderer";
 import licenses from "../resources/licenses.html";
 import appClasses from "../styles/pages/app.module.sass";
 
@@ -17,7 +17,7 @@ const Page = ({
 }) => (
   <div className={appClasses.pageContainer}>
     <div className={appClasses.contentContainer}>
-      <MdxRenderer input={content.body} />
+      <MdRenderer input={content.body.raw} />
       <div
         className={appClasses.htmlRoot}
         dangerouslySetInnerHTML={{ __html: licenses }}
