@@ -1,0 +1,71 @@
+.root
+  position: fixed
+  top: 0
+  left: 0
+  height: 100vh
+  width: 100vw
+  z-index: 100
+  background: rgba(black, .5)
+  backdrop-filter: blur(5px)
+  display: flex
+  justify-content: center
+  align-items: center
+  .closeButton
+    position: fixed
+    z-index: 100
+    top: 25px
+    left: 25px
+  .prevButton
+    position: fixed
+    z-index: 100
+    left: 25px
+    top: calc(50vh - 25px)
+    @include mobile
+      > a
+        background: var(--transparent-primary)
+  .nextButton
+    position: fixed
+    z-index: 100
+    right: 25px
+    top: calc(50vh - 25px)
+    @include mobile
+      > a
+        background: var(--transparent-primary)
+
+.controlButton
+  @include clickable-shadow
+  display: flex
+  justify-content: center
+  align-items: center
+  height: 50px
+  width: 50px
+  border-radius: 25px
+  background: var(--primary-color)
+
+.carouselContainer
+  margin-top: 100px
+  margin-bottom: 100px
+  @include mobile
+    margin-top: 0
+    margin-bottom: 0
+  max-height: calc(100vh - 200px)
+  display: flex
+  align-items: center
+  justify-content: center
+
+  > div
+    max-height: 100%
+
+.carouselFrame
+  display: flex
+  align-items: center
+  justify-content: center
+  text-align: center
+  margin: auto
+  height: calc(100vh - 200px)
+
+  img
+    height: auto !important
+    width: auto !important
+    max-height: 100%
+    max-width: 100%

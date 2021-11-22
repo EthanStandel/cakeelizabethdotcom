@@ -1,9 +1,14 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
-import { GetStaticProps, GetStaticPaths } from "next";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { MdRenderer, MdxRenderer } from "../components/ContentRenderers";
+import ImageCarouselOverlay, {
+  imageCarouselRouting,
+} from "../components/ImageCarouselOverlay";
 import appClasses from "../styles/pages/app.module.sass";
 import classes from "../styles/pages/product.module.sass";
 
@@ -12,45 +17,42 @@ import type { PageContent } from ".contentlayer/types";
 
 interface ProductPageProps {
   content: PageContent;
-  images: Array<string>;
+  images: Array<{ src: string; alt: string }>;
 }
 
 const Page = ({ content, images }: ProductPageProps) => {
-  const [displayImg, _setDisplayImg] = useState(0);
   const mainImgRef = useRef<null | HTMLImageElement>(null);
-  const setDisplayImg = (index: number) => {
-    _setDisplayImg(index);
-    mainImgRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "start",
-    });
-  };
+  const router = useRouter();
 
   return (
     <div className={`${appClasses.pageContainer} ${classes.root}`}>
+      <ImageCarouselOverlay images={images} />
       <div className={appClasses.contentContainer}>
         <div className={classes.mainSection}>
           <div ref={mainImgRef} className={classes.mainImgContainer}>
-            <img
-              alt={`Selected ${content.pageTitle} example`}
-              src={images[displayImg]}
-            />
+            <img alt={images[0].alt} src={images[0].src} />
           </div>
           <div className={classes.spielContainer}>
             <MdxRenderer input={content.body} />
           </div>
         </div>
         <div className={classes.imagesContainer}>
-          {images.map((url, index) => (
-            <button key={url} onClick={() => setDisplayImg(index)}>
-              <Image
-                alt={`${content.pageTitle} exmaple`}
-                width={150}
-                height={150}
-                src={url}
-              />
-            </button>
+          {images.map(({ src, alt }, index) => (
+            <Link
+              key={src}
+              scroll={false}
+              href={{
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  ...imageCarouselRouting.queryBuilder(index),
+                },
+              }}
+            >
+              <a>
+                <Image alt={alt} width={150} height={150} src={src} />
+              </a>
+            </Link>
           ))}
         </div>
         {content.data?.extendedContent && (
@@ -63,16 +65,17 @@ const Page = ({ content, images }: ProductPageProps) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+// This could be getStaticProps w/ getStaticPaths but it would break the image carousel when JS is turned off
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   try {
     if (!params?.product || typeof params.product !== "string") {
       throw new Error("Not a product page");
     }
 
     const content = allPageContents.find(({ page }) => page === params.product);
-    const images = allImageManifests.find(
-      ({ page }) => page === params.product
-    )?.items;
+    const images = allImageManifests
+      .find(({ page }) => page === params.product)
+      ?.items.map((src) => ({ src, alt: `${content?.pageTitle} example` }));
 
     return {
       props: { content, images },
@@ -81,23 +84,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return { notFound: true };
   }
 };
-
-export const getStaticPaths: GetStaticPaths = () => ({
-  paths: [
-    { params: { product: "birthday-cakes" } },
-    { params: { product: "cake-pops-cookies" } },
-    { params: { product: "childrens-cake" } },
-    { params: { product: "cupcakes" } },
-    { params: { product: "dessert-bars" } },
-    { params: { product: "holiday-cakes" } },
-    { params: { product: "naughty-cakes" } },
-    { params: { product: "religious-cakes" } },
-    { params: { product: "sculpted-cakes" } },
-    { params: { product: "shower-cakes" } },
-    { params: { product: "special-occasion-cakes" } },
-    { params: { product: "weddings" } },
-  ],
-  fallback: false,
-});
 
 export default Page;
