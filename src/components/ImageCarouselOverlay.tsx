@@ -28,10 +28,14 @@ interface Props {
 
 const ImageCarouselOverlay = ({ images }: Props) => {
   const router = useRouter();
-  const selectedItem =
+  const selectedItemMod =
     Number.parseInt(
       router.query[imageCarouselRouting.indexQueryParam] as string
     ) % images.length;
+  const selectedItem =
+    selectedItemMod < 0
+      ? images.length - Math.abs(selectedItemMod)
+      : selectedItemMod;
   const open =
     router.query[imageCarouselRouting.queryParam] ===
     imageCarouselRouting.queryValue;
