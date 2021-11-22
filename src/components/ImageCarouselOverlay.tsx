@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React from "react";
 import type { UrlObject } from "url";
 
 import { XyzTransition } from "@animxyz/react";
@@ -61,7 +61,7 @@ const ImageCarouselOverlay = ({ images }: Props) => {
     },
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     const listener = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         router.push(routes.close, undefined, { scroll: false });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { XyzTransition } from "@animxyz/react";
 import { ChevronDownIcon, HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
@@ -87,9 +87,9 @@ const MainMenu = ({ structure }: Props) => {
 
 const MobileStickyMenu = ({ structure }: Props) => {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const closeMenu = () => setOpen(false);
     router.events.on("routeChangeStart", closeMenu);
     return () => router.events.off("routeChangeStart", closeMenu);
