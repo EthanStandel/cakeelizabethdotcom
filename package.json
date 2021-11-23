@@ -33,7 +33,6 @@
     "next-contentlayer": "0.0.32",
     "next-sitemap": "^1.6.203",
     "npm-license-generator": "^1.1.0",
-    "preact": "^10.5.15",
     "prettier": "^2.4.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
