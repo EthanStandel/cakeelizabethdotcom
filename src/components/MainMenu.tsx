@@ -10,6 +10,7 @@ import {
   Icon,
   IconButton,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { IconType } from "react-icons";
@@ -63,7 +64,12 @@ const MainMenu = ({ structure }: Props) => {
             <div className={classes.logoContainer}>
               <Link href={structure.href!}>
                 <a className={classes.logo}>
-                  <img alt={structure.name} src={structure.logo} />
+                  <Image
+                    alt={structure.name}
+                    src={structure.logo}
+                    height="125px"
+                    width="225px"
+                  />
                 </a>
               </Link>
             </div>
@@ -110,11 +116,11 @@ const MobileStickyMenu = ({ structure }: Props) => {
             <div className={classes.mobileImageContainer}>
               <Link href={structure.href!}>
                 <a className={classes.logo}>
-                  <img
+                  <Image
                     alt={structure.name}
                     src={structure.logo}
-                    height="125px"
-                    width="225px"
+                    height="52px"
+                    width="94px"
                   />
                 </a>
               </Link>

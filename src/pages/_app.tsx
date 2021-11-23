@@ -10,59 +10,60 @@ import MainMenu from "../components/MainMenu";
 import footerContent from "../resources/footer.json";
 import menu from "../resources/menu.json";
 
-const App = ({ Component, pageProps }: AppProps) => (
-  <ChakraProvider>
-    <Head>
-      <link rel="icon" href="/favicon.png" />
-      {pageProps.content?.description && (
-        <>
-          <meta name="description" content={pageProps.content?.description} />
-          <meta
-            property="og:description"
-            content={pageProps.content?.description}
-          />
-        </>
-      )}
-      {pageProps.content?.page && (
-        <>
-          <link
-            rel="canonical"
-            href={`https://cakeelizabeth.com/${pageProps.content?.page}`}
-          />
-          <meta
-            property="og:url"
-            content={`https://cakeelizabeth.com/${pageProps.content?.page}`}
-          />
-        </>
-      )}
-      <meta property="og:site_name" content="Cake Elizabeth" />
-      <meta
-        property="article:publisher"
-        content="https://www.facebook.com/cakeelizabeth/"
-      />
-      <meta
-        property="og:image"
-        content="https://cakeelizabeth.com/resources/other/logo.png"
-      />
-      <meta property="og:type" content="article" />
-      <meta property="og:locale" content="en_US" />
-      {pageProps.content?.pageTitle && (
-        <meta property="og:title" content={pageProps.content?.pageTitle} />
-      )}
-      <title>
-        {pageProps.content?.pageTitle
-          ? `${pageProps.content.pageTitle} | Cake Elizabeth`
-          : "Cake Elizabeth"}
-      </title>
-    </Head>
-    <div className="app">
-      <MainMenu structure={menu} />
-      <div className="page">
-        <Component {...pageProps} />
+const App = ({ Component, pageProps }: AppProps) => {
+  const route =
+    pageProps.content?.page === "index" ? "" : pageProps.content?.page;
+  return (
+    <ChakraProvider>
+      <Head>
+        <link rel="icon" href="/favicon.png" />
+        {pageProps.content?.description && (
+          <>
+            <meta name="description" content={pageProps.content?.description} />
+            <meta
+              property="og:description"
+              content={pageProps.content?.description}
+            />
+          </>
+        )}
+        {pageProps.content?.page && (
+          <>
+            <link rel="canonical" href={`https://cakeelizabeth.com/${route}`} />
+            <meta
+              property="og:url"
+              content={`https://cakeelizabeth.com/${route}`}
+            />
+          </>
+        )}
+        <meta property="og:site_name" content="Cake Elizabeth" />
+        <meta
+          property="article:publisher"
+          content="https://www.facebook.com/cakeelizabeth/"
+        />
+        <meta
+          property="og:image"
+          content="https://cakeelizabeth.com/resources/other/logo.png"
+        />
+        <meta property="og:type" content="article" />
+        <meta property="og:locale" content="en_US" />
+        {pageProps.content?.pageTitle && (
+          <meta property="og:title" content={pageProps.content?.pageTitle} />
+        )}
+        <title>
+          {pageProps.content?.pageTitle
+            ? `${pageProps.content.pageTitle} | Cake Elizabeth`
+            : "Cake Elizabeth"}
+        </title>
+      </Head>
+      <div className="app">
+        <MainMenu structure={menu} />
+        <div className="page">
+          <Component {...pageProps} />
+        </div>
+        <Footer content={footerContent} />
       </div>
-      <Footer content={footerContent} />
-    </div>
-  </ChakraProvider>
-);
+    </ChakraProvider>
+  );
+};
 
 export default App;
