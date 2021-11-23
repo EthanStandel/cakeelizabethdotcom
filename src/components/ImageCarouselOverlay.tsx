@@ -130,7 +130,7 @@ const ImageCarouselOverlay = ({ images }: Props) => {
             >
               {images.map(({ src, alt }) => (
                 <div key={src} className={classes.carouselFrame}>
-                  <img src={src} alt={alt} />
+                  <img src={src} alt={alt} loading="lazy" />
                 </div>
               ))}
             </Carousel>

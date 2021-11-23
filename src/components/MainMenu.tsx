@@ -110,7 +110,12 @@ const MobileStickyMenu = ({ structure }: Props) => {
             <div className={classes.mobileImageContainer}>
               <Link href={structure.href!}>
                 <a className={classes.logo}>
-                  <img alt={structure.name} src={structure.logo} />
+                  <img
+                    alt={structure.name}
+                    src={structure.logo}
+                    height="125px"
+                    width="225px"
+                  />
                 </a>
               </Link>
             </div>

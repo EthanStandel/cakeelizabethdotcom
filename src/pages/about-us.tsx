@@ -30,10 +30,12 @@ const Page = ({ content }: { content: PageContent }) => (
           <img
             alt={content.data.pattyImgAlt}
             src="/resources/pages/about-us/patty.png"
+            loading="lazy"
           />
           <img
             alt={content.data.pattyGordonImgAlt}
             src="/resources/pages/about-us/pattygordon.png"
+            loading="lazy"
           />
         </div>
         <div className={classes.text}>
