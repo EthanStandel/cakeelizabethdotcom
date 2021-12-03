@@ -1,9 +1,14 @@
 import "@animxyz/core";
+import "nprogress/nprogress.css";
 import "../styles/app.sass";
+
+import { useEffect } from "react";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import NProgress from "nprogress";
 
 import Footer from "../components/Footer";
 import MainMenu from "../components/MainMenu";
@@ -13,6 +18,15 @@ import menu from "../resources/menu.json";
 const App = ({ Component, pageProps }: AppProps) => {
   const route =
     pageProps.content?.page === "index" ? "" : pageProps.content?.page;
+
+  const { events } = useRouter();
+
+  useEffect(() => {
+    events.on("routeChangeStart", () => NProgress.start());
+    events.on("routeChangeComplete", () => NProgress.done());
+    events.on("routeChangeError", () => NProgress.done());
+  });
+
   return (
     <ChakraProvider>
       <Head>
