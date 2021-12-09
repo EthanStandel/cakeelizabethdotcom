@@ -68,11 +68,14 @@ const Page = ({ content, images }: ProductPageProps) => {
 // This could be getStaticProps w/ getStaticPaths but it would break the image carousel when JS is turned off
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   try {
-    if (!params?.product || typeof params.product !== "string") {
+    const content = allPageContents.find(
+      ({ page }) => page === params?.product
+    );
+
+    if (typeof params?.product !== "string" || !content) {
       throw new Error("Not a product page");
     }
 
-    const content = allPageContents.find(({ page }) => page === params.product);
     const images = allImageManifests
       .find(({ page }) => page === params.product)
       ?.items.map((src) => ({ src, alt: `${content?.pageTitle} example` }));
