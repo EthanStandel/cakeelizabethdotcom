@@ -14,7 +14,7 @@ module.exports = {
     return _.difference(allPagesContent, allPagesDirectory).map((file) => ({
       loc: `/${file}`,
       changefreq: "daily",
-      prioriy: .7,
+      priority: .7,
       lastmod: new Date().toISOString()
     }))
 
