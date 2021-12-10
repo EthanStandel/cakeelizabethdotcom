@@ -5,9 +5,11 @@
 - **Framework**: [Next.js](https://nextjs.org/)
 - **Deployment**: [Vercel](https://vercel.com)
 - **Content**: [contentlayer](https://github.com/contentlayerdev/contentlayer)
-- **Styling**: [SASS Modules](https://sass-lang.com/)
+- **Styling**: [SASS modules](https://sass-lang.com/)
 - **Components**: [Chakra](https://chakra-ui.com/)
+- **Animations**: [AnimXYZ](https://animxyz.com/docs/)
 - **Mailer**: [Sendgrid](https://sendgrid.com/)
+- **Logging**: [LogFlare](https://logflare.app/)
 
 ## Running locally
 
