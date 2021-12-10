@@ -4,14 +4,13 @@
     <h2 style="text-transform: uppercase; font-weight: lighter; letter-spacing: .15em; max-width: calc(100% - 2rem)">A new contact is trying to reach out!</h2>
   </div>
   <div style="max-width: calc(100% - 2rem); padding: 1rem;">
-    <p>Their name is <span style="font-weight: bold;"><%- name %></span>.</p>
-    <p>They provided an email address of <span style="font-weight: bold;"><%- email %></span>.</p>
-    <% if (phoneNumber) { %> 
-      <p>They provided <span style="font-weight: bold;"><%- phoneNumber %></span> as a phone number.</p>
+    <p>Name: <span style="font-weight: bold;"><%- name %></span>.</p>
+    <p>Email: <span style="font-weight: bold;"><%- email %></span>.</p>
+    <% if (phoneNumber) { %>
+      <p>Phone number: <span style="font-weight: bold;"><%- phoneNumber %></span></p>
     <% } %>
-    <h3>Here's the message they left!</h3>
     <% if (subject) { %> 
-      <h4><%- subject %></h4>
+      <h3><%- subject %></h3>
     <% } %>
     <p><%- message %></p>
   </div>
