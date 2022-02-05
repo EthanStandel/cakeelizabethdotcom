@@ -12,6 +12,10 @@
 
   & > div
     margin: 1rem
+    // Safari has wrong calculations for how they
+    // define the space for text, which forces the
+    // phone number to wrap here, this fixes that
+    word-break: keep-all
 
 .socialLink
   margin: .25rem
