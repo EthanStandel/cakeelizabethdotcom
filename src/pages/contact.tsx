@@ -6,6 +6,7 @@ import { css } from "@emotion/react";
 import { Form, Formik } from "formik";
 import { GetStaticProps } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   FaEnvelope,
   FaPhoneAlt,
@@ -28,10 +29,12 @@ import { allPageContents } from ".contentlayer/data";
 import type { PageContent } from ".contentlayer/types";
 
 const Page = ({ content }: { content: PageContent }) => {
+  const router = useRouter();
   const [submitting, setSubmitting] = React.useState(false);
-  const [latestSubmissionResult, setLatestSubmissionResult] = React.useState<
-    "success" | "error" | null
-  >(null);
+  const latestSubmissionResult = router.query.submission as
+    | "success"
+    | "error"
+    | undefined;
 
   return (
     <div css={styleUtils.pageContainer}>
@@ -52,13 +55,16 @@ const Page = ({ content }: { content: PageContent }) => {
                     validationSchema={contactFormValidator.schema}
                     validateOnMount
                     onSubmit={async ({ phoneNumber, ...form }: ContactForm) => {
-                      setLatestSubmissionResult(null);
                       setSubmitting(true);
+                      router.replace({ pathname: router.pathname });
                       const success = await apiClient.submitContactForm({
                         ...form,
                         phoneNumber: formatPhoneNumber(phoneNumber),
                       });
-                      setLatestSubmissionResult(success ? "success" : "error");
+                      router.replace({
+                        pathname: router.pathname,
+                        query: { submission: success ? "success" : "error" },
+                      });
                       setSubmitting(false);
                     }}
                   >
