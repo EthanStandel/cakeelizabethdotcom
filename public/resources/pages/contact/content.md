@@ -23,5 +23,5 @@
         literal: '/'
     formResult: 
       success: 'Thanks for reaching out! We''ll try to get back to you as quickly as possible'
-      error: 'Looks like something went wrong just shoot an email with what you''re looking for over to <a target="_blank" href="mailto:info@cakeelizabeth.com">info@cakeelizabeth.com</a>'
+      error: 'Looks like something went wrong, so please just shoot an email with what you''re looking for over to <a target="_blank" href="mailto:info@cakeelizabeth.com">info@cakeelizabeth.com</a>'
 ---

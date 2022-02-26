@@ -1,20 +1,20 @@
+import { css } from "@emotion/react";
 import { GetStaticProps } from "next";
 
 import MdRenderer from "../components/MdRenderer";
-import classes from "../styles/pages/about-us.module.sass";
-import appClasses from "../styles/pages/app.module.sass";
+import styleUtils from "../utils/styleUtils";
 
 import { allPageContents } from ".contentlayer/data";
 import type { PageContent } from ".contentlayer/types";
 
 const Page = ({ content }: { content: PageContent }) => (
-  <div className={appClasses.pageContainer}>
-    <div className={appClasses.contentContainer}>
-      <div className={classes.storyGroup}>
-        <div className={classes.text}>
+  <div css={styleUtils.pageContainer}>
+    <div css={styleUtils.contentContainer}>
+      <div css={styles.storyGroup}>
+        <div css={styles.text}>
           <MdRenderer input={content.data.owner} />
         </div>
-        <div className={classes.image}>
+        <div css={styles.image}>
           <img
             alt={content.data.kristinaImgAlt}
             src="/resources/pages/about-us/kristina.jpg"
@@ -25,8 +25,8 @@ const Page = ({ content }: { content: PageContent }) => (
           />
         </div>
       </div>
-      <div className={classes.storyGroup}>
-        <div className={classes.image}>
+      <div css={styles.storyGroup}>
+        <div css={styles.image}>
           <img
             alt={content.data.pattyImgAlt}
             src="/resources/pages/about-us/patty.png"
@@ -38,7 +38,7 @@ const Page = ({ content }: { content: PageContent }) => (
             loading="lazy"
           />
         </div>
-        <div className={classes.text}>
+        <div css={styles.text}>
           <MdRenderer input={content.data.founder} />
         </div>
       </div>
@@ -51,5 +51,58 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return { props: { content } };
 };
+
+const imageAndTextStyles = css`
+  display: flex;
+  gap: 1em;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const styles = Object.freeze({
+  storyGroup: css`
+    display: flex;
+    gap: 1em;
+    ${styleUtils.mobile(
+      css`
+        flex-direction: column;
+      `
+    )}
+
+    &:last-child {
+      margin-top: 2em;
+      ${styleUtils.mobile(
+        css`
+          flex-direction: column-reverse;
+        `
+      )}
+    }
+  `,
+
+  text: css`
+    width: 60%;
+    ${imageAndTextStyles}
+    ${styleUtils.mobile(
+      css`
+        width: 100%;
+      `
+    )}
+  `,
+  image: css`
+    max-height: 100%;
+    width: 40%;
+    ${imageAndTextStyles}
+    ${styleUtils.mobile(
+      css`
+        width: 100%;
+      `
+    )}
+    > img {
+      border-radius: var(--chakra-radii-md);
+      width: 100%;
+    }
+  `,
+});
 
 export default Page;

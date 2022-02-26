@@ -6,7 +6,7 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 
-import classes from "../styles/pages/app.module.sass";
+import styleUtils from "../utils/styleUtils";
 
 const processor = unified()
   .use(remarkParse)
@@ -27,7 +27,7 @@ const MdRenderer = React.memo(
     as?: "div" | "span";
   }) => (
     <Component
-      className={classes.htmlRoot}
+      css={styleUtils.htmlRoot}
       dangerouslySetInnerHTML={{ __html: processMd(input) }}
     />
   )

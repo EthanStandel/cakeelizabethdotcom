@@ -3,7 +3,7 @@ import sanitizeHtml from "sanitize-html";
 
 import MdRenderer from "../components/MdRenderer";
 import licenses from "../resources/licenses.html";
-import appClasses from "../styles/pages/app.module.sass";
+import styleUtils from "../utils/styleUtils";
 
 import { allPageContents } from ".contentlayer/data";
 import type { PageContent } from ".contentlayer/types";
@@ -15,11 +15,11 @@ const Page = ({
   licenses: string;
   content: PageContent;
 }) => (
-  <div className={appClasses.pageContainer}>
-    <div className={appClasses.contentContainer}>
+  <div css={styleUtils.pageContainer}>
+    <div css={styleUtils.contentContainer}>
       <MdRenderer input={content.body.raw} />
       <div
-        className={appClasses.htmlRoot}
+        css={styleUtils.htmlRoot}
         dangerouslySetInnerHTML={{ __html: licenses }}
       />
     </div>

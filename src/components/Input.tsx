@@ -11,12 +11,11 @@ import {
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
+import { css } from "@emotion/react";
 import { useField, FieldAttributes } from "formik";
 import PhoneNumberInput, {
   Props as PhoneNumberInputProps,
 } from "react-phone-number-input/input";
-
-import classes from "../styles/components/Input.module.sass";
 
 type Props = FieldAttributes<unknown> & {
   left?: React.ReactChild;
@@ -51,7 +50,7 @@ const Input = ({
       {label && (
         <FormLabel>
           {label}
-          {required && <span className={classes.required}>{" *"}</span>}
+          {required && <span css={styles.required}>{" *"}</span>}
         </FormLabel>
       )}
       <InputGroup>
@@ -63,7 +62,7 @@ const Input = ({
         {textarea ? (
           <Textarea
             {...(inputProps as TextareaProps)}
-            className={classes.padded}
+            css={styles.padded}
             size="lg"
           />
         ) : phoneNumber ? (
@@ -71,7 +70,7 @@ const Input = ({
             defaultCountry="US"
             inputComponent={CkInput}
             size="lg"
-            className={classes.padded}
+            className={styles.padded}
             {...(inputProps as PhoneNumberInputProps)}
             onChange={(input: string) => setValue(input ?? "")}
           />
@@ -85,5 +84,15 @@ const Input = ({
     </FormControl>
   );
 };
+
+const styles = Object.freeze({
+  padded: css`
+    padding-left: var(--chakra-space-10) !important;
+  `,
+  required: css`
+    color: red;
+    font-weight: bold;
+  `,
+});
 
 export default Input;

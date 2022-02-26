@@ -2,6 +2,7 @@ import React from "react";
 
 import { XyzTransition } from "@animxyz/react";
 import { Icon } from "@chakra-ui/react";
+import { css } from "@emotion/react";
 import { Form, Formik } from "formik";
 import { GetStaticProps } from "next";
 import Link from "next/link";
@@ -20,8 +21,7 @@ import CtaButton from "../components/CtaButton";
 import InfoBox from "../components/InfoBox";
 import Input from "../components/Input";
 import { ContactForm } from "../models/ContactForm";
-import appClasses from "../styles/pages/app.module.sass";
-import classes from "../styles/pages/contact.module.sass";
+import styleUtils from "../utils/styleUtils";
 import contactFormValidator from "../validation/contactFormValidator";
 
 import { allPageContents } from ".contentlayer/data";
@@ -34,9 +34,9 @@ const Page = ({ content }: { content: PageContent }) => {
   >(null);
 
   return (
-    <div className={appClasses.pageContainer}>
-      <div className={appClasses.contentContainer}>
-        <div className={classes.pageSplit}>
+    <div css={styleUtils.pageContainer}>
+      <div css={styleUtils.contentContainer}>
+        <div css={styles.pageSplit}>
           <div>
             <XyzTransition xyz="small-25% fade stagger">
               {latestSubmissionResult !== "success" && (
@@ -62,7 +62,7 @@ const Page = ({ content }: { content: PageContent }) => {
                       setSubmitting(false);
                     }}
                   >
-                    <Form className={classes.form}>
+                    <Form css={styles.form}>
                       <Input
                         name="name"
                         left={<Icon color="gray.300" as={FaUserTag} />}
@@ -94,7 +94,7 @@ const Page = ({ content }: { content: PageContent }) => {
                         required
                         textarea
                       />
-                      <div className={classes.submit}>
+                      <div css={styles.submit}>
                         <CtaButton
                           loading={submitting}
                           leftIcon={<Icon as={FaPaperPlane} />}
@@ -127,7 +127,7 @@ const Page = ({ content }: { content: PageContent }) => {
               )}
             </XyzTransition>
           </div>
-          <div className={classes.contactBlock}>
+          <div css={styles.contactBlock}>
             <h2>{content.data.contact.name}</h2>
             <div>
               <p>{content.data.contact.address.street}</p>
@@ -160,7 +160,7 @@ const SubmissionStatusBox = ({
 }) => (
   <InfoBox state={submissionResult}>
     <span
-      className={appClasses.htmlRoot}
+      css={styleUtils.htmlRoot}
       dangerouslySetInnerHTML={{
         __html: content.data.formResult[submissionResult],
       }}
@@ -172,5 +172,51 @@ export const getStaticProps: GetStaticProps = async () => {
   const content = allPageContents.find(({ page }) => page === "contact");
   return { props: { content } };
 };
+
+const styles = Object.freeze({
+  form: css`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+
+    > * {
+      // I have no idea...
+      z-index: 0;
+    }
+  `,
+  submit: css`
+    width: 100%;
+    margin-top: 1em;
+    > button {
+      ${styleUtils.mobile(
+        css`
+          width: 100%;
+        `
+      )}
+    }
+  `,
+
+  pageSplit: css`
+    width: 100%;
+    display: flex;
+    gap: 2em;
+    ${styleUtils.desktop(css`
+      > :first-child {
+        width: 60%;
+      }
+    `)}
+    ${styleUtils.mobile(
+      css`
+        flex-direction: column-reverse;
+      `
+    )}
+  `,
+
+  contactBlock: css`
+    > :not(:first-child) {
+      margin-bottom: 1em;
+    }
+  `,
+});
 
 export default Page;

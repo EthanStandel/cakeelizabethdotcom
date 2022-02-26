@@ -1,9 +1,9 @@
+import { css } from "@emotion/react";
 import type { GetStaticProps, NextPage } from "next";
 
 import ClickableCard from "../components/ClickableCard";
 import QuoteCarousel from "../components/QuoteCarousel";
-import appClasses from "../styles/pages/app.module.sass";
-import classes from "../styles/pages/index.module.sass";
+import styleUtils from "../utils/styleUtils";
 
 import { allPageContents } from ".contentlayer/data";
 import type { PageContent } from ".contentlayer/types";
@@ -13,15 +13,15 @@ interface Props {
 
 const Page: NextPage<Props> = ({ content }) => (
   <div>
-    <div className={classes.bannerImageContainer}>
+    <div css={styles.bannerImageContainer}>
       <img alt={content.data.bannerAlt} src="/resources/other/banner.jpg" />
     </div>
-    <div className={appClasses.pageContainer}>
-      <div className={appClasses.contentContainer}>
-        <div className={appClasses.center}>
+    <div css={styleUtils.pageContainer}>
+      <div css={styleUtils.contentContainer}>
+        <div css={styleUtils.center}>
           <h2>{content.data.chooseYourOccasion}</h2>
         </div>
-        <div className={classes.cakeTypeCards}>
+        <div css={styles.cakeTypeCards}>
           {(
             content.data.cakeTypes as Array<{
               title: string;
@@ -50,5 +50,31 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return { props: { content } };
 };
+
+const styles = Object.freeze({
+  bannerImageContainer: css`
+    min-width: 100%;
+    img {
+      height: 500px;
+      width: 100%;
+      object-fit: cover;
+      ${styleUtils.mobile(
+        css`
+          height: 300px;
+        `
+      )}
+    }
+  `,
+  cakeTypeCards: css`
+    display: grid;
+    gap: 2em;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    width: 100%;
+  `,
+  quote: css`
+    height: 300px;
+  `,
+});
 
 export default Page;

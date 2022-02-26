@@ -1,9 +1,12 @@
+import { css } from "@emotion/react";
 import NextDocument, { Html, Head, Main, NextScript } from "next/document";
+
+import styleUtils from "../utils/styleUtils";
 
 class Document extends NextDocument {
   render() {
     return (
-      <Html lang="en-US">
+      <Html lang="en-US" css={styles.html}>
         <Head>
           <link
             rel="stylesheet"
@@ -18,5 +21,42 @@ class Document extends NextDocument {
     );
   }
 }
+
+const styles = Object.freeze({
+  html: css`
+    --app-width: 80%;
+    --primary-color: aquamarine;
+    --secondary-color: springgreen;
+    --text-color: #555555;
+    --transparent-primary: rgba(127, 255, 212, 0.5);
+    ${styleUtils.mobile(
+      css`
+        --app-width: 95%;
+      `
+    )}
+
+    * {
+      font-family: "Montserrat", sans-serif;
+    }
+
+    h2 {
+      text-transform: uppercase;
+      font-size: 2em;
+      margin: 1rem auto;
+      text-align: center;
+    }
+
+    /* NProgress overrides */
+    #nprogress {
+      .bar {
+        background: var(--text-color) !important;
+      }
+      .spinner-icon {
+        border-top-color: var(--text-color) !important;
+        border-left-color: var(--text-color) !important;
+      }
+    }
+  `,
+});
 
 export default Document;

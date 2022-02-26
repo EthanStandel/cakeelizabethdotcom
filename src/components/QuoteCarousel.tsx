@@ -1,7 +1,8 @@
 import React from "react";
 
-import classes from "../styles/components/QuoteCarousel.module.sass";
-import appClasses from "../styles/pages/app.module.sass";
+import { css } from "@emotion/react";
+
+import styleUtils from "../utils/styleUtils";
 
 import Carousel from "./Carousel";
 
@@ -27,12 +28,45 @@ const QuoteCarousel = ({ quotes }: { quotes: Array<QuoteModel> }) => {
 };
 
 const Quote = ({ quote: { text, name } }: { quote: QuoteModel }) => (
-  <div className={classes.quote}>
-    <div className={appClasses.contentContainer}>
-      <p className={classes.text}>{`"${text}"`}</p>
-      <p className={classes.name}>{`--${name}`}</p>
+  <div css={styles.quote}>
+    <div css={styleUtils.contentContainer}>
+      <p css={styles.text}>{`"${text}"`}</p>
+      <p css={styles.name}>{`--${name}`}</p>
     </div>
   </div>
 );
+
+const styles = Object.freeze({
+  quote: css`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 400px;
+    background-color: var(--primary-color);
+
+    p {
+      font-weight: 500;
+      color: var(--text-color);
+    }
+  `,
+  text: css`
+    font-size: 2.5em;
+    font-style: italic;
+    ${styleUtils.mobile(
+      css`
+        font-size: 1.25em;
+      `
+    )}
+  `,
+  name: css`
+    font-size: 2em;
+    text-align: right;
+    ${styleUtils.mobile(
+      css`
+        font-size: 1em;
+      `
+    )}
+  `,
+});
 
 export default QuoteCarousel;

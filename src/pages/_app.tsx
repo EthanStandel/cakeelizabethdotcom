@@ -1,10 +1,10 @@
 import "@animxyz/core";
 import "nprogress/nprogress.css";
-import "../styles/app.sass";
 
 import { useEffect } from "react";
 
 import { ChakraProvider } from "@chakra-ui/react";
+import { css } from "@emotion/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -14,6 +14,7 @@ import Footer from "../components/Footer";
 import MainMenu from "../components/MainMenu";
 import footerContent from "../resources/footer.json";
 import menu from "../resources/menu.json";
+import styleUtils from "../utils/styleUtils";
 
 const App = ({ Component, pageProps }: AppProps) => {
   const route =
@@ -69,9 +70,9 @@ const App = ({ Component, pageProps }: AppProps) => {
             : "Cake Elizabeth"}
         </title>
       </Head>
-      <div className="app">
+      <div css={styles.app}>
         <MainMenu structure={menu} />
-        <div className="page">
+        <div css={styles.page}>
           <Component {...pageProps} />
         </div>
         <Footer content={footerContent} />
@@ -79,5 +80,16 @@ const App = ({ Component, pageProps }: AppProps) => {
     </ChakraProvider>
   );
 };
+
+const styles = Object.freeze({
+  app: css`
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  `,
+  page: css`
+    flex-grow: 1;
+  `,
+});
 
 export default App;
