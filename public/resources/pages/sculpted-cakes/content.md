@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Sculpted Cakes'
+product: true
 description: 'Sculpting and carving cakes into 3D shapes, to resemble your favorite pet, vehicle, sporting item, musical instrument, hobby or even human figure is one of our specialties.'
 ---
 

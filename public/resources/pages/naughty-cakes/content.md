@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Naughty Cakes'
+product: true
 description: 'These humor filled creations break social taboos and make an emphatic statement!'
 ---
 

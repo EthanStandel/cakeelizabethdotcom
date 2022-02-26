@@ -1,7 +1,7 @@
 import React from "react";
 
 import { css } from "@emotion/react";
-import { GetServerSideProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -65,8 +65,14 @@ const Page = ({ content, images }: ProductPageProps) => {
   );
 };
 
-// This could be getStaticProps w/ getStaticPaths but it would break the image carousel when JS is turned off
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getStaticPaths: GetStaticPaths = () => ({
+  paths: allPageContents
+    .filter(({ product }) => product)
+    .map(({ page }) => ({ params: { product: page } })),
+  fallback: false,
+});
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const content = allPageContents.find(
       ({ page }) => page === params?.product

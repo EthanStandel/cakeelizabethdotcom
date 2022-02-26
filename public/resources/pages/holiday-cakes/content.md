@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Holiday Cakes'
+product: true
 description: 'We create custom decorations and delight in special shapes made just for you. Whether you choose a traditional holiday dessert or treat or create a customized holiday cake of your own, it sure to be delicious and beautifully presented.'
 ---
 

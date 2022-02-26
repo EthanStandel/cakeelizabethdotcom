@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Wedding Cakes'
+product: true
 description: 'The best cakes are created with the help of our clients. We ask that you order your cake at least 6 weeks ahead of time. Schedule your tasting as soon as possible.'
 ---
 

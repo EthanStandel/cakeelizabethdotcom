@@ -14,7 +14,6 @@ import Footer from "../components/Footer";
 import MainMenu from "../components/MainMenu";
 import footerContent from "../resources/footer.json";
 import menu from "../resources/menu.json";
-import styleUtils from "../utils/styleUtils";
 
 const App = ({ Component, pageProps }: AppProps) => {
   const route =

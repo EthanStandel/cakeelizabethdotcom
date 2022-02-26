@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Shower Cakes'
+product: true
 description: 'Let us create a wonderful cake, cupcakes, or cake-pops to match your invitations, nursery, bridal gown, favorite thing, or even help you inform the couple and their guests, the gender of their coming addition!'
 ---
 
