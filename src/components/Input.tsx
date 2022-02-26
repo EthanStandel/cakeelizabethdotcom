@@ -70,7 +70,7 @@ const Input = ({
             defaultCountry="US"
             inputComponent={CkInput}
             size="lg"
-            className={styles.padded}
+            css={styles.padded}
             {...(inputProps as PhoneNumberInputProps)}
             onChange={(input: string) => setValue(input ?? "")}
           />
