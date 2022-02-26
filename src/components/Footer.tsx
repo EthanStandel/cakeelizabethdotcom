@@ -1,7 +1,6 @@
 import { css } from "@emotion/react";
 import { keyword } from "color-convert";
 
-import classes from "../styles/components/Footer.module.sass";
 import styleUtils from "../utils/styleUtils";
 
 interface Props {

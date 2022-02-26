@@ -26,6 +26,7 @@ const contentLayerConfig = makeSource({
       fields: {
         pageTitle: { type: "string", required: true },
         description: { type: "string", required: true },
+        product: { type: "boolean", required: false },
         data: { type: "json" },
       },
       computedFields,

@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Dessert Bars'
+product: true
 description: 'We put together assortments of small desserts that will make your event!'
 ---
 

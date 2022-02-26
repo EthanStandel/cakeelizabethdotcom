@@ -1,5 +1,6 @@
 ---
 pageTitle: 'Special Occasion Cakes'
+product: true
 description: 'Anniversaries, Valentines, Sweet 16, Mother’s Day, Father’s Day, Graduations, Retirements, New Homes, Welcoming someone back to health, and even the Passing of a friend or loved one, life is always sweeter with Cake.'
 ---
 
