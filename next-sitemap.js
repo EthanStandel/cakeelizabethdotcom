@@ -17,6 +17,5 @@ module.exports = {
       priority: .7,
       lastmod: new Date().toISOString()
     }))
-
   }
 };

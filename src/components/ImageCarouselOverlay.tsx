@@ -3,10 +3,12 @@ import type { UrlObject } from "url";
 
 import { XyzTransition } from "@animxyz/react";
 import { CloseIcon, ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import { css } from "@emotion/react";
+import { keyword } from "color-convert";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import classes from "../styles/components/ImageCarouselOverlay.module.sass";
+import styleUtils from "../utils/styleUtils";
 
 import Carousel from "./Carousel";
 
@@ -85,23 +87,23 @@ const ImageCarouselOverlay = ({ images }: Props) => {
   return (
     <XyzTransition xyz="fade">
       {open && (
-        <div className={classes.root}>
-          <div className={classes.closeButton}>
+        <div css={styles.root}>
+          <div css={styles.closeButton}>
             <ControlButton href={routes.close}>
               <CloseIcon />
             </ControlButton>
           </div>
-          <div className={classes.prevButton}>
+          <div css={styles.prevButton}>
             <ControlButton href={routes.prev}>
               <ArrowBackIcon />
             </ControlButton>
           </div>
-          <div className={classes.nextButton}>
+          <div css={styles.nextButton}>
             <ControlButton href={routes.next}>
               <ArrowForwardIcon />
             </ControlButton>
           </div>
-          <div className={classes.carouselContainer}>
+          <div css={styles.carouselContainer}>
             <Carousel
               swipeable
               emulateTouch
@@ -129,7 +131,7 @@ const ImageCarouselOverlay = ({ images }: Props) => {
               selectedItem={selectedItem}
             >
               {images.map(({ src, alt }) => (
-                <div key={src} className={classes.carouselFrame}>
+                <div key={src} css={styles.carouselFrame}>
                   <img src={src} alt={alt} loading="lazy" />
                 </div>
               ))}
@@ -148,9 +150,96 @@ const ControlButton = ({
   href: UrlObject | string;
   children: React.ReactChild;
 }) => (
-  <Link scroll={false} href={href}>
-    <a className={classes.controlButton}>{children}</a>
+  <Link scroll={false} href={href} passHref>
+    <a css={styles.controlButton}>{children}</a>
   </Link>
 );
+
+const styles = Object.freeze({
+  root: css`
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 100;
+    background: rgba(${keyword.rgb("black").join(",")}, 0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `,
+  closeButton: css`
+    position: fixed;
+    z-index: 100;
+    top: 25px;
+    left: 25px;
+  `,
+  prevButton: css`
+    position: fixed;
+    z-index: 100;
+    left: 25px;
+    top: calc(50vh - 25px);
+    > a {
+      ${styleUtils.mobile(
+        css`
+          background: var(--transparent-primary);
+        `
+      )}
+    }
+  `,
+  nextButton: css`
+    position: fixed;
+    z-index: 100;
+    right: 25px;
+    top: calc(50vh - 25px);
+    > a {
+      ${styleUtils.mobile(css`
+        background: var(--transparent-primary);
+      `)}
+    }
+  `,
+
+  controlButton: css`
+    ${styleUtils.clickableShadow}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    background: var(--primary-color);
+  `,
+  carouselContainer: css`
+    margin-top: 100px;
+    margin-bottom: 100px;
+    ${styleUtils.mobile(css`
+      margin-top: 0;
+      margin-bottom: 0;
+    `)}
+    max-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    > div {
+      max-height: 100%;
+    }
+  `,
+  carouselFrame: css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: auto;
+    height: calc(100vh - 200px);
+
+    img {
+      height: auto !important;
+      width: auto !important;
+      max-height: 100%;
+      max-width: 100%;
+    }
+  `,
+});
 
 export default ImageCarouselOverlay;

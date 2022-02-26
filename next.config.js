@@ -3,9 +3,6 @@ const { withContentlayer } = require("next-contentlayer");
 
 module.exports = withContentlayer()({
   reactStrictMode: true,
-  sassOptions: {
-    prependData: '@use "src/styles/global" as *',
-  },
   redirects: (async () => [
     {
       source: "/schedule-your-tasting",

@@ -10,6 +10,8 @@ import {
   Icon,
   IconButton,
 } from "@chakra-ui/react";
+import { css } from "@emotion/react";
+import { keyword } from "color-convert";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -18,8 +20,7 @@ import { FaFacebookSquare, FaInstagramSquare } from "react-icons/fa";
 
 import useIsMobileView from "../hooks/useIsMobileView";
 import { Menu } from "../models/Menu";
-import classes from "../styles/components/MainMenu.module.sass";
-import appClasses from "../styles/pages/app.module.sass";
+import styleUtils from "../utils/styleUtils";
 
 export interface Props {
   structure: Menu;
@@ -34,17 +35,17 @@ const MainMenu = ({ structure }: Props) => {
   const isMobileView = useIsMobileView();
   return (
     <>
-      <div className={classes.shadowRoot} />
-      <div className={classes.root}>
-        <div className={appClasses.contentContainer}>
-          <div className={classes.topItems}>
+      <div css={styles.shadowRoot} />
+      <div css={styles.root}>
+        <div css={styleUtils.contentContainer}>
+          <div css={styles.topItems}>
             <div>
               <a href={`tel:${structure.phone}`}>{structure.phone}</a>
             </div>
             <div>
               {structure.social.map((social) => (
                 <a
-                  className={classes.socialLink}
+                  css={styles.socialLink}
                   key={social.name}
                   href={social.href}
                   target="_blank"
@@ -61,9 +62,9 @@ const MainMenu = ({ structure }: Props) => {
             </div>
           </div>
           {!isMobileView && (
-            <div className={classes.logoContainer}>
+            <div css={styles.logoContainer}>
               <Link href={structure.href!}>
-                <a className={classes.logo}>
+                <a>
                   <Image
                     alt={structure.name}
                     src={structure.logo}
@@ -79,9 +80,9 @@ const MainMenu = ({ structure }: Props) => {
       {isMobileView ? (
         <MobileStickyMenu structure={structure} />
       ) : (
-        <div className={classes.stickyRoot}>
-          <div className={classes.root}>
-            <div className={appClasses.contentContainer}>
+        <div css={styles.stickyRoot}>
+          <div css={styles.root}>
+            <div css={styleUtils.contentContainer}>
               <MenuItems structure={structure} />
             </div>
           </div>
@@ -102,20 +103,20 @@ const MobileStickyMenu = ({ structure }: Props) => {
   }, [router]);
 
   return (
-    <div className={classes.stickyRoot}>
-      <div className={classes.root}>
-        <div className={appClasses.contentContainer}>
-          <div className={classes.mobileMenuContainer}>
+    <div css={styles.stickyRoot}>
+      <div css={styles.root}>
+        <div css={styleUtils.contentContainer}>
+          <div css={styles.mobileMenuContainer}>
             <IconButton
-              className={classes.mobileMenu}
+              css={styles.mobileMenu}
               variant="outline"
               aria-label="Menu"
               icon={open ? <CloseIcon /> : <HamburgerIcon />}
               onClick={() => setOpen(!open)}
             />
-            <div className={classes.mobileImageContainer}>
+            <div css={styles.mobileImageContainer}>
               <Link href={structure.href!}>
-                <a className={classes.logo}>
+                <a>
                   <Image
                     alt={structure.name}
                     src={structure.logo}
@@ -130,7 +131,7 @@ const MobileStickyMenu = ({ structure }: Props) => {
       </div>
       <XyzTransition xyz="up-100%">
         {open && (
-          <div className={classes.hiddenMenuContainer}>
+          <div css={styles.hiddenMenuContainer}>
             <MenuItems structure={structure} />
           </div>
         )}
@@ -143,32 +144,28 @@ const MenuItems = ({ structure }: Props) => {
   const { asPath } = useRouter();
   const isMobileView = useIsMobileView();
   return (
-    <ul className={classes.menuItems}>
+    <ul css={styles.menuItems}>
       {structure.children?.map((item) => {
         const selectedItem =
           item.href === asPath ||
           item.children?.find((subitem) => subitem.href === asPath);
         return (
-          <li className={classes.rootMenuItem} key={item.name}>
+          <li css={styles.rootMenuItem} key={item.name}>
             {item.children ? (
               <ChakraMenu placement={isMobileView ? "bottom" : undefined}>
                 <MenuButton
                   as="button"
-                  className={`${selectedItem ? classes.selected : ""} ${
-                    classes.menuButton
-                  }`}
+                  css={[styles.menuButton, selectedItem && styles.selected]}
                 >
                   {item.name}
                   {item.children && <ChevronDownIcon h="1.5em" w="1.5em" />}
                 </MenuButton>
-                <MenuList className={classes.menuList}>
+                <MenuList>
                   {item.children?.map((subitem) => (
                     <Link key={subitem.href} href={subitem.href!} passHref>
                       <MenuItem
                         as="a"
-                        className={
-                          selectedItem === subitem ? classes.selected : ""
-                        }
+                        css={selectedItem === subitem && styles.selected}
                       >
                         {subitem.name}
                       </MenuItem>
@@ -177,11 +174,8 @@ const MenuItems = ({ structure }: Props) => {
                 </MenuList>
               </ChakraMenu>
             ) : (
-              <Link href={item.href!}>
-                <a
-                  className={selectedItem ? classes.selected : ""}
-                  key={item.name}
-                >
+              <Link href={item.href!} passHref>
+                <a css={selectedItem && styles.selected} key={item.name}>
                   {item.name}
                 </a>
               </Link>
@@ -192,5 +186,153 @@ const MenuItems = ({ structure }: Props) => {
     </ul>
   );
 };
+
+const styles = Object.freeze({
+  root: css`
+    background: var(--primary-color) !important;
+    color: var(--text-color);
+    z-index: 4;
+    width: 100%;
+    position: sticky;
+  `,
+  topItems: css`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    > div {
+      margin: 1rem;
+      // Safari has wrong calculations for how they
+      // define the space for text, which forces the
+      // phone number to wrap here, this fixes that
+      word-break: keep-all;
+    }
+  `,
+  socialLink: css`
+    margin: 0.25rem;
+  `,
+
+  logoContainer: css`
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
+    > button {
+      margin: 0.5rem;
+    }
+  `,
+
+  menuItems: css`
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+    ${styleUtils.mobile(
+      css`
+        flex-direction: column;
+      `
+    )}
+    li {
+      list-style-type: none;
+    }
+  `,
+
+  menuButton: css`
+    & + * {
+      z-index: 4 !important;
+    }
+  `,
+
+  selected: css`
+    font-weight: bold !important;
+  `,
+
+  rootMenuItem: css`
+    &,
+    button,
+    a {
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 0.95em;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    margin: 1rem;
+    ${styleUtils.mobile(
+      css`
+        margin: 0.5rem;
+      `
+    )}
+
+    flex-grow: 1;
+    white-space: nowrap;
+
+    ${styleUtils.desktop(
+      css`
+        &:first-child {
+          margin-left: 0;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+      `
+    )}
+  `,
+
+  stickyRoot: css`
+    z-index: 4;
+    position: sticky;
+    top: 0;
+  `,
+
+  // adds a "sliding door" shadow when the header goes sticky
+  shadowRoot: css`
+    background: var(--primary-color);
+    position: sticky;
+    height: 1px;
+    margin-top: -1px;
+    z-index: 1;
+    top: 0;
+    box-shadow: 5px calc(1.4em + 1.9rem) 20px 5px
+      rgba(${keyword.rgb("black").join(",")}, 0.5);
+    width: 100%;
+  `,
+
+  mobileMenuContainer: css`
+    display: flex;
+    width: 100%;
+    & > :last-child {
+      flex-grow: 1;
+      height: 52px;
+      margin-top: 2px;
+      width: 52px;
+    }
+  `,
+  mobileImageContainer: css`
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-around;
+    img {
+      height: 52px;
+    }
+  `,
+  mobileMenu: css`
+    margin: 0.5rem 0;
+    border-color: var(--text-color) !important;
+    background-color: transparent !important;
+  `,
+
+  hiddenMenuContainer: css`
+    position: absolute;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    top: 0;
+    width: 100%;
+    background: var(--primary-color);
+  `,
+});
 
 export default MainMenu;
