@@ -105,23 +105,9 @@ const ImageCarouselOverlay = ({ images }: Props) => {
           </div>
           <div css={styles.carouselContainer}>
             <Carousel
-              swipeable
-              emulateTouch
+              swipeable={false}
               autoFocus
               infiniteLoop
-              onChange={(index) =>
-                router.push(
-                  {
-                    pathname: router.pathname,
-                    query: {
-                      ...router.query,
-                      [imageCarouselRouting.indexQueryParam]: index,
-                    },
-                  },
-                  undefined,
-                  { scroll: false }
-                )
-              }
               useKeyboardArrows={false}
               showThumbs={false}
               showIndicators={false}
