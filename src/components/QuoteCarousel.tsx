@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { css } from "@emotion/react";
 
@@ -12,18 +12,18 @@ interface QuoteModel {
 }
 
 const QuoteCarousel = ({ quotes }: { quotes: Array<QuoteModel> }) => {
-  const [autoPlay, setAutoPlay] = React.useState(true);
+  const [index, setIndex] = useState(0);
   return (
     <Carousel
-      infiniteLoop
-      autoPlay={autoPlay}
-      showThumbs={false}
-      onClickItem={() => setAutoPlay(false)}
-    >
-      {quotes.map((quote) => (
+      index={index}
+      setIndex={setIndex}
+      items={quotes}
+      autoplay
+      pagination
+      slideComponent={({ item: quote }) => (
         <Quote key={quote.text} quote={quote} />
-      ))}
-    </Carousel>
+      )}
+    />
   );
 };
 
