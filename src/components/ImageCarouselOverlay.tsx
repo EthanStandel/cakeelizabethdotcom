@@ -105,23 +105,34 @@ const ImageCarouselOverlay = ({ images }: Props) => {
           </div>
           <div css={styles.carouselContainer}>
             <Carousel
-              swipeable={false}
-              autoFocus
-              infiniteLoop
-              useKeyboardArrows={false}
-              showThumbs={false}
-              showIndicators={false}
-              showArrows={false}
-              autoPlay={false}
-              showStatus={false}
-              selectedItem={selectedItem}
-            >
-              {images.map(({ src, alt }) => (
+              index={selectedItem}
+              setIndex={(index) =>
+                router.push(
+                  {
+                    pathname: router.pathname,
+                    query: {
+                      ...router.query,
+                      [imageCarouselRouting.indexQueryParam]: index,
+                    },
+                  },
+                  undefined,
+                  { scroll: false }
+                )
+              }
+              items={images}
+              slideComponent={({
+                item: { src, alt },
+                isActive,
+                isPrev,
+                isNext,
+              }) => (
                 <div key={src} css={styles.carouselFrame}>
-                  <img src={src} alt={alt} loading="lazy" />
+                  {(isActive || isPrev || isNext) && (
+                    <img src={src} alt={alt} loading="lazy" />
+                  )}
                 </div>
-              ))}
-            </Carousel>
+              )}
+            />
           </div>
         </div>
       )}
@@ -207,8 +218,8 @@ const styles = Object.freeze({
     display: flex;
     align-items: center;
     justify-content: center;
-    > div {
-      max-height: 100%;
+    .swiper-initialized {
+      width: 100vw;
     }
   `,
   carouselFrame: css`
