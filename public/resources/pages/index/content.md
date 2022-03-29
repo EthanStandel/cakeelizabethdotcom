@@ -19,10 +19,6 @@
         link: '/cupcakes'
         img: '/resources/pages/cupcakes/1.jpg'
       -
-        title: 'Naughty cakes'
-        link: '/naughty-cakes'
-        img: '/resources/pages/naughty-cakes/1.jpg'
-      -
         title: 'Sculpted cakes'
         link: '/sculpted-cakes'
         img: '/resources/pages/sculpted-cakes/1.jpg'
