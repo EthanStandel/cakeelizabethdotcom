@@ -12,7 +12,7 @@
     contact:
       name: 'Cake Elizabeth'
       address: 
-        street: '851 Sawyer Rd'
+        street: '851 Sawyer St'
         cityState: 'South Portland ME'
         zip: '04106'
       phone: 
