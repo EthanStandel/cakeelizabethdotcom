@@ -18,6 +18,7 @@
       phone: 
         display: '(207) 370-4008'
         literal: '2073704008'
+      email: 'info@cakeelizabeth.com'
       web: 
         display: 'www.cakeelizabeth.com'
         literal: '/'

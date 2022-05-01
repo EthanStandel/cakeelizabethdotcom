@@ -146,6 +146,11 @@ const Page = ({ content }: { content: PageContent }) => {
               </a>
             </div>
             <div>
+              <a href={`mailto:${content.data.contact.email}`}>
+                {content.data.contact.email}
+              </a>
+            </div>
+            <div>
               <Link href={content.data.contact.web.literal}>
                 {content.data.contact.web.display}
               </Link>
