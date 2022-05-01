@@ -30,30 +30,45 @@ const Page = ({ content, images }: ProductPageProps) => {
       <div css={styleUtils.contentContainer}>
         <div css={styles.mainSection}>
           <div ref={mainImgRef} css={styles.mainImgContainer}>
-            <img alt={images[0].alt} src={images[0].src} />
+            <Link
+              scroll={false}
+              href={{
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  ...imageCarouselRouting.queryBuilder(0),
+                },
+              }}
+            >
+              <a>
+                <img alt={images[0].alt} src={images[0].src} />
+              </a>
+            </Link>
           </div>
           <div css={styles.spielContainer}>
             <MdRenderer input={content.body.raw} />
           </div>
         </div>
         <div css={styles.imagesContainer}>
-          {images.map(({ src, alt }, index) => (
-            <Link
-              key={src}
-              scroll={false}
-              href={{
-                pathname: router.pathname,
-                query: {
-                  ...router.query,
-                  ...imageCarouselRouting.queryBuilder(index),
-                },
-              }}
-            >
-              <a>
-                <Image alt={alt} width={150} height={150} src={src} />
-              </a>
-            </Link>
-          ))}
+          {images
+            .filter((_, index) => index !== 0)
+            .map(({ src, alt }, index) => (
+              <Link
+                key={src}
+                scroll={false}
+                href={{
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    ...imageCarouselRouting.queryBuilder(index + 1),
+                  },
+                }}
+              >
+                <a>
+                  <Image alt={alt} width={150} height={150} src={src} />
+                </a>
+              </Link>
+            ))}
         </div>
         {content.data?.extendedContent && (
           <div css={styles.extendedInfo}>
@@ -117,6 +132,11 @@ export const styles = Object.freeze({
     display: flex;
     align-items: center;
     justify-content: center;
+
+    a {
+      ${styleUtils.clickableShadow}
+      border-radius: var(--chakra-radii-md);
+    }
 
     ${styleUtils.mobile(css`
       scroll-margin-top: 60px;

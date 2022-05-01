@@ -126,11 +126,18 @@ const ImageCarouselOverlay = ({ images }: Props) => {
                 isPrev,
                 isNext,
               }) => (
-                <div key={src} css={styles.carouselFrame}>
-                  {(isActive || isPrev || isNext) && (
-                    <img src={src} alt={alt} loading="lazy" />
+                <>
+                  {isActive && (
+                    <Link href={routes.close} scroll={false} passHref>
+                      <a tabIndex={-1} css={styles.backgroundCover} />
+                    </Link>
                   )}
-                </div>
+                  <div key={src} css={styles.carouselFrame}>
+                    {(isActive || isPrev || isNext) && (
+                      <img src={src} alt={alt} loading="lazy" />
+                    )}
+                  </div>
+                </>
               )}
             />
           </div>
@@ -166,6 +173,15 @@ const styles = Object.freeze({
     justify-content: center;
     align-items: center;
   `,
+  backgroundCover: css`
+    height: 100vh;
+    width: 100vw;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: auto;
+  `,
   closeButton: css`
     position: fixed;
     z-index: 100;
@@ -196,7 +212,6 @@ const styles = Object.freeze({
       `)}
     }
   `,
-
   controlButton: css`
     ${styleUtils.clickableShadow}
     display: flex;
@@ -220,6 +235,7 @@ const styles = Object.freeze({
     justify-content: center;
     .swiper-initialized {
       width: 100vw;
+      height: 100vh;
     }
   `,
   carouselFrame: css`
@@ -228,13 +244,17 @@ const styles = Object.freeze({
     justify-content: center;
     text-align: center;
     margin: auto;
-    height: calc(100vh - 200px);
-
+    height: 100vh;
     img {
       height: auto !important;
       width: auto !important;
-      max-height: 100%;
+      max-height: 85%;
       max-width: 100%;
+      z-index: 100;
+      cursor: grab;
+      &:active {
+        cursor: grabbing;
+      }
     }
   `,
 });
