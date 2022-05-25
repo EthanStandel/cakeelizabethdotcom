@@ -17,6 +17,7 @@ export interface CarouselProps<T> {
   slideComponent: React.FC<SlideData & { item: T }>;
   index: number;
   setIndex: (index: number) => void;
+  zIndex?: number;
   pagination?: boolean;
   autoplay?: boolean;
 }
@@ -30,6 +31,7 @@ const Carousel: <T>(props: CarouselProps<T>) => React.ReactElement = ({
   pagination,
   autoplay,
   items,
+  zIndex = 1, // actual default from swiper
   slideComponent: SlideComponent,
 }) => {
   const [swiper, setSwiper] = useState<Swiper | undefined>();
@@ -42,6 +44,7 @@ const Carousel: <T>(props: CarouselProps<T>) => React.ReactElement = ({
     <SwiperComponent
       loop
       className={css`
+        z-index: ${zIndex};
         .swiper-pagination-bullet-active {
           background-color: white;
         }

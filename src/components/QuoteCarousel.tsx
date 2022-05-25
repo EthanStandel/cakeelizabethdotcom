@@ -18,6 +18,7 @@ const QuoteCarousel = ({ quotes }: { quotes: Array<QuoteModel> }) => {
       index={index}
       setIndex={setIndex}
       items={quotes}
+      zIndex={0}
       autoplay
       pagination
       slideComponent={({ item: quote }) => (
