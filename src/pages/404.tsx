@@ -1,14 +1,16 @@
 import React from "react";
 
-import { GetStaticProps } from "next";
+import { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 
 import styleUtils from "../utils/styleUtils";
 
-import { allPageContents } from ".contentlayer/data";
-import type { PageContent } from ".contentlayer/types";
+import { allPageContents } from ".contentlayer/generated";
+import type { PageContent } from ".contentlayer/generated/types";
 
-const Page = ({ content }: { content: PageContent }) => {
+type Props = { content: PageContent };
+
+const Page: NextPage<Props> = ({ content }) => {
   const router = useRouter();
 
   React.useEffect(() => {
@@ -27,8 +29,8 @@ const Page = ({ content }: { content: PageContent }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  const content = allPageContents.find(({ page }) => page === "404");
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const content = allPageContents.find(({ page }) => page === "404")!;
 
   return { props: { content } };
 };

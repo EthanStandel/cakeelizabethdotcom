@@ -36,8 +36,8 @@ const MainMenu = ({ structure }: Props) => {
   return (
     <>
       <div css={styles.shadowRoot} />
-      <div css={styles.root}>
-        <div css={styleUtils.contentContainer}>
+      <div css={[styles.root, styleUtils.contentContainerParent]}>
+        <div css={styleUtils.contentContainerFullWidth}>
           <div css={styles.topItems}>
             <div>
               <a href={`tel:${structure.phone}`}>{structure.phone}</a>
@@ -81,8 +81,8 @@ const MainMenu = ({ structure }: Props) => {
         <MobileStickyMenu structure={structure} />
       ) : (
         <div css={styles.stickyRoot}>
-          <div css={styles.root}>
-            <div css={styleUtils.contentContainer}>
+          <div css={[styles.root, styleUtils.contentContainerParent]}>
+            <div css={styleUtils.contentContainerFullWidth}>
               <MenuItems structure={structure} />
             </div>
           </div>
@@ -104,8 +104,8 @@ const MobileStickyMenu = ({ structure }: Props) => {
 
   return (
     <div css={styles.stickyRoot}>
-      <div css={styles.root}>
-        <div css={styleUtils.contentContainer}>
+      <div css={[styles.root, styleUtils.contentContainerParent]}>
+        <div css={styleUtils.contentContainerFullWidth}>
           <div css={styles.mobileMenuContainer}>
             <IconButton
               css={styles.mobileMenu}

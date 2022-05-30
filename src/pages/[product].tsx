@@ -1,26 +1,33 @@
 import React from "react";
 
 import { css } from "@emotion/react";
-import { GetStaticPaths, GetStaticProps } from "next";
-import Image from "next/image";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+import { FlavorGroup } from "src/components/FlavorGroup";
+import { ImageGallery } from "src/components/ImageGallery";
+import MdRenderer from "src/components/MdRenderer";
 
 import ImageCarouselOverlay, {
   imageCarouselRouting,
 } from "../components/ImageCarouselOverlay";
-import MdRenderer from "../components/MdRenderer";
 import styleUtils from "../utils/styleUtils";
 
-import { allPageContents, allImageManifests } from ".contentlayer/data";
-import type { PageContent } from ".contentlayer/types";
+import {
+  allPageContents,
+  allImageManifests,
+  allExtendedPageContents,
+} from ".contentlayer/generated";
+import type { PageContent } from ".contentlayer/generated/types";
 
-interface ProductPageProps {
-  content: PageContent;
+interface Props {
+  content: Omit<PageContent, "body"> & { body: string };
+  extendedContentBody: string | null;
   images: Array<{ src: string; alt: string }>;
 }
 
-const Page = ({ content, images }: ProductPageProps) => {
+const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
   const mainImgRef = React.useRef<null | HTMLImageElement>(null);
   const router = useRouter();
 
@@ -46,33 +53,19 @@ const Page = ({ content, images }: ProductPageProps) => {
             </Link>
           </div>
           <div css={styles.spielContainer}>
-            <MdRenderer input={content.body.raw} />
+            <div css={styleUtils.htmlRoot}>
+              <h2>{content.pageTitle}</h2>
+              <MdRenderer input={content.body} />
+            </div>
           </div>
         </div>
-        <div css={styles.imagesContainer}>
-          {images
-            .filter((_, index) => index !== 0)
-            .map(({ src, alt }, index) => (
-              <Link
-                key={src}
-                scroll={false}
-                href={{
-                  pathname: router.pathname,
-                  query: {
-                    ...router.query,
-                    ...imageCarouselRouting.queryBuilder(index + 1),
-                  },
-                }}
-              >
-                <a>
-                  <Image alt={alt} width={150} height={150} src={src} />
-                </a>
-              </Link>
-            ))}
-        </div>
-        {content.data?.extendedContent && (
-          <div css={styles.extendedInfo}>
-            <MdRenderer input={content.data.extendedContent} />
+        <ImageGallery images={images} />
+        {extendedContentBody && (
+          <div css={[styleUtils.htmlRoot, styles.shadowPassthrough]}>
+            <MdRenderer
+              input={extendedContentBody}
+              components={{ FlavorGroup }}
+            />
           </div>
         )}
       </div>
@@ -87,9 +80,13 @@ export const getStaticPaths: GetStaticPaths = () => ({
   fallback: false,
 });
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   try {
     const content = allPageContents.find(
+      ({ page }) => page === params?.product
+    );
+
+    const extendedContent = allExtendedPageContents.find(
       ({ page }) => page === params?.product
     );
 
@@ -98,11 +95,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 
     const images = allImageManifests
-      .find(({ page }) => page === params.product)
-      ?.items.map((src) => ({ src, alt: `${content?.pageTitle} example` }));
+      .find(({ page }) => page === params.product)!
+      .items.map((src) => ({ src, alt: `${content?.pageTitle} example` }));
 
     return {
-      props: { content, images },
+      props: {
+        content: { ...content!, body: content!.body.raw },
+        images,
+        extendedContentBody: extendedContent?.body.raw ?? null,
+      },
     };
   } catch {
     return { notFound: true };
@@ -141,13 +142,11 @@ export const styles = Object.freeze({
     ${styleUtils.mobile(css`
       scroll-margin-top: 60px;
       width: 100%;
-      height: 500px;
     `)}
 
     ${styleUtils.desktop(css`
       scroll-margin-top: 115px;
-      width: calc(60% - 1em);
-      height: 750px;
+      width: calc(50% - 1em);
     `)}
 
     img {
@@ -171,7 +170,7 @@ export const styles = Object.freeze({
     justify-content: center;
     ${styleUtils.desktop(
       css`
-        width: 40%;
+        width: 50%;
       `
     )}
     ${styleUtils.mobile(
@@ -180,50 +179,8 @@ export const styles = Object.freeze({
       `
     )}
   `,
-
-  imagesContainer: css`
-    display: grid;
-    gap: 1em;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-
-    img {
-      object-fit: cover;
-    }
-
-    > a {
-      ${styleUtils.clickableShadow}
-      border-radius: var(--chakra-radii-md);
-
-      & > * {
-        display: block !important;
-      }
-    }
-  `,
-
-  extendedInfo: css`
-    ${styleUtils.shadow}
-    margin-top: 2rem;
-    padding: 1em 2em 2em 2em;
-    ${styleUtils.mobile(
-      css`
-        padding: 0 1em 1em 1em;
-      `
-    )}
-    border-radius: var(--chakra-radii-md);
-    ol,
-    ul {
-      & > li {
-        list-style-type: none;
-        ${styleUtils.mobile(
-          css`
-            text-align: center;
-          `
-        )}
-        &:nth-child(2n-1) {
-          background: var(--primary-color);
-        }
-      }
-    }
+  shadowPassthrough: css`
+    overflow: visible;
   `,
 });
 

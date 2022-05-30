@@ -1,36 +1,34 @@
-import React from "react";
+import React, { FC } from "react";
 
-import rehypeStringify from "rehype-stringify";
-import remarkGfm from "remark-gfm";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import { unified } from "unified";
-
-import styleUtils from "../utils/styleUtils";
-
-const processor = unified()
-  .use(remarkParse)
-  .use(remarkGfm)
-  .use(remarkRehype)
-  .use(rehypeStringify);
-
-export const processMd = (input: string) =>
-  String(processor.processSync(input));
+import Markdown from "markdown-to-jsx";
+import Link from "next/link";
 
 // eslint-disable-next-line react/display-name
 const MdRenderer = React.memo(
   ({
     input,
-    as: Component = "div",
+    components = {},
   }: {
     input: string;
-    as?: "div" | "span";
-  }) => (
-    <Component
-      css={styleUtils.htmlRoot}
-      dangerouslySetInnerHTML={{ __html: processMd(input) }}
-    />
-  )
+    components?: Record<string, FC<any>>;
+  }) => {
+    return (
+      <Markdown
+        options={{
+          overrides: {
+            a: ({ href, ...props }) => (
+              <Link href={href}>
+                <a {...props} />
+              </Link>
+            ),
+            ...components,
+          },
+        }}
+      >
+        {input}
+      </Markdown>
+    );
+  }
 );
 
 export default MdRenderer;

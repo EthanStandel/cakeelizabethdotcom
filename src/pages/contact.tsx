@@ -4,7 +4,7 @@ import { XyzTransition } from "@animxyz/react";
 import { Icon } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 import { Form, Formik } from "formik";
-import { GetStaticProps } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -25,10 +25,12 @@ import { ContactForm } from "../models/ContactForm";
 import styleUtils from "../utils/styleUtils";
 import contactFormValidator from "../validation/contactFormValidator";
 
-import { allPageContents } from ".contentlayer/data";
-import type { PageContent } from ".contentlayer/types";
+import { allPageContents } from ".contentlayer/generated";
+import type { PageContent } from ".contentlayer/generated/types";
 
-const Page = ({ content }: { content: PageContent }) => {
+type Props = { content: PageContent };
+
+const Page: NextPage<Props> = ({ content }) => {
   const router = useRouter();
   const [submitting, setSubmitting] = React.useState(false);
   const latestSubmissionResult = router.query.submission as
@@ -179,8 +181,9 @@ const SubmissionStatusBox = ({
   </InfoBox>
 );
 
-export const getStaticProps: GetStaticProps = async () => {
-  const content = allPageContents.find(({ page }) => page === "contact");
+export const getStaticProps: GetStaticProps<Props> = async (arg) => {
+  console.log(arg);
+  const content = allPageContents.find(({ page }) => page === "contact")!;
   return { props: { content } };
 };
 

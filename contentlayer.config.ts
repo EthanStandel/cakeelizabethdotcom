@@ -3,11 +3,6 @@ import {
   defineDocumentType,
   makeSource,
 } from "@contentlayer/source-files";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeCodeTitles from "rehype-code-titles";
-import rehypePrism from "rehype-prism-plus";
-import rehypeSlug from "rehype-slug";
-import remarkGfm from "remark-gfm";
 
 const computedFields: ComputedFields = {
   page: {
@@ -21,14 +16,19 @@ const contentLayerConfig = makeSource({
   documentTypes: [
     defineDocumentType(() => ({
       name: "PageContent",
-      filePathPattern: "pages/**/content.md",
-      bodyType: "mdx",
+      filePathPattern: "pages/**/content.mdx",
       fields: {
         pageTitle: { type: "string", required: true },
         description: { type: "string", required: true },
         product: { type: "boolean", required: false },
         data: { type: "json" },
       },
+      computedFields,
+    })),
+    defineDocumentType(() => ({
+      name: "ExtendedPageContent",
+      filePathPattern: "pages/**/extended-content.mdx",
+      fields: {},
       computedFields,
     })),
     defineDocumentType(() => ({
@@ -40,22 +40,6 @@ const contentLayerConfig = makeSource({
       computedFields,
     })),
   ],
-  mdx: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [
-      rehypeSlug,
-      rehypeCodeTitles,
-      rehypePrism,
-      [
-        rehypeAutolinkHeadings,
-        {
-          properties: {
-            className: ["anchor"],
-          },
-        },
-      ],
-    ],
-  },
 });
 
 export default contentLayerConfig;
