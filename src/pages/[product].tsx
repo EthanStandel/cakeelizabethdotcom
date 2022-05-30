@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 
 import { FlavorGroup } from "src/components/FlavorGroup";
 import { ImageGallery } from "src/components/ImageGallery";
-import MdRenderer from "src/components/MdRenderer";
+import MdxRenderer from "src/components/MdxRenderer";
 
 import ImageCarouselOverlay, {
   imageCarouselRouting,
@@ -55,14 +55,14 @@ const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
           <div css={styles.spielContainer}>
             <div css={styleUtils.htmlRoot}>
               <h2>{content.pageTitle}</h2>
-              <MdRenderer input={content.body} />
+              <MdxRenderer input={content.body} />
             </div>
           </div>
         </div>
         <ImageGallery images={images} />
         {extendedContentBody && (
           <div css={[styleUtils.htmlRoot, styles.shadowPassthrough]}>
-            <MdRenderer
+            <MdxRenderer
               input={extendedContentBody}
               components={{ FlavorGroup }}
             />

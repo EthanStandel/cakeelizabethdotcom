@@ -35,7 +35,7 @@ MAIL_FROM=
 ## Codebase overview
 
 - `public/*` - all content that gets served publically
-  - `public/resources/**/*.(md)|(json)` - content and data that is managed and distributed by [contentlayer](https://github.com/contentlayerdev/contentlayer)
+  - `public/resources/**/*.(mdx)|(json)` - content and data that is managed and distributed by [contentlayer](https://github.com/contentlayerdev/contentlayer)
 - `scripts/*` - pre/post-build scripts
 - `src/*` - all logic, templating, and styles
   - `src/pages/*` - all route content

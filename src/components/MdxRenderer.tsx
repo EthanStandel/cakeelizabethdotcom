@@ -4,7 +4,7 @@ import Markdown from "markdown-to-jsx";
 import Link from "next/link";
 
 // eslint-disable-next-line react/display-name
-const MdRenderer = React.memo(
+const MdxRenderer = React.memo(
   ({
     input,
     components = {},
@@ -31,4 +31,4 @@ const MdRenderer = React.memo(
   }
 );
 
-export default MdRenderer;
+export default MdxRenderer;

@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import { GetStaticProps, NextPage } from "next";
 
 import { FlavorGroup } from "../components/FlavorGroup";
-import MdRenderer from "../components/MdRenderer";
+import MdxRenderer from "../components/MdxRenderer";
 import styleUtils from "../utils/styleUtils";
 
 import { allPageContents } from ".contentlayer/generated";
@@ -15,7 +15,7 @@ const Page: NextPage<Props> = ({ content }) => (
     <div css={styleUtils.contentContainer}>
       <div css={styles.splitGroup}>
         <div css={styles.leftPane}>
-          <MdRenderer input={content.body} />
+          <MdxRenderer input={content.body} />
           <FlavorGroup {...content.data.flavorGroups.cakeFlavors} />
         </div>
         <div css={styles.rightPane}>
