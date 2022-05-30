@@ -141,14 +141,16 @@ const MobileStickyMenu = ({ structure }: Props) => {
 };
 
 const MenuItems = ({ structure }: Props) => {
-  const { asPath } = useRouter();
+  // asPath, despite the name, contains query params 🤦
+  const [pathname] = useRouter().asPath.split("?");
+
   const isMobileView = useIsMobileView();
   return (
     <ul css={styles.menuItems}>
       {structure.children?.map((item) => {
         const selectedItem =
-          item.href === asPath ||
-          item.children?.find((subitem) => subitem.href === asPath);
+          item.href === pathname ||
+          item.children?.find((subitem) => subitem.href === pathname);
         return (
           <li css={styles.rootMenuItem} key={item.name}>
             {item.children ? (
