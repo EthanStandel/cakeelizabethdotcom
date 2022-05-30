@@ -6,7 +6,7 @@ import Link from "next/link";
 import styleUtils from "../utils/styleUtils";
 
 interface Props {
-  image: string | StaticImageData;
+  image: string;
   alt: string;
   href: string;
   cta: string;
