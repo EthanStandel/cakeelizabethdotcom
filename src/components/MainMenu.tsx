@@ -36,8 +36,8 @@ const MainMenu = ({ structure }: Props) => {
   return (
     <>
       <div css={styles.shadowRoot} />
-      <div css={styles.root}>
-        <div css={styleUtils.contentContainer}>
+      <div css={[styles.root, styleUtils.contentContainerParent]}>
+        <div css={styleUtils.contentContainerFullWidth}>
           <div css={styles.topItems}>
             <div>
               <a href={`tel:${structure.phone}`}>{structure.phone}</a>
@@ -81,8 +81,8 @@ const MainMenu = ({ structure }: Props) => {
         <MobileStickyMenu structure={structure} />
       ) : (
         <div css={styles.stickyRoot}>
-          <div css={styles.root}>
-            <div css={styleUtils.contentContainer}>
+          <div css={[styles.root, styleUtils.contentContainerParent]}>
+            <div css={styleUtils.contentContainerFullWidth}>
               <MenuItems structure={structure} />
             </div>
           </div>
@@ -104,8 +104,8 @@ const MobileStickyMenu = ({ structure }: Props) => {
 
   return (
     <div css={styles.stickyRoot}>
-      <div css={styles.root}>
-        <div css={styleUtils.contentContainer}>
+      <div css={[styles.root, styleUtils.contentContainerParent]}>
+        <div css={styleUtils.contentContainerFullWidth}>
           <div css={styles.mobileMenuContainer}>
             <IconButton
               css={styles.mobileMenu}
@@ -141,14 +141,16 @@ const MobileStickyMenu = ({ structure }: Props) => {
 };
 
 const MenuItems = ({ structure }: Props) => {
-  const { asPath } = useRouter();
+  // asPath, despite the name, contains query params 🤦
+  const [pathname] = useRouter().asPath.split("?");
+
   const isMobileView = useIsMobileView();
   return (
     <ul css={styles.menuItems}>
       {structure.children?.map((item) => {
         const selectedItem =
-          item.href === asPath ||
-          item.children?.find((subitem) => subitem.href === asPath);
+          item.href === pathname ||
+          item.children?.find((subitem) => subitem.href === pathname);
         return (
           <li css={styles.rootMenuItem} key={item.name}>
             {item.children ? (

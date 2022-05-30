@@ -1,18 +1,21 @@
 import { css } from "@emotion/react";
-import { GetStaticProps } from "next";
+import { GetStaticProps, NextPage } from "next";
 
+import { FlavorGroup } from "../components/FlavorGroup";
 import MdRenderer from "../components/MdRenderer";
 import styleUtils from "../utils/styleUtils";
 
-import { allPageContents } from ".contentlayer/data";
-import type { PageContent } from ".contentlayer/types";
+import { allPageContents } from ".contentlayer/generated";
+import type { PageContent } from ".contentlayer/generated/types";
 
-const Page = ({ content }: { content: PageContent }) => (
+type Props = { content: Omit<PageContent, "body"> & { body: string } };
+
+const Page: NextPage<Props> = ({ content }) => (
   <div css={styleUtils.pageContainer}>
     <div css={styleUtils.contentContainer}>
       <div css={styles.splitGroup}>
         <div css={styles.leftPane}>
-          <MdRenderer input={content.body.raw} />
+          <MdRenderer input={content.body} />
           <FlavorGroup {...content.data.flavorGroups.cakeFlavors} />
         </div>
         <div css={styles.rightPane}>
@@ -30,26 +33,9 @@ const Page = ({ content }: { content: PageContent }) => (
   </div>
 );
 
-const FlavorGroup = ({
-  name,
-  flavors,
-}: {
-  name: string;
-  flavors: Array<string>;
-}) => (
-  <div css={styles.flavorGroup}>
-    <h2>{name}</h2>
-    <ul css={styles.flavorList}>
-      {flavors.map((flavor) => (
-        <li key={flavor}>{flavor}</li>
-      ))}
-    </ul>
-  </div>
-);
-
-export const getStaticProps: GetStaticProps = async () => {
-  const content = allPageContents.find(({ page }) => page === "cake-flavors");
-  return { props: { content } };
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const content = allPageContents.find(({ page }) => page === "cake-flavors")!;
+  return { props: { content: { ...content, body: content.body.raw } } };
 };
 
 const styles = Object.freeze({
@@ -90,40 +76,6 @@ const styles = Object.freeze({
         width: 100%;
       `
     )}
-  `,
-
-  flavorGroup: css`
-    ${styleUtils.shadow}
-    margin-top: 2em;
-    width: 100%;
-    padding: 2em;
-    border-radius: var(--chakra-radii-md);
-  `,
-  flavorList: css`
-    display: grid;
-    ${styleUtils.desktop(
-      css`
-        grid-template-columns: repeat(2, 1fr);
-      `
-    )}
-    > li {
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      list-style-type: none;
-      ${styleUtils.mobile(css`
-        &:nth-child(2n) {
-          background: var(--primary-color);
-        }
-      `)}
-      ${styleUtils.desktop(css`
-        &:nth-child(4n-3),
-        &:nth-child(4n) {
-          background: var(--primary-color);
-        }
-      `)}
-    }
   `,
 });
 

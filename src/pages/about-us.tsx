@@ -1,13 +1,15 @@
 import { css } from "@emotion/react";
-import { GetStaticProps } from "next";
+import { GetStaticProps, NextPage } from "next";
 
 import MdRenderer from "../components/MdRenderer";
 import styleUtils from "../utils/styleUtils";
 
-import { allPageContents } from ".contentlayer/data";
-import type { PageContent } from ".contentlayer/types";
+import { allPageContents } from ".contentlayer/generated";
+import type { PageContent } from ".contentlayer/generated/types";
 
-const Page = ({ content }: { content: PageContent }) => (
+type Props = { content: PageContent };
+
+const Page: NextPage<Props> = ({ content }) => (
   <div css={styleUtils.pageContainer}>
     <div css={styleUtils.contentContainer}>
       <div css={styles.storyGroup}>
@@ -46,8 +48,8 @@ const Page = ({ content }: { content: PageContent }) => (
   </div>
 );
 
-export const getStaticProps: GetStaticProps = async () => {
-  const content = allPageContents.find(({ page }) => page === "about-us");
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const content = allPageContents.find(({ page }) => page === "about-us")!;
 
   return { props: { content } };
 };

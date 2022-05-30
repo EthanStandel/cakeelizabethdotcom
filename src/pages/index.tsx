@@ -5,8 +5,8 @@ import ClickableCard from "../components/ClickableCard";
 import QuoteCarousel from "../components/QuoteCarousel";
 import styleUtils from "../utils/styleUtils";
 
-import { allPageContents } from ".contentlayer/data";
-import type { PageContent } from ".contentlayer/types";
+import { allPageContents } from ".contentlayer/generated";
+import type { PageContent } from ".contentlayer/generated/types";
 interface Props {
   content: PageContent;
 }
@@ -45,8 +45,8 @@ const Page: NextPage<Props> = ({ content }) => (
   </div>
 );
 
-export const getStaticProps: GetStaticProps = async () => {
-  const content = allPageContents.find(({ page }) => page === "index");
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const content = allPageContents.find(({ page }) => page === "index")!;
 
   return { props: { content } };
 };

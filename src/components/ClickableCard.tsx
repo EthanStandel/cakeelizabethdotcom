@@ -6,7 +6,7 @@ import Link from "next/link";
 import styleUtils from "../utils/styleUtils";
 
 interface Props {
-  image: string | StaticImageData;
+  image: string;
   alt: string;
   href: string;
   cta: string;
@@ -31,6 +31,7 @@ const styles = Object.freeze({
     display: block;
     width: 300px;
     height: 400px;
+    max-width: 400px;
     border-radius: var(--chakra-radii-md);
 
     ${styleUtils.mobile(css`

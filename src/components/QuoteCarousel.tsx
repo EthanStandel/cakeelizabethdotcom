@@ -29,10 +29,12 @@ const QuoteCarousel = ({ quotes }: { quotes: Array<QuoteModel> }) => {
 };
 
 const Quote = ({ quote: { text, name } }: { quote: QuoteModel }) => (
-  <div css={styles.quote}>
-    <div css={styleUtils.contentContainer}>
-      <p css={styles.text}>{`"${text}"`}</p>
-      <p css={styles.name}>{`--${name}`}</p>
+  <div css={[styles.quote]}>
+    <div css={styleUtils.contentContainerParent}>
+      <div css={styleUtils.contentContainer}>
+        <p css={styles.text}>{`"${text}"`}</p>
+        <p css={styles.name}>{`--${name}`}</p>
+      </div>
     </div>
   </div>
 );
@@ -43,6 +45,9 @@ const styles = Object.freeze({
     flex-direction: column;
     justify-content: space-around;
     height: 400px;
+    ${styleUtils.mobile(css`
+      height: 300px;
+    `)}
     background-color: var(--primary-color);
 
     p {
