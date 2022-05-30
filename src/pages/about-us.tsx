@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { GetStaticProps, NextPage } from "next";
 
-import MdRenderer from "../components/MdRenderer";
+import MdxRenderer from "../components/MdxRenderer";
 import styleUtils from "../utils/styleUtils";
 
 import { allPageContents } from ".contentlayer/generated";
@@ -14,7 +14,7 @@ const Page: NextPage<Props> = ({ content }) => (
     <div css={styleUtils.contentContainer}>
       <div css={styles.storyGroup}>
         <div css={styles.text}>
-          <MdRenderer input={content.data.owner} />
+          <MdxRenderer input={content.data.owner} />
         </div>
         <div css={styles.image}>
           <img
@@ -41,7 +41,7 @@ const Page: NextPage<Props> = ({ content }) => (
           />
         </div>
         <div css={styles.text}>
-          <MdRenderer input={content.data.founder} />
+          <MdxRenderer input={content.data.founder} />
         </div>
       </div>
     </div>

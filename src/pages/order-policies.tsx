@@ -1,6 +1,6 @@
 import { GetStaticProps, NextPage } from "next";
 
-import MdRenderer from "../components/MdRenderer";
+import MdxRenderer from "../components/MdxRenderer";
 import styleUtils from "../utils/styleUtils";
 
 import { allPageContents } from ".contentlayer/generated";
@@ -11,7 +11,7 @@ type Props = { content: Omit<PageContent, "body"> & { body: string } };
 const Page: NextPage<Props> = ({ content }) => (
   <div css={styleUtils.pageContainer}>
     <div css={[styleUtils.contentContainer, styleUtils.htmlRoot]}>
-      <MdRenderer input={content.body} />
+      <MdxRenderer input={content.body} />
     </div>
   </div>
 );

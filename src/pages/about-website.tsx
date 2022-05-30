@@ -1,7 +1,7 @@
 import { GetStaticProps, NextPage } from "next";
 import sanitizeHtml from "sanitize-html";
 
-import MdRenderer from "../components/MdRenderer";
+import MdxRenderer from "../components/MdxRenderer";
 import licenses from "../resources/licenses.html";
 import styleUtils from "../utils/styleUtils";
 
@@ -16,7 +16,7 @@ type Props = {
 const Page: NextPage<Props> = ({ licenses, content }) => (
   <div css={styleUtils.pageContainer}>
     <div css={styleUtils.contentContainer}>
-      <MdRenderer input={content.body} />
+      <MdxRenderer input={content.body} />
       <div
         css={styleUtils.htmlRoot}
         dangerouslySetInnerHTML={{ __html: licenses }}
