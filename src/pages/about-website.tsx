@@ -15,7 +15,7 @@ type Props = {
 
 const Page: NextPage<Props> = ({ licenses, content }) => (
   <div css={styleUtils.pageContainer}>
-    <div css={styleUtils.contentContainer}>
+    <div css={[styleUtils.contentContainer, styleUtils.htmlRoot]}>
       <MdxRenderer input={content.body} />
       <div
         css={styleUtils.htmlRoot}

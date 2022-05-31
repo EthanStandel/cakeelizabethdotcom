@@ -13,7 +13,7 @@ const Page: NextPage<Props> = ({ content }) => (
   <div css={styleUtils.pageContainer}>
     <div css={styleUtils.contentContainer}>
       <div css={styles.storyGroup}>
-        <div css={styles.text}>
+        <div css={[styles.text, styleUtils.htmlRoot]}>
           <MdxRenderer input={content.data.owner} />
         </div>
         <div css={styles.image}>
@@ -40,7 +40,7 @@ const Page: NextPage<Props> = ({ content }) => (
             loading="lazy"
           />
         </div>
-        <div css={styles.text}>
+        <div css={[styles.text, styleUtils.htmlRoot]}>
           <MdxRenderer input={content.data.founder} />
         </div>
       </div>
