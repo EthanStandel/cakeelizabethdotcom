@@ -13,7 +13,7 @@ const Page: NextPage<Props> = ({ content }) => (
   <div css={styleUtils.pageContainer}>
     <div css={styleUtils.contentContainer}>
       <div css={styles.contentGroup}>
-        <div css={styles.bodyContent}>
+        <div css={[styles.bodyContent, styleUtils.htmlRoot]}>
           <MdxRenderer input={content.body} />
         </div>
         <div css={styles.imgContainer}>

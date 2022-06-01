@@ -68,20 +68,22 @@ const ImageCarouselOverlay = ({ images }: Props) => {
   };
 
   React.useEffect(() => {
-    const listener = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        router.push(routes.close, undefined, { scroll: false });
-        document.removeEventListener("keydown", listener);
-      } else if (event.key === "ArrowRight") {
-        router.push(routes.next, undefined, { scroll: false });
-      } else if (event.key === "ArrowLeft") {
-        router.push(routes.prev, undefined, { scroll: false });
-      }
-    };
+    if (open) {
+      const listener = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+          router.replace(routes.close, undefined, { scroll: false });
+          document.removeEventListener("keydown", listener);
+        } else if (event.key === "ArrowRight") {
+          router.replace(routes.next, undefined, { scroll: false });
+        } else if (event.key === "ArrowLeft") {
+          router.replace(routes.prev, undefined, { scroll: false });
+        }
+      };
 
-    document.addEventListener("keydown", listener);
+      document.addEventListener("keydown", listener);
 
-    return () => document.removeEventListener("keydown", listener);
+      return () => document.removeEventListener("keydown", listener);
+    }
   });
 
   return (
@@ -107,7 +109,7 @@ const ImageCarouselOverlay = ({ images }: Props) => {
             <Carousel
               index={selectedItem}
               setIndex={(index) =>
-                router.push(
+                router.replace(
                   {
                     pathname: router.pathname,
                     query: {
