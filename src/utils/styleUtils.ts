@@ -34,6 +34,12 @@ const contentContainerFullWidth = css`
 const styleUtils = {
   desktop,
   mobile,
+  desktopOnly: mobile(css`
+    display: none;
+  `),
+  mobileOnly: desktop(css`
+    display: none;
+  `),
   shadow,
   clickableShadow: css`
     ${shadow}
