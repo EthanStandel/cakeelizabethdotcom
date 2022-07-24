@@ -31,66 +31,58 @@ const socialIcons = {
   instagram: FaInstagramSquare,
 } as Record<string, IconType>;
 
-const MainMenu = ({ structure }: Props) => {
-  const isMobileView = useIsMobileView();
-  return (
-    <>
-      <div css={styles.shadowRoot} />
-      <div css={[styles.root, styleUtils.contentContainerParent]}>
-        <div css={styleUtils.contentContainerFullWidth}>
-          <div css={styles.topItems}>
-            <div>
-              <a href={`tel:${structure.phone}`}>{structure.phone}</a>
-            </div>
-            <div>
-              {structure.social.map((social) => (
-                <a
-                  css={styles.socialLink}
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Icon
-                    h="2em"
-                    w="2em"
-                    aria-label={social.name}
-                    as={socialIcons[social.icon]}
-                  />
-                </a>
-              ))}
-            </div>
+const MainMenu = ({ structure }: Props) => (
+  <>
+    <div css={styles.shadowRoot} />
+    <div css={[styles.root, styleUtils.contentContainerParent]}>
+      <div css={styleUtils.contentContainerFullWidth}>
+        <div css={styles.topItems}>
+          <div>
+            <a href={`tel:${structure.phone}`}>{structure.phone}</a>
           </div>
-          {!isMobileView && (
-            <div css={styles.logoContainer}>
-              <Link href={structure.href!}>
-                <a>
-                  <Image
-                    alt={structure.name}
-                    src={structure.logo}
-                    height="125px"
-                    width="225px"
-                  />
-                </a>
-              </Link>
-            </div>
-          )}
+          <div>
+            {structure.social.map((social) => (
+              <a
+                css={styles.socialLink}
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Icon
+                  h="2em"
+                  w="2em"
+                  aria-label={social.name}
+                  as={socialIcons[social.icon]}
+                />
+              </a>
+            ))}
+          </div>
+        </div>
+        <div css={[styles.logoContainer, styleUtils.desktopOnly]}>
+          <Link href={structure.href!}>
+            <a>
+              <Image
+                alt={structure.name}
+                src={structure.logo}
+                height="125px"
+                width="225px"
+              />
+            </a>
+          </Link>
         </div>
       </div>
-      {isMobileView ? (
-        <MobileStickyMenu structure={structure} />
-      ) : (
-        <div css={styles.stickyRoot}>
-          <div css={[styles.root, styleUtils.contentContainerParent]}>
-            <div css={styleUtils.contentContainerFullWidth}>
-              <MenuItems structure={structure} />
-            </div>
-          </div>
+    </div>
+    <MobileStickyMenu structure={structure} />
+    <div css={[styles.stickyRoot, styleUtils.desktopOnly]}>
+      <div css={[styles.root, styleUtils.contentContainerParent]}>
+        <div css={styleUtils.contentContainerFullWidth}>
+          <MenuItems structure={structure} />
         </div>
-      )}
-    </>
-  );
-};
+      </div>
+    </div>
+  </>
+);
 
 const MobileStickyMenu = ({ structure }: Props) => {
   const router = useRouter();
@@ -103,7 +95,7 @@ const MobileStickyMenu = ({ structure }: Props) => {
   }, [router]);
 
   return (
-    <div css={styles.stickyRoot}>
+    <div css={[styles.stickyRoot, styleUtils.mobileOnly]}>
       <div css={[styles.root, styleUtils.contentContainerParent]}>
         <div css={styleUtils.contentContainerFullWidth}>
           <div css={styles.mobileMenuContainer}>
