@@ -25,7 +25,7 @@ class Document extends NextDocument {
 const styles = Object.freeze({
   html: css`
     --app-width: 80%;
-    --primary-color: aquamarine;
+    --primary-color: #65ffce;
     --secondary-color: springgreen;
     --text-color: #555555;
     --transparent-primary: rgba(127, 255, 212, 0.5);

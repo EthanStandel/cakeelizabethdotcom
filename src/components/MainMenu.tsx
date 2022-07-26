@@ -65,7 +65,7 @@ const MainMenu = ({ structure }: Props) => (
               <Image
                 alt={structure.name}
                 src={structure.logo}
-                height="125px"
+                height="130px"
                 width="225px"
               />
             </a>
