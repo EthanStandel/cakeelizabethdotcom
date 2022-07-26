@@ -49,6 +49,7 @@ const App = ({ Component, pageProps }: AppProps) => {
             />
           </>
         )}
+        <meta name="theme-color" content="#65ffce" />
         <meta property="og:site_name" content="Cake Elizabeth" />
         <meta
           property="article:publisher"
