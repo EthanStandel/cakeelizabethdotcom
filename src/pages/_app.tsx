@@ -56,7 +56,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         />
         <meta
           property="og:image"
-          content="https://cakeelizabeth.com/resources/other/logo.png"
+          content="https://cakeelizabeth.com/resources/other/logo.svg"
         />
         <meta property="og:type" content="article" />
         <meta property="og:locale" content="en_US" />
