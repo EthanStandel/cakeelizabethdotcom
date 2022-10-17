@@ -130,7 +130,7 @@ const ImageCarouselOverlay = ({ images }: Props) => {
               }) => (
                 <>
                   {isActive && (
-                    <Link href={routes.close} scroll={false} passHref>
+                    <Link href={routes.close} scroll={false} replace passHref>
                       <a tabIndex={-1} css={styles.backgroundCover} />
                     </Link>
                   )}
@@ -156,7 +156,7 @@ const ControlButton = ({
   href: UrlObject | string;
   children: React.ReactChild;
 }) => (
-  <Link scroll={false} href={href} passHref>
+  <Link scroll={false} href={href} replace passHref>
     <a css={styles.controlButton}>{children}</a>
   </Link>
 );

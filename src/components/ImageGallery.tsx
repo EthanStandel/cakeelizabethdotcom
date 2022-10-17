@@ -21,6 +21,7 @@ export const ImageGallery: FC<{ images: Array<{ src: string; alt: string }> }> =
             <Link
               key={src}
               scroll={false}
+              replace
               href={{
                 pathname: router.pathname,
                 query: {

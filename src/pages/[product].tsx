@@ -39,6 +39,7 @@ const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
           <div ref={mainImgRef} css={styles.mainImgContainer}>
             <Link
               scroll={false}
+              replace
               href={{
                 pathname: router.pathname,
                 query: {
