@@ -11,10 +11,10 @@ import type { PageContent } from ".contentlayer/generated/types";
 type Props = { content: PageContent };
 
 const Page: NextPage<Props> = ({ content }) => (
-  <div css={styleUtils.pageContainer}>
-    <div css={styleUtils.contentContainer}>
+  <styleUtils.PageContainer>
+    <styleUtils.ContentContainer>
       <styles.StoryGroup>
-        <styles.Text css={styleUtils.htmlRoot}>
+        <styles.Text>
           <MdxRenderer input={content.data.owner} />
         </styles.Text>
         <styles.Image>
@@ -41,12 +41,12 @@ const Page: NextPage<Props> = ({ content }) => (
             loading="lazy"
           />
         </styles.Image>
-        <styles.Text css={styleUtils.htmlRoot}>
+        <styles.Text>
           <MdxRenderer input={content.data.founder} />
         </styles.Text>
       </styles.StoryGroup>
-    </div>
-  </div>
+    </styleUtils.ContentContainer>
+  </styleUtils.PageContainer>
 );
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
@@ -80,6 +80,7 @@ const styles = Object.freeze({
   }),
   Text: styled.div({
     "&": imageAndTextStyles,
+    "&, &": styleUtils.htmlRoot,
     width: "60%",
     [styleUtils.mobile]: {
       width: "100%",

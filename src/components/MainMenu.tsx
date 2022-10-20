@@ -36,7 +36,7 @@ const MainMenu = ({ structure }: Props) => (
   <>
     <styles.ShadowRoot />
     <styles.MainMenu>
-      <div css={styleUtils.contentContainerFullWidth}>
+      <styleUtils.ContentContainerFullWidth>
         <styles.TopItems>
           <div>
             <a href={`tel:${structure.phone}`}>{structure.phone}</a>
@@ -71,14 +71,14 @@ const MainMenu = ({ structure }: Props) => (
             </a>
           </Link>
         </styles.LogoContainer>
-      </div>
+      </styleUtils.ContentContainerFullWidth>
     </styles.MainMenu>
     <MobileStickyMenu structure={structure} />
     <styles.StickyRoot css={styleUtils.desktopOnly}>
       <styles.MainMenu>
-        <div css={styleUtils.contentContainerFullWidth}>
+        <styleUtils.ContentContainerFullWidth>
           <MenuItems structure={structure} />
-        </div>
+        </styleUtils.ContentContainerFullWidth>
       </styles.MainMenu>
     </styles.StickyRoot>
   </>
@@ -97,7 +97,7 @@ const MobileStickyMenu = ({ structure }: Props) => {
   return (
     <styles.StickyRoot css={styleUtils.mobileOnly}>
       <styles.MainMenu>
-        <div css={styleUtils.contentContainerFullWidth}>
+        <styleUtils.ContentContainerFullWidth>
           <styles.MobileMenuContainer>
             <styles.MobileMenu
               variant="outline"
@@ -118,7 +118,7 @@ const MobileStickyMenu = ({ structure }: Props) => {
               </Link>
             </styles.MobileImageContainer>
           </styles.MobileMenuContainer>
-        </div>
+        </styleUtils.ContentContainerFullWidth>
       </styles.MainMenu>
       <XyzTransition xyz="up-100%">
         {open && (

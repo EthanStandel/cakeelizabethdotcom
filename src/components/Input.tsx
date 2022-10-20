@@ -12,6 +12,7 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { useField, FieldAttributes } from "formik";
 import PhoneNumberInput, {
   Props as PhoneNumberInputProps,
@@ -50,7 +51,7 @@ const Input = ({
       {label && (
         <FormLabel>
           {label}
-          {required && <span css={styles.required}>{" *"}</span>}
+          {required && <styles.Required>{" *"}</styles.Required>}
         </FormLabel>
       )}
       <InputGroup>
@@ -89,7 +90,7 @@ const styles = Object.freeze({
   padded: css({
     paddingLeft: "var(--chakra-space-10) !important",
   }),
-  required: css({
+  Required: styled.span({
     color: "red",
     fontWeight: "bold",
   }),

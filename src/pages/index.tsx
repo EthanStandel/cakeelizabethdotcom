@@ -16,11 +16,11 @@ const Page: NextPage<Props> = ({ content }) => (
     <styles.BannerImageContainer>
       <img alt={content.data.bannerAlt} src="/resources/other/banner.jpg" />
     </styles.BannerImageContainer>
-    <div css={styleUtils.pageContainer}>
-      <div css={styleUtils.contentContainer}>
-        <div css={styleUtils.center}>
+    <styleUtils.PageContainer>
+      <styleUtils.ContentContainer>
+        <styleUtils.Center>
           <h2>{content.data.chooseYourOccasion}</h2>
-        </div>
+        </styleUtils.Center>
         <styles.CakeTypeCards>
           {(
             content.data.cakeTypes as Array<{
@@ -39,8 +39,8 @@ const Page: NextPage<Props> = ({ content }) => (
             />
           ))}
         </styles.CakeTypeCards>
-      </div>
-    </div>
+      </styleUtils.ContentContainer>
+    </styleUtils.PageContainer>
     <QuoteCarousel quotes={content.data.quotes} />
   </div>
 );

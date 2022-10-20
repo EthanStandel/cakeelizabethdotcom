@@ -39,8 +39,8 @@ const Page: NextPage<Props> = ({ content }) => {
     | undefined;
 
   return (
-    <div css={styleUtils.pageContainer}>
-      <div css={styleUtils.contentContainer}>
+    <styleUtils.PageContainer>
+      <styleUtils.ContentContainer>
         <styles.PageSplit>
           <div>
             <XyzTransition xyz="small-25% fade stagger">
@@ -159,8 +159,8 @@ const Page: NextPage<Props> = ({ content }) => {
             </div>
           </styles.ContactBlock>
         </styles.PageSplit>
-      </div>
-    </div>
+      </styleUtils.ContentContainer>
+    </styleUtils.PageContainer>
   );
 };
 
@@ -172,8 +172,7 @@ const SubmissionStatusBox = ({
   submissionResult: "success" | "error";
 }) => (
   <InfoBox state={submissionResult}>
-    <span
-      css={styleUtils.htmlRoot}
+    <styleUtils.HtmlRoot
       dangerouslySetInnerHTML={{
         __html: content.data.formResult[submissionResult],
       }}

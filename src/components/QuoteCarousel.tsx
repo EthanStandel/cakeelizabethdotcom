@@ -31,12 +31,12 @@ const QuoteCarousel = ({ quotes }: { quotes: Array<QuoteModel> }) => {
 
 const Quote = ({ quote: { text, name } }: { quote: QuoteModel }) => (
   <styles.Quote>
-    <div css={styleUtils.contentContainerParent}>
-      <div css={styleUtils.contentContainer}>
+    <styleUtils.ContentContainerParent>
+      <styleUtils.ContentContainer>
         <styles.Text>{`"${text}"`}</styles.Text>
         <styles.Name>{`--${name}`}</styles.Name>
-      </div>
-    </div>
+      </styleUtils.ContentContainer>
+    </styleUtils.ContentContainerParent>
   </styles.Quote>
 );
 

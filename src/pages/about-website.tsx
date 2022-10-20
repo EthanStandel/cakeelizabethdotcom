@@ -14,15 +14,12 @@ type Props = {
 };
 
 const Page: NextPage<Props> = ({ licenses, content }) => (
-  <div css={styleUtils.pageContainer}>
-    <div css={[styleUtils.contentContainer, styleUtils.htmlRoot]}>
+  <styleUtils.PageContainer>
+    <styleUtils.ContentContainer css={styleUtils.htmlRoot}>
       <MdxRenderer input={content.body} />
-      <div
-        css={styleUtils.htmlRoot}
-        dangerouslySetInnerHTML={{ __html: licenses }}
-      />
-    </div>
-  </div>
+      <styleUtils.HtmlRoot dangerouslySetInnerHTML={{ __html: licenses }} />
+    </styleUtils.ContentContainer>
+  </styleUtils.PageContainer>
 );
 
 export const getStaticProps: GetStaticProps<Props> = async () => {

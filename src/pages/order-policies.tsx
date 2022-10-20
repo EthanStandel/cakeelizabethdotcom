@@ -9,11 +9,11 @@ import type { PageContent } from ".contentlayer/generated/types";
 type Props = { content: Omit<PageContent, "body"> & { body: string } };
 
 const Page: NextPage<Props> = ({ content }) => (
-  <div css={styleUtils.pageContainer}>
-    <div css={[styleUtils.contentContainer, styleUtils.htmlRoot]}>
+  <styleUtils.PageContainer>
+    <styleUtils.ContentContainer css={styleUtils.htmlRoot}>
       <MdxRenderer input={content.body} />
-    </div>
-  </div>
+    </styleUtils.ContentContainer>
+  </styleUtils.PageContainer>
 );
 
 export const getStaticProps: GetStaticProps<Props> = async () => {

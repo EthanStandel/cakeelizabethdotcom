@@ -11,8 +11,8 @@ import type { PageContent } from ".contentlayer/generated/types";
 type Props = { content: Omit<PageContent, "body"> & { body: string } };
 
 const Page: NextPage<Props> = ({ content }) => (
-  <div css={styleUtils.pageContainer}>
-    <div css={styleUtils.contentContainer}>
+  <styleUtils.PageContainer>
+    <styleUtils.ContentContainer>
       <styles.SplitGroup>
         <styles.LeftPane>
           <MdxRenderer input={content.body} />
@@ -29,8 +29,8 @@ const Page: NextPage<Props> = ({ content }) => (
         <FlavorGroup {...content.data.flavorGroups.cakeFilling} />
         <FlavorGroup {...content.data.flavorGroups.cakeIcing} />
       </styles.SplitGroup>
-    </div>
-  </div>
+    </styleUtils.ContentContainer>
+  </styleUtils.PageContainer>
 );
 
 export const getStaticProps: GetStaticProps<Props> = async () => {

@@ -34,7 +34,7 @@ const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
   return (
     <styles.ProductPage>
       <ImageCarouselOverlay images={images} />
-      <div css={styleUtils.contentContainer}>
+      <styleUtils.ContentContainer>
         <styles.MainSection>
           <styles.MainImgContainer ref={mainImgRef}>
             <Link
@@ -54,10 +54,10 @@ const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
             </Link>
           </styles.MainImgContainer>
           <styles.SpielContainer>
-            <div css={styleUtils.htmlRoot}>
+            <styleUtils.HtmlRoot>
               <h2>{content.pageTitle}</h2>
               <MdxRenderer input={content.body} />
-            </div>
+            </styleUtils.HtmlRoot>
           </styles.SpielContainer>
         </styles.MainSection>
         <ImageGallery images={images} />
@@ -69,7 +69,7 @@ const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
             />
           </styles.ShadowPassthrough>
         )}
-      </div>
+      </styleUtils.ContentContainer>
     </styles.ProductPage>
   );
 };

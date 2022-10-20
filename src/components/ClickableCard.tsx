@@ -1,10 +1,9 @@
+import { Button } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
 
 import styleUtils from "../utils/styleUtils";
-
-import { Button } from "./core/Button";
 
 interface Props {
   image: string;

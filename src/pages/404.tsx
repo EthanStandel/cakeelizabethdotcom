@@ -21,11 +21,11 @@ const Page: NextPage<Props> = ({ content }) => {
   // Can't use true redirect because SSR is not allowed for 404 component
   // and getStaticProps can't return redirect
   return (
-    <div css={styleUtils.pageContainer}>
-      <div css={styleUtils.contentContainer}>
+    <styleUtils.PageContainer>
+      <styleUtils.ContentContainer>
         <h2>{content.data.text}</h2>
-      </div>
-    </div>
+      </styleUtils.ContentContainer>
+    </styleUtils.PageContainer>
   );
 };
 
