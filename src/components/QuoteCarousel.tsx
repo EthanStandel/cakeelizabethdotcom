@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 
 import styleUtils from "../utils/styleUtils";
 
@@ -29,50 +30,45 @@ const QuoteCarousel = ({ quotes }: { quotes: Array<QuoteModel> }) => {
 };
 
 const Quote = ({ quote: { text, name } }: { quote: QuoteModel }) => (
-  <div css={[styles.quote]}>
+  <styles.Quote>
     <div css={styleUtils.contentContainerParent}>
       <div css={styleUtils.contentContainer}>
-        <p css={styles.text}>{`"${text}"`}</p>
-        <p css={styles.name}>{`--${name}`}</p>
+        <styles.Text>{`"${text}"`}</styles.Text>
+        <styles.Name>{`--${name}`}</styles.Name>
       </div>
     </div>
-  </div>
+  </styles.Quote>
 );
 
 const styles = Object.freeze({
-  quote: css`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 400px;
-    ${styleUtils.mobile(css`
-      height: 300px;
-    `)}
-    background-color: var(--primary-color);
-
-    p {
-      font-weight: 500;
-      color: var(--text-color);
-    }
-  `,
-  text: css`
-    font-size: 2.5em;
-    font-style: italic;
-    ${styleUtils.mobile(
-      css`
-        font-size: 1.25em;
-      `
-    )}
-  `,
-  name: css`
-    font-size: 2em;
-    text-align: right;
-    ${styleUtils.mobile(
-      css`
-        font-size: 1em;
-      `
-    )}
-  `,
+  Quote: styled.div({
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    height: 400,
+    backgroundColor: "var(--primary-color)",
+    [styleUtils.mobile]: {
+      height: 300,
+    },
+    p: {
+      fontWeight: 500,
+      color: "var(--text-color)",
+    },
+  }),
+  Text: styled.p({
+    fontSize: "2.5em",
+    fontStyle: "italic",
+    [styleUtils.mobile]: {
+      fontSize: "1.25em",
+    },
+  }),
+  Name: styled.p({
+    fontSize: "2em",
+    textAlign: "right",
+    [styleUtils.mobile]: {
+      fontSize: "1em",
+    },
+  }),
 });
 
 export default QuoteCarousel;

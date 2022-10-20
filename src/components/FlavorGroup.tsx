@@ -1,6 +1,7 @@
 import { FC } from "react";
 
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 
 import styleUtils from "src/utils/styleUtils";
 
@@ -11,12 +12,8 @@ export const FlavorGroup: FC<{
   leftAlign?: boolean;
   verticalOnly?: boolean;
 }> = ({ title, flavors, children, leftAlign, verticalOnly }) => (
-  <div
-    css={[
-      styles.flavorGroup,
-      !verticalOnly && styles.desktopGrid,
-      leftAlign && styles.leftAlign,
-    ]}
+  <styles.FlavorGroup
+    css={[!verticalOnly && styles.desktopGrid, leftAlign && styles.leftAlign]}
   >
     {title && <h2>{title}</h2>}
     {flavors && (
@@ -27,68 +24,63 @@ export const FlavorGroup: FC<{
       </ul>
     )}
     {children}
-  </div>
+  </styles.FlavorGroup>
 );
 
 const styles = {
-  desktopGrid: styleUtils.desktop(css`
-    ul {
-      grid-template-columns: repeat(2, 1fr);
+  desktopGrid: css({
+    [styleUtils.desktop]: {
+      ul: {
+        "grid-template-columns": "repeat(2, 1fr)",
 
-      > li {
-        &:nth-child(2n) {
-          background: unset;
-          margin-left: unset;
-          margin-right: unset;
-          padding-left: unset;
-          padding-right: unset;
-        }
-        &:nth-child(4n-3),
-        &:nth-child(4n) {
-          background: var(--primary-color);
-        }
-        &:nth-child(2n-1) {
-          margin-left: -2em;
-          padding-left: 2em;
-          padding-right: 1em;
-        }
-        &:nth-child(2n) {
-          margin-right: -2em;
-          padding-right: 2em;
-          padding-left: 1em;
-        }
-      }
-    }
-  `),
-  leftAlign: css`
-    ul > li {
-      display: block;
-      text-align: left;
-    }
-  `,
-  flavorGroup: css`
-    ${styleUtils.shadow}
-    margin-top: 2em;
-    width: 100%;
-    padding: 2em;
-    border-radius: var(--chakra-radii-md);
-
-    ul {
-      display: grid;
-      > li {
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        list-style-type: none;
-        &:nth-child(2n) {
-          background: var(--primary-color);
-          margin-left: -2em;
-          margin-right: -2em;
-          padding-left: 2em;
-          padding-right: 2em;
-        }
-      }
-    }
-  `,
+        "> li": {
+          "&:nth-child(2n)": {
+            background: "unset",
+            marginLeft: "unset",
+            marginRight: "-2em",
+            paddingRight: "2em",
+            paddingLeft: "1em",
+          },
+          "&:nth-child(4n-3), &:nth-child(4n)": {
+            background: "var(--primary-color)",
+          },
+          "&:nth-child(2n-1)": {
+            "margin-left": "-2em",
+            "padding-left": "2em",
+            "padding-right": "1em",
+          },
+        },
+      },
+    },
+  }),
+  leftAlign: css({
+    "ul > li": {
+      display: "block",
+      textAlign: "left",
+    },
+  }),
+  FlavorGroup: styled.div({
+    "&": styleUtils.shadow,
+    marginTop: "2em",
+    width: "100%",
+    padding: "2em",
+    borderRadius: "var(--card-border-radius)",
+    ul: {
+      display: "grid",
+      "> li": {
+        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        listStyleType: "none",
+        "&:nth-child(2n)": {
+          background: "var(--primary-color)",
+          marginLeft: "-2em",
+          marginRight: "-2em",
+          paddingLeft: "2em",
+          paddingRight: "2em",
+        },
+      },
+    },
+  }),
 };

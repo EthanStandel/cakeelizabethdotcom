@@ -1,9 +1,10 @@
-import { Button } from "@chakra-ui/react";
-import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
 
 import styleUtils from "../utils/styleUtils";
+
+import { Button } from "./core/Button";
 
 interface Props {
   image: string;
@@ -15,51 +16,51 @@ interface Props {
 
 const ClickableCard = ({ image, alt, href, cta, title }: Props) => (
   <Link href={href} passHref>
-    <a css={styles.root}>
+    <styles.LinkRoot>
       <Image height="300px" width="300px" alt={alt} src={image} />
-      <div css={styles.container}>
+      <styles.Container>
         <p>{title}</p>
         <Button tabIndex={-1}>{cta}</Button>
-      </div>
-    </a>
+      </styles.Container>
+    </styles.LinkRoot>
   </Link>
 );
 
 const styles = Object.freeze({
-  root: css`
-    ${styleUtils.clickableShadow}
-    display: block;
-    width: 300px;
-    height: 400px;
-    max-width: 400px;
-    border-radius: var(--chakra-radii-md);
+  LinkRoot: styled.a({
+    "&": styleUtils.clickableShadow,
+    display: "block",
+    width: 300,
+    height: 400,
+    maxWidth: 400,
+    borderRadius: "var(--card-border-radius)",
 
-    ${styleUtils.mobile(css`
-      width: 100%;
-    `)}
+    [styleUtils.mobile]: {
+      width: "100%",
+    },
 
-    &>:first-child {
-      width: 100% !important;
-    }
+    "& > :first-child": {
+      width: "100% !important",
+    },
 
-    img {
-      object-fit: cover;
-      object-position: 0% 0%;
-      border-top-left-radius: var(--chakra-radii-md);
-      border-top-right-radius: var(--chakra-radii-md);
-    }
-  `,
-  container: css`
-    height: 100px;
-    padding: 0.5rem 1rem 1rem 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    img: {
+      objectFit: "cover",
+      objectPosition: "0% 0%",
+      borderTopLeftRadius: "var(--card-border-radius)",
+      borderTopRightRadius: "var(--card-border-radius)",
+    },
+  }),
+  Container: styled.div({
+    height: 100,
+    padding: "0.5rem 1rem 1rem 1rem",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
 
-    & > p {
-      text-align: center;
-    }
-  `,
+    "& > p": {
+      textAlign: "center",
+    },
+  }),
 });
 
 export default ClickableCard;

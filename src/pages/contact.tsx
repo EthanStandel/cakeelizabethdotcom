@@ -2,7 +2,7 @@ import React from "react";
 
 import { XyzTransition } from "@animxyz/react";
 import { Icon } from "@chakra-ui/react";
-import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { Form, Formik } from "formik";
 import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
@@ -41,7 +41,7 @@ const Page: NextPage<Props> = ({ content }) => {
   return (
     <div css={styleUtils.pageContainer}>
       <div css={styleUtils.contentContainer}>
-        <div css={styles.pageSplit}>
+        <styles.PageSplit>
           <div>
             <XyzTransition xyz="small-25% fade stagger">
               {latestSubmissionResult !== "success" && (
@@ -70,7 +70,7 @@ const Page: NextPage<Props> = ({ content }) => {
                       setSubmitting(false);
                     }}
                   >
-                    <Form css={styles.form}>
+                    <styles.Form>
                       <Input
                         name="name"
                         left={<Icon color="gray.300" as={FaUserTag} />}
@@ -102,7 +102,7 @@ const Page: NextPage<Props> = ({ content }) => {
                         required
                         textarea
                       />
-                      <div css={styles.submit}>
+                      <styles.Submit>
                         <CtaButton
                           loading={submitting}
                           leftIcon={<Icon as={FaPaperPlane} />}
@@ -110,8 +110,8 @@ const Page: NextPage<Props> = ({ content }) => {
                         >
                           {content.data.form.send}
                         </CtaButton>
-                      </div>
-                    </Form>
+                      </styles.Submit>
+                    </styles.Form>
                   </Formik>
                   <XyzTransition xyz="small-25% fade stagger">
                     {latestSubmissionResult === "error" && (
@@ -135,7 +135,7 @@ const Page: NextPage<Props> = ({ content }) => {
               )}
             </XyzTransition>
           </div>
-          <div css={styles.contactBlock}>
+          <styles.ContactBlock>
             <h2>{content.data.contact.name}</h2>
             <div>
               <p>{content.data.contact.address.street}</p>
@@ -157,8 +157,8 @@ const Page: NextPage<Props> = ({ content }) => {
                 {content.data.contact.web.display}
               </Link>
             </div>
-          </div>
-        </div>
+          </styles.ContactBlock>
+        </styles.PageSplit>
       </div>
     </div>
   );
@@ -188,49 +188,43 @@ export const getStaticProps: GetStaticProps<Props> = async (arg) => {
 };
 
 const styles = Object.freeze({
-  form: css`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
+  Form: styled(Form)({
+    display: "flex",
+    flexDirection: "column",
+    gap: ".5em",
 
-    > * {
+    "> *": {
       // I have no idea...
-      z-index: 0;
-    }
-  `,
-  submit: css`
-    width: 100%;
-    margin-top: 1em;
-    > button {
-      ${styleUtils.mobile(
-        css`
-          width: 100%;
-        `
-      )}
-    }
-  `,
-
-  pageSplit: css`
-    width: 100%;
-    display: flex;
-    gap: 2em;
-    ${styleUtils.desktop(css`
-      > :first-child {
-        width: 60%;
-      }
-    `)}
-    ${styleUtils.mobile(
-      css`
-        flex-direction: column-reverse;
-      `
-    )}
-  `,
-
-  contactBlock: css`
-    > :not(:first-child) {
-      margin-bottom: 1em;
-    }
-  `,
+      zIndex: 0,
+    },
+  }),
+  Submit: styled.div({
+    width: "100%",
+    marginTop: "1em",
+    "> button": {
+      [styleUtils.mobile]: {
+        width: "100%",
+      },
+    },
+  }),
+  PageSplit: styled.div({
+    width: "100%",
+    display: "flex",
+    gap: "2em",
+    [styleUtils.desktop]: {
+      "> :first-child": {
+        width: "60%",
+      },
+    },
+    [styleUtils.mobile]: {
+      flexDirection: "column-reverse",
+    },
+  }),
+  ContactBlock: styled.div({
+    "> :not(:first-child)": {
+      marginBottom: "1em",
+    },
+  }),
 });
 
 export default Page;

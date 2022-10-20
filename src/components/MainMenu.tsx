@@ -11,6 +11,7 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { keyword } from "color-convert";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,17 +34,16 @@ const socialIcons = {
 
 const MainMenu = ({ structure }: Props) => (
   <>
-    <div css={styles.shadowRoot} />
-    <div css={[styles.root, styleUtils.contentContainerParent]}>
+    <styles.ShadowRoot />
+    <styles.MainMenu>
       <div css={styleUtils.contentContainerFullWidth}>
-        <div css={styles.topItems}>
+        <styles.TopItems>
           <div>
             <a href={`tel:${structure.phone}`}>{structure.phone}</a>
           </div>
           <div>
             {structure.social.map((social) => (
-              <a
-                css={styles.socialLink}
+              <styles.SocialLink
                 key={social.name}
                 href={social.href}
                 target="_blank"
@@ -55,11 +55,11 @@ const MainMenu = ({ structure }: Props) => (
                   aria-label={social.name}
                   as={socialIcons[social.icon]}
                 />
-              </a>
+              </styles.SocialLink>
             ))}
           </div>
-        </div>
-        <div css={[styles.logoContainer, styleUtils.desktopOnly]}>
+        </styles.TopItems>
+        <styles.LogoContainer css={styleUtils.desktopOnly}>
           <Link href={structure.href!}>
             <a>
               <Image
@@ -70,17 +70,17 @@ const MainMenu = ({ structure }: Props) => (
               />
             </a>
           </Link>
-        </div>
+        </styles.LogoContainer>
       </div>
-    </div>
+    </styles.MainMenu>
     <MobileStickyMenu structure={structure} />
-    <div css={[styles.stickyRoot, styleUtils.desktopOnly]}>
-      <div css={[styles.root, styleUtils.contentContainerParent]}>
+    <styles.StickyRoot css={styleUtils.desktopOnly}>
+      <styles.MainMenu>
         <div css={styleUtils.contentContainerFullWidth}>
           <MenuItems structure={structure} />
         </div>
-      </div>
-    </div>
+      </styles.MainMenu>
+    </styles.StickyRoot>
   </>
 );
 
@@ -95,18 +95,17 @@ const MobileStickyMenu = ({ structure }: Props) => {
   }, [router]);
 
   return (
-    <div css={[styles.stickyRoot, styleUtils.mobileOnly]}>
-      <div css={[styles.root, styleUtils.contentContainerParent]}>
+    <styles.StickyRoot css={styleUtils.mobileOnly}>
+      <styles.MainMenu>
         <div css={styleUtils.contentContainerFullWidth}>
-          <div css={styles.mobileMenuContainer}>
-            <IconButton
-              css={styles.mobileMenu}
+          <styles.MobileMenuContainer>
+            <styles.MobileMenu
               variant="outline"
               aria-label="Menu"
               icon={open ? <CloseIcon /> : <HamburgerIcon />}
               onClick={() => setOpen(!open)}
             />
-            <div css={styles.mobileImageContainer}>
+            <styles.MobileImageContainer>
               <Link href={structure.href!}>
                 <a>
                   <Image
@@ -117,18 +116,18 @@ const MobileStickyMenu = ({ structure }: Props) => {
                   />
                 </a>
               </Link>
-            </div>
-          </div>
+            </styles.MobileImageContainer>
+          </styles.MobileMenuContainer>
         </div>
-      </div>
+      </styles.MainMenu>
       <XyzTransition xyz="up-100%">
         {open && (
-          <div css={styles.hiddenMenuContainer}>
+          <styles.HiddenMenuContainer>
             <MenuItems structure={structure} />
-          </div>
+          </styles.HiddenMenuContainer>
         )}
       </XyzTransition>
-    </div>
+    </styles.StickyRoot>
   );
 };
 
@@ -138,22 +137,22 @@ const MenuItems = ({ structure }: Props) => {
 
   const isMobileView = useIsMobileView();
   return (
-    <ul css={styles.menuItems}>
+    <styles.MenuItems>
       {structure.children?.map((item) => {
         const selectedItem =
           item.href === pathname ||
           item.children?.find((subitem) => subitem.href === pathname);
         return (
-          <li css={styles.rootMenuItem} key={item.name}>
+          <styles.RootMenuItem key={item.name}>
             {item.children ? (
               <ChakraMenu placement={isMobileView ? "bottom" : undefined}>
-                <MenuButton
+                <styles.MenuButton
                   as="button"
-                  css={[styles.menuButton, selectedItem && styles.selected]}
+                  css={selectedItem && styles.selected}
                 >
                   {item.name}
                   {item.children && <ChevronDownIcon h="1.5em" w="1.5em" />}
-                </MenuButton>
+                </styles.MenuButton>
                 <MenuList>
                   {item.children?.map((subitem) => (
                     <Link key={subitem.href} href={subitem.href!} passHref>
@@ -174,159 +173,147 @@ const MenuItems = ({ structure }: Props) => {
                 </a>
               </Link>
             )}
-          </li>
+          </styles.RootMenuItem>
         );
       })}
-    </ul>
+    </styles.MenuItems>
   );
 };
 
 const styles = Object.freeze({
-  root: css`
-    background: var(--primary-color) !important;
-    color: var(--text-color);
-    z-index: 4;
-    width: 100%;
-    position: sticky;
-  `,
-  topItems: css`
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
+  MainMenu: styled.div({
+    "&": styleUtils.contentContainerParent,
+    background: "var(--primary-color) !important",
+    color: "var(--text-color)",
+    zIndex: 4,
+    width: "100%",
+    position: "sticky",
+  }),
+  TopItems: styled.div({
+    display: "flex",
+    width: "100%",
+    justifyContent: "space-between",
 
-    > div {
-      margin: 1rem;
+    "> div": {
+      margin: "1rem",
       // Safari has wrong calculations for how they
       // define the space for text, which forces the
       // phone number to wrap here, this fixes that
-      word-break: keep-all;
-    }
-  `,
-  socialLink: css`
-    margin: 0.25rem;
-  `,
+      wordBreak: "keep-all",
+    },
+  }),
+  SocialLink: styled.a({
+    margin: ".25rem",
+  }),
+  LogoContainer: styled.div({
+    "&": styleUtils.desktopOnly,
+    display: "flex",
+    justifyContent: "center",
+    width: "100%",
 
-  logoContainer: css`
-    display: flex;
-    width: 100%;
-    justify-content: center;
+    "> button": {
+      margin: ".5rem",
+    },
+  }),
+  MenuItems: styled.ul({
+    display: "flex",
+    width: "100%",
+    maxWidth: "100%",
+    flexWrap: "wrap",
+    [styleUtils.mobile]: {
+      flexDirection: "column",
+    },
+    li: {
+      listStyleType: "none",
+    },
+  }),
+  MenuButton: styled(MenuButton)({
+    "& + *": {
+      zIndex: "4 !important" as any,
+    },
+  }),
+  selected: css({
+    fontWeight: "bold !important" as any,
+  }),
+  RootMenuItem: styled.li({
+    "&, button, a": {
+      textTransform: "uppercase",
+      letterSpacing: "0.15em",
+      fontSize: "0.95em",
+      fontWeight: 500,
+      textAlign: "center",
+    },
 
-    > button {
-      margin: 0.5rem;
-    }
-  `,
+    margin: "1rem",
 
-  menuItems: css`
-    display: flex;
-    width: 100%;
-    max-width: 100%;
-    flex-wrap: wrap;
-    ${styleUtils.mobile(
-      css`
-        flex-direction: column;
-      `
-    )}
-    li {
-      list-style-type: none;
-    }
-  `,
+    [styleUtils.mobile]: {
+      margin: ".5rem",
+    },
 
-  menuButton: css`
-    & + * {
-      z-index: 4 !important;
-    }
-  `,
+    flexGrow: 1,
+    whiteSpace: "nowrap",
 
-  selected: css`
-    font-weight: bold !important;
-  `,
-
-  rootMenuItem: css`
-    &,
-    button,
-    a {
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      font-size: 0.95em;
-      font-weight: 500;
-      text-align: center;
-    }
-
-    margin: 1rem;
-    ${styleUtils.mobile(
-      css`
-        margin: 0.5rem;
-      `
-    )}
-
-    flex-grow: 1;
-    white-space: nowrap;
-
-    ${styleUtils.desktop(
-      css`
-        &:first-child {
-          margin-left: 0;
-        }
-
-        &:last-child {
-          margin-right: 0;
-        }
-      `
-    )}
-  `,
-
-  stickyRoot: css`
-    z-index: 4;
-    position: sticky;
-    top: 0;
-  `,
+    [styleUtils.desktop]: {
+      "&:first-child": {
+        marginLeft: 0,
+      },
+      "&:last-child": {
+        marginRight: 0,
+      },
+    },
+  }),
+  StickyRoot: styled.div({
+    zIndex: 4,
+    position: "sticky",
+    top: 0,
+  }),
 
   // adds a "sliding door" shadow when the header goes sticky
-  shadowRoot: css`
-    background: var(--primary-color);
-    position: sticky;
-    height: 1px;
-    margin-top: -1px;
-    z-index: 1;
-    top: 0;
-    box-shadow: 5px calc(1.4em + 1.9rem) 20px 5px
-      rgba(${keyword.rgb("black").join(",")}, 0.5);
-    width: 100%;
-  `,
+  ShadowRoot: styled.div({
+    background: "var(--primary-color)",
+    position: "sticky",
+    height: 1,
+    marginTop: -1,
+    zIndex: 1,
+    top: 1,
+    boxShadow: `5px calc(1.4em + 1.9rem) 20px 5px rgba(${keyword
+      .rgb("black")
+      .join(",")}, 0.5)`,
+    width: "100%",
+  }),
 
-  mobileMenuContainer: css`
-    display: flex;
-    width: 100%;
-    & > :last-child {
-      flex-grow: 1;
-      height: 52px;
-      margin-top: 2px;
-      width: 52px;
-    }
-  `,
-  mobileImageContainer: css`
-    flex-grow: 1;
-    display: flex;
-    justify-content: space-around;
-    img {
-      height: 52px;
-    }
-  `,
-  mobileMenu: css`
-    margin: 0.5rem 0;
-    border-color: var(--text-color) !important;
-    background-color: transparent !important;
-  `,
-
-  hiddenMenuContainer: css`
-    position: absolute;
-    display: flex;
-    align-items: center;
-    height: 100vh;
-    top: 0;
-    width: 100%;
-    background: var(--primary-color);
-  `,
+  MobileMenuContainer: styled.div({
+    display: "flex",
+    width: "100%",
+    "& > :last-child": {
+      flexGrow: 1,
+      height: 52,
+      marginTop: 2,
+      width: 52,
+    },
+  }),
+  MobileImageContainer: styled.div({
+    flexGrow: 1,
+    display: "flex",
+    justifyContent: "space-around",
+    img: {
+      height: 52,
+    },
+  }),
+  MobileMenu: styled(IconButton)({
+    margin: ".5rem 0",
+    borderColor: "var(--text-color) !important",
+    backgroundColor: "transparent !important",
+  }),
+  HiddenMenuContainer: styled.div({
+    position: "absolute",
+    display: "flex",
+    alignItems: "center",
+    height: "100vh",
+    top: 0,
+    width: "100%",
+    background: "var(--primary-color)",
+  }),
 });
 
 export default MainMenu;

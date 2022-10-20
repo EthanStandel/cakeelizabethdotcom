@@ -1,6 +1,7 @@
 import { FC } from "react";
 
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,7 +15,7 @@ export const ImageGallery: FC<{ images: Array<{ src: string; alt: string }> }> =
     const router = useRouter();
 
     return (
-      <div css={styles.imagesContainer}>
+      <styles.ImagesContainer>
         {images
           .filter((_, index) => index !== 0)
           .map(({ src, alt }, index) => (
@@ -35,27 +36,27 @@ export const ImageGallery: FC<{ images: Array<{ src: string; alt: string }> }> =
               </a>
             </Link>
           ))}
-      </div>
+      </styles.ImagesContainer>
     );
   };
 
 const styles = {
-  imagesContainer: css`
-    display: grid;
-    gap: 1em;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  ImagesContainer: styled.div({
+    display: "grid",
+    gap: "1em",
+    gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
 
-    img {
-      object-fit: cover;
-    }
+    img: {
+      objectFit: "auto" as any,
+    },
 
-    > a {
-      ${styleUtils.clickableShadow}
-      border-radius: var(--chakra-radii-md);
+    "> a": {
+      "&": styleUtils.clickableShadow,
+      borderRadius: "var(--card-border-radius)",
 
-      & > * {
-        display: block !important;
-      }
-    }
-  `,
+      "> *": {
+        display: "block !important",
+      },
+    },
+  }),
 };

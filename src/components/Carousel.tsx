@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { css } from "@emotion/css";
+import styled from "@emotion/styled";
 import _isNil from "lodash/isNil";
 import { Swiper, Pagination, Autoplay } from "swiper";
 import {
@@ -8,7 +8,6 @@ import {
   SwiperSlide,
   useSwiperSlide,
 } from "swiper/react";
-
 import "swiper/css";
 import "swiper/css/pagination";
 
@@ -41,14 +40,9 @@ const Carousel: <T>(props: CarouselProps<T>) => React.ReactElement = ({
     }
   }, [swiper, index]);
   return (
-    <SwiperComponent
+    <styles.SwiperComponent
       loop
-      className={css`
-        z-index: ${zIndex};
-        .swiper-pagination-bullet-active {
-          background-color: white;
-        }
-      `.toString()}
+      css={{ zIndex }}
       modules={[
         ...(pagination ? [Pagination] : []),
         ...(autoplay ? [Autoplay] : []),
@@ -83,8 +77,16 @@ const Carousel: <T>(props: CarouselProps<T>) => React.ReactElement = ({
           )}
         </SwiperSlide>
       ))}
-    </SwiperComponent>
+    </styles.SwiperComponent>
   );
 };
+
+const styles = Object.freeze({
+  SwiperComponent: styled(SwiperComponent)({
+    ".swiper-pagination-bullet-active": {
+      backgroundColor: "white",
+    },
+  }),
+});
 
 export default Carousel;

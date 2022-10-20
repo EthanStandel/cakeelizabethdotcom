@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { GetStaticProps, NextPage } from "next";
 
 import { FlavorGroup } from "../components/FlavorGroup";
@@ -13,22 +13,22 @@ type Props = { content: Omit<PageContent, "body"> & { body: string } };
 const Page: NextPage<Props> = ({ content }) => (
   <div css={styleUtils.pageContainer}>
     <div css={styleUtils.contentContainer}>
-      <div css={styles.splitGroup}>
-        <div css={styles.leftPane}>
+      <styles.SplitGroup>
+        <styles.LeftPane>
           <MdxRenderer input={content.body} />
           <FlavorGroup {...content.data.flavorGroups.cakeFlavors} />
-        </div>
-        <div css={styles.rightPane}>
+        </styles.LeftPane>
+        <styles.RightPane>
           <img
             src="/resources/pages/weddings/12.jpg"
             alt={content.data.imgAlt}
           />
-        </div>
-      </div>
-      <div css={styles.splitGroup}>
+        </styles.RightPane>
+      </styles.SplitGroup>
+      <styles.SplitGroup>
         <FlavorGroup {...content.data.flavorGroups.cakeFilling} />
         <FlavorGroup {...content.data.flavorGroups.cakeIcing} />
-      </div>
+      </styles.SplitGroup>
     </div>
   </div>
 );
@@ -39,44 +39,35 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 const styles = Object.freeze({
-  splitGroup: css`
-    display: flex;
-    gap: 1rem;
-    ${styleUtils.mobile(
-      css`
-        flex-direction: column;
-      `
-    )}
-
-    img {
-      border-radius: var(--chakra-radii-md);
-      object-fit: contain;
-    }
-  `,
-
-  leftPane: css`
-    width: 50%;
-    ${styleUtils.mobile(
-      css`
-        width: 100%;
-      `
-    )}
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  `,
-
-  rightPane: css`
-    display: flex;
-    justify-content: center;
-    width: 50%;
-    ${styleUtils.mobile(
-      css`
-        width: 100%;
-      `
-    )}
-  `,
+  SplitGroup: styled.div({
+    display: "flex",
+    gap: "1rem",
+    [styleUtils.mobile]: {
+      flexDirection: "column",
+    },
+    img: {
+      borderRadius: "var(--card-border-radius)",
+      objectFit: "contain",
+    },
+  }),
+  LeftPane: styled.div({
+    width: "50%",
+    [styleUtils.mobile]: {
+      width: "100%",
+    },
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  }),
+  RightPane: styled.div({
+    display: "flex",
+    justifyContent: "center",
+    width: "50%",
+    [styleUtils.mobile]: {
+      width: "100%",
+    },
+  }),
 });
 
 export default Page;

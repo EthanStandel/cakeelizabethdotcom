@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import type { GetStaticProps, NextPage } from "next";
 
 import ClickableCard from "../components/ClickableCard";
@@ -13,15 +13,15 @@ interface Props {
 
 const Page: NextPage<Props> = ({ content }) => (
   <div>
-    <div css={styles.bannerImageContainer}>
+    <styles.BannerImageContainer>
       <img alt={content.data.bannerAlt} src="/resources/other/banner.jpg" />
-    </div>
+    </styles.BannerImageContainer>
     <div css={styleUtils.pageContainer}>
       <div css={styleUtils.contentContainer}>
         <div css={styleUtils.center}>
           <h2>{content.data.chooseYourOccasion}</h2>
         </div>
-        <div css={styles.cakeTypeCards}>
+        <styles.CakeTypeCards>
           {(
             content.data.cakeTypes as Array<{
               title: string;
@@ -38,7 +38,7 @@ const Page: NextPage<Props> = ({ content }) => (
               title={title}
             />
           ))}
-        </div>
+        </styles.CakeTypeCards>
       </div>
     </div>
     <QuoteCarousel quotes={content.data.quotes} />
@@ -52,29 +52,23 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 const styles = Object.freeze({
-  bannerImageContainer: css`
-    min-width: 100%;
-    img {
-      height: 500px;
-      width: 100%;
-      object-fit: cover;
-      ${styleUtils.mobile(
-        css`
-          height: 300px;
-        `
-      )}
-    }
-  `,
-  cakeTypeCards: css`
-    display: grid;
-    gap: 2em;
-    justify-items: center;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    width: 100%;
-  `,
-  quote: css`
-    height: 300px;
-  `,
+  BannerImageContainer: styled.div({
+    minWidth: "100%",
+    img: {
+      height: 500,
+      width: "100%",
+      objectFit: "cover",
+      [styleUtils.mobile]: {
+        height: 300,
+      },
+    },
+  }),
+  CakeTypeCards: styled.div({
+    display: "grid",
+    gap: "2em",
+    justifyItems: "center",
+    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+  }),
 });
 
 export default Page;

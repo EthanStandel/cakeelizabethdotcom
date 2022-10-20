@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import NextDocument, { Html, Head, Main, NextScript } from "next/document";
 
 import styleUtils from "../utils/styleUtils";
@@ -6,7 +6,7 @@ import styleUtils from "../utils/styleUtils";
 class Document extends NextDocument {
   render() {
     return (
-      <Html lang="en-US" css={styles.html}>
+      <styles.Html lang="en-US">
         <Head>
           <link
             rel="stylesheet"
@@ -17,46 +17,44 @@ class Document extends NextDocument {
           <Main />
           <NextScript />
         </body>
-      </Html>
+      </styles.Html>
     );
   }
 }
 
 const styles = Object.freeze({
-  html: css`
-    --app-width: 80%;
-    --primary-color: #65ffce;
-    --secondary-color: springgreen;
-    --text-color: #555555;
-    --transparent-primary: rgba(127, 255, 212, 0.5);
-    ${styleUtils.mobile(
-      css`
-        --app-width: 95%;
-      `
-    )}
+  Html: styled(Html)({
+    "--card-border-radius": "5px",
+    "--app-width": "80%",
+    "--primary-color": "#65ffce",
+    "--secondary-color": "springgreen",
+    "--text-color": "#555555",
+    "--transparent-primary": "rgba(127, 255, 212, 0.5)",
 
-    * {
-      font-family: "Montserrat", sans-serif;
-    }
+    [styleUtils.mobile]: {
+      "--app-width": "95%",
+    },
 
-    h2 {
-      text-transform: uppercase;
-      font-size: 2em;
-      margin: 1rem auto;
-      text-align: center;
-    }
+    "*": {
+      fontFamily: "Montserrat, sans-serif",
+    },
+    h2: {
+      textTransform: "uppercase",
+      fontSize: "2em",
+      margin: "1rem auto",
+      textAlign: "center",
+    },
 
-    /* NProgress overrides */
-    #nprogress {
-      .bar {
-        background: var(--text-color) !important;
-      }
-      .spinner-icon {
-        border-top-color: var(--text-color) !important;
-        border-left-color: var(--text-color) !important;
-      }
-    }
-  `,
+    "#nprogress": {
+      ".bar": {
+        background: "var(--text-color) !important",
+      },
+      ".spinner-icon": {
+        borderTopColor: "var(--text-color) !important",
+        borderLeftColor: "var(--text-color) !important",
+      },
+    },
+  }),
 });
 
 export default Document;

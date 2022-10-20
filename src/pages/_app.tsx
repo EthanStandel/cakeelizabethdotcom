@@ -4,7 +4,7 @@ import "nprogress/nprogress.css";
 import { useEffect } from "react";
 
 import { ChakraProvider } from "@chakra-ui/react";
-import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -15,9 +15,16 @@ import MainMenu from "../components/MainMenu";
 import footerContent from "../resources/footer.json";
 import menu from "../resources/menu.json";
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({
+  Component,
+  pageProps,
+}: AppProps & {
+  pageProps: {
+    content: { page: string; description: string; pageTitle: string };
+  };
+}) => {
   const route =
-    pageProps.content?.page === "index" ? "" : pageProps.content?.page;
+    pageProps.content.page === "index" ? "" : pageProps.content.page;
 
   const { events } = useRouter();
 
@@ -31,16 +38,16 @@ const App = ({ Component, pageProps }: AppProps) => {
     <ChakraProvider>
       <Head>
         <link rel="icon" href="/favicon.png" />
-        {pageProps.content?.description && (
+        {pageProps.content.description && (
           <>
-            <meta name="description" content={pageProps.content?.description} />
+            <meta name="description" content={pageProps.content.description} />
             <meta
               property="og:description"
-              content={pageProps.content?.description}
+              content={pageProps.content.description}
             />
           </>
         )}
-        {pageProps.content?.page && (
+        {pageProps.content.page && (
           <>
             <link rel="canonical" href={`https://cakeelizabeth.com/${route}`} />
             <meta
@@ -62,34 +69,34 @@ const App = ({ Component, pageProps }: AppProps) => {
         <meta property="og:type" content="article" />
         <meta property="og:locale" content="en_US" />
         {pageProps.content?.pageTitle && (
-          <meta property="og:title" content={pageProps.content?.pageTitle} />
+          <meta property="og:title" content={pageProps.content.pageTitle} />
         )}
         <title>
-          {pageProps.content?.pageTitle
+          {pageProps.content.pageTitle
             ? `${pageProps.content.pageTitle} | Cake Elizabeth`
             : "Cake Elizabeth"}
         </title>
       </Head>
-      <div css={styles.app}>
+      <styles.App>
         <MainMenu structure={menu} />
-        <div css={styles.page}>
+        <styles.Page>
           <Component {...pageProps} />
-        </div>
+        </styles.Page>
         <Footer content={footerContent} />
-      </div>
+      </styles.App>
     </ChakraProvider>
   );
 };
 
 const styles = Object.freeze({
-  app: css`
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  `,
-  page: css`
-    flex-grow: 1;
-  `,
+  App: styled.div({
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+  }),
+  Page: styled.div({
+    flexGrow: 1,
+  }),
 });
 
 export default App;

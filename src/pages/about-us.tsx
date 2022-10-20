@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { GetStaticProps, NextPage } from "next";
 
 import MdxRenderer from "../components/MdxRenderer";
@@ -12,11 +13,11 @@ type Props = { content: PageContent };
 const Page: NextPage<Props> = ({ content }) => (
   <div css={styleUtils.pageContainer}>
     <div css={styleUtils.contentContainer}>
-      <div css={styles.storyGroup}>
-        <div css={[styles.text, styleUtils.htmlRoot]}>
+      <styles.StoryGroup>
+        <styles.Text css={styleUtils.htmlRoot}>
           <MdxRenderer input={content.data.owner} />
-        </div>
-        <div css={styles.image}>
+        </styles.Text>
+        <styles.Image>
           <img
             alt={content.data.kristinaImgAlt}
             src="/resources/pages/about-us/kristina.jpg"
@@ -25,10 +26,10 @@ const Page: NextPage<Props> = ({ content }) => (
             alt={content.data.kristinaEthanImgAlt}
             src="/resources/pages/about-us/kristinaethan.jpg"
           />
-        </div>
-      </div>
-      <div css={styles.storyGroup}>
-        <div css={styles.image}>
+        </styles.Image>
+      </styles.StoryGroup>
+      <styles.StoryGroup>
+        <styles.Image>
           <img
             alt={content.data.pattyImgAlt}
             src="/resources/pages/about-us/patty.png"
@@ -39,11 +40,11 @@ const Page: NextPage<Props> = ({ content }) => (
             src="/resources/pages/about-us/pattygordon.png"
             loading="lazy"
           />
-        </div>
-        <div css={[styles.text, styleUtils.htmlRoot]}>
+        </styles.Image>
+        <styles.Text css={styleUtils.htmlRoot}>
           <MdxRenderer input={content.data.founder} />
-        </div>
-      </div>
+        </styles.Text>
+      </styles.StoryGroup>
     </div>
   </div>
 );
@@ -54,57 +55,50 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   return { props: { content } };
 };
 
-const imageAndTextStyles = css`
-  display: flex;
-  gap: 1em;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
+const imageAndTextStyles = css({
+  display: "flex",
+  gap: "1em",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+});
 
 const styles = Object.freeze({
-  storyGroup: css`
-    display: flex;
-    gap: 1em;
-    ${styleUtils.mobile(
-      css`
-        flex-direction: column;
-      `
-    )}
+  StoryGroup: styled.div({
+    display: "flex",
+    gap: "1em",
+    [styleUtils.mobile]: {
+      flexDirection: "column",
+    },
 
-    &:last-child {
-      margin-top: 2em;
-      ${styleUtils.mobile(
-        css`
-          flex-direction: column-reverse;
-        `
-      )}
-    }
-  `,
+    "&:last-child": {
+      marginTop: "2em",
+      [styleUtils.mobile]: {
+        flexDirection: "column-reverse",
+      },
+    },
+  }),
+  Text: styled.div({
+    "&": imageAndTextStyles,
+    width: "60%",
+    [styleUtils.mobile]: {
+      width: "100%",
+    },
+  }),
 
-  text: css`
-    width: 60%;
-    ${imageAndTextStyles}
-    ${styleUtils.mobile(
-      css`
-        width: 100%;
-      `
-    )}
-  `,
-  image: css`
-    max-height: 100%;
-    width: 40%;
-    ${imageAndTextStyles}
-    ${styleUtils.mobile(
-      css`
-        width: 100%;
-      `
-    )}
-    > img {
-      border-radius: var(--chakra-radii-md);
-      width: 100%;
-    }
-  `,
+  Image: styled.div({
+    "&": imageAndTextStyles,
+    width: "40%",
+
+    maxHeight: "100%",
+    [styleUtils.mobile]: {
+      width: "100%",
+    },
+    "> img": {
+      width: "100%",
+      borderRadius: "var(--card-border-radius)",
+    },
+  }),
 });
 
 export default Page;

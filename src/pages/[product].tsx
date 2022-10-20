@@ -1,6 +1,6 @@
 import React from "react";
 
-import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -32,11 +32,11 @@ const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
   const router = useRouter();
 
   return (
-    <div css={[styleUtils.pageContainer, styles.root]}>
+    <styles.ProductPage>
       <ImageCarouselOverlay images={images} />
       <div css={styleUtils.contentContainer}>
-        <div css={styles.mainSection}>
-          <div ref={mainImgRef} css={styles.mainImgContainer}>
+        <styles.MainSection>
+          <styles.MainImgContainer ref={mainImgRef}>
             <Link
               scroll={false}
               replace
@@ -52,25 +52,25 @@ const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
                 <img alt={images[0].alt} src={images[0].src} />
               </a>
             </Link>
-          </div>
-          <div css={styles.spielContainer}>
+          </styles.MainImgContainer>
+          <styles.SpielContainer>
             <div css={styleUtils.htmlRoot}>
               <h2>{content.pageTitle}</h2>
               <MdxRenderer input={content.body} />
             </div>
-          </div>
-        </div>
+          </styles.SpielContainer>
+        </styles.MainSection>
         <ImageGallery images={images} />
         {extendedContentBody && (
-          <div css={[styleUtils.htmlRoot, styles.shadowPassthrough]}>
+          <styles.ShadowPassthrough>
             <MdxRenderer
               input={extendedContentBody}
               components={{ FlavorGroup }}
             />
-          </div>
+          </styles.ShadowPassthrough>
         )}
       </div>
-    </div>
+    </styles.ProductPage>
   );
 };
 
@@ -112,77 +112,71 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 };
 
 export const styles = Object.freeze({
-  root: css`
-    img {
-      border-radius: var(--chakra-radii-md);
-    }
-  `,
-  mainSection: css`
-    display: flex;
-    gap: 1em;
-    margin-bottom: 1em;
-    align-items: center;
+  ProductPage: styled.div({
+    "&": styleUtils.pageContainer,
+    img: {
+      borderRadius: "var(--card-border-radius)",
+    },
+  }),
+  MainSection: styled.div({
+    display: "flex",
+    gap: "1em",
+    marginBottom: "1em",
+    alignItems: "center",
+    [styleUtils.mobile]: {
+      justifyContent: "center",
+      flexDirection: "column-reverse",
+      width: "100%",
+    },
+  }),
+  MainImgContainer: styled.div({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
 
-    ${styleUtils.mobile(css`
-      justify-content: center;
-      flex-direction: column-reverse;
-      width: 100%;
-    `)}
-  `,
+    a: {
+      "&": styleUtils.clickableShadow,
+      borderRadius: "var(--card-border-radius)",
+    },
 
-  mainImgContainer: css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    [styleUtils.mobile]: {
+      scrollMarginTop: 60,
+      width: "100%",
+    },
 
-    a {
-      ${styleUtils.clickableShadow}
-      border-radius: var(--chakra-radii-md);
-    }
+    [styleUtils.desktop]: {
+      scrollMarginTop: 115,
+      width: "calc(50% - 1em)",
+    },
 
-    ${styleUtils.mobile(css`
-      scroll-margin-top: 60px;
-      width: 100%;
-    `)}
+    img: {
+      objectFit: "cover",
+      maxWidth: "100%",
 
-    ${styleUtils.desktop(css`
-      scroll-margin-top: 115px;
-      width: calc(50% - 1em);
-    `)}
+      [styleUtils.mobile]: {
+        maxHeight: 500,
+      },
 
-    img {
-      object-fit: cover;
-
-      ${styleUtils.mobile(css`
-        max-width: 100%;
-        max-height: 500px;
-      `)}
-
-      ${styleUtils.desktop(css`
-        max-width: 100%;
-        max-height: 750px;
-      `)}
-    }
-  `,
-
-  spielContainer: css`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    ${styleUtils.desktop(
-      css`
-        width: 50%;
-      `
-    )}
-    ${styleUtils.mobile(
-      css`
-        width: 100%;
-      `
-    )}
-  `,
-  shadowPassthrough: css`
-    overflow: visible;
-  `,
+      [styleUtils.desktop]: {
+        maxHeight: 750,
+      },
+    },
+  }),
+  SpielContainer: styled.div({
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    [styleUtils.desktop]: {
+      width: "50%",
+    },
+    [styleUtils.mobile]: {
+      width: "100%",
+    },
+  }),
+  ShadowPassthrough: styled.div({
+    "&": styleUtils.htmlRoot,
+    overflow: "visible",
+  }),
 });
 
 export default Page;

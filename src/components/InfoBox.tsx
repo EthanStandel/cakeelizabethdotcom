@@ -1,6 +1,7 @@
 import React from "react";
 
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { keyword } from "color-convert";
 
 interface Props {
@@ -9,34 +10,32 @@ interface Props {
 }
 
 const InfoBox = ({ children, state = "success" }: Props) => (
-  <div
+  <styles.Box
     css={[
-      styles.box,
       state === "success" && styles.success,
       state === "error" && styles.error,
     ]}
   >
     {children}
-  </div>
+  </styles.Box>
 );
 
 const styles = Object.freeze({
-  box: css`
-    width: 100%;
-    border: solid 2px black;
-    padding: 1em;
-    border-radius: var(--chakra-radii-md);
-    margin: 1em 0;
-  `,
-
-  success: css`
-    border-color: springgreen;
-    background: rgba(${keyword.rgb("springgreen").join(",")}, 0.2);
-  `,
-  error: css`
-    border-color: red;
-    background: rgba(${keyword.rgb("red").join(",")}, 0.2);
-  `,
+  Box: styled.div({
+    width: "100%",
+    border: "solid 2px black",
+    padding: "1em",
+    borderRadius: "var(--card-border-radius)",
+    margin: "1em 0",
+  }),
+  success: css({
+    borderColor: "springgreen",
+    background: `rgba(${keyword.rgb("springgreen").join(",")}, 0.2)`,
+  }),
+  error: css({
+    borderColor: "red",
+    background: `rgba(${keyword.rgb("red").join(",")}, 0.2)`,
+  }),
 });
 
 export default InfoBox;

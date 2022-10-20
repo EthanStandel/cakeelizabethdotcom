@@ -71,7 +71,7 @@ const Input = ({
             inputComponent={CkInput}
             size="lg"
             css={styles.padded}
-            {...(inputProps as PhoneNumberInputProps)}
+            {...(inputProps as any as PhoneNumberInputProps)}
             onChange={(input: string) => setValue(input ?? "")}
           />
         ) : (
@@ -86,13 +86,13 @@ const Input = ({
 };
 
 const styles = Object.freeze({
-  padded: css`
-    padding-left: var(--chakra-space-10) !important;
-  `,
-  required: css`
-    color: red;
-    font-weight: bold;
-  `,
+  padded: css({
+    paddingLeft: "var(--chakra-space-10) !important",
+  }),
+  required: css({
+    color: "red",
+    fontWeight: "bold",
+  }),
 });
 
 export default Input;

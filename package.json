@@ -30,15 +30,16 @@
     "color-convert": "^2.0.1",
     "contentlayer": "^0.2.5",
     "formik": "^2.2.9",
+    "framer-motion": "^7.6.1",
     "markdown-to-jsx": "^7.1.7",
-    "next": "^12.1.6",
+    "next": "^12.3.1",
     "next-contentlayer": "^0.2.5",
     "next-sitemap": "^1.6.203",
     "npm-license-generator": "^1.1.0",
     "nprogress": "^0.2.0",
     "prettier": "^2.4.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^4.3.1",
     "react-phone-number-input": "^3.1.38",
     "sanitize-html": "^2.5.3",
@@ -75,7 +76,7 @@
     "typescript": "4.4.3"
   },
   "engines": {
-    "node": "14.x",
-    "npm": "6.x"
+    "node": "16.x",
+    "npm": "8.x"
   }
 }
