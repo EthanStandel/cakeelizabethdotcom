@@ -2,7 +2,7 @@ import React from "react";
 
 import { XyzTransition } from "@animxyz/react";
 import { Icon } from "@chakra-ui/react";
-import styled from "@emotion/styled";
+import { styled } from "@stitches/react";
 import { Form, Formik } from "formik";
 import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
@@ -187,7 +187,7 @@ export const getStaticProps: GetStaticProps<Props> = async (arg) => {
 };
 
 const styles = Object.freeze({
-  Form: styled(Form)({
+  Form: styled(Form, {
     display: "flex",
     flexDirection: "column",
     gap: ".5em",
@@ -197,7 +197,7 @@ const styles = Object.freeze({
       zIndex: 0,
     },
   }),
-  Submit: styled.div({
+  Submit: styled("div", {
     width: "100%",
     marginTop: "1em",
     "> button": {
@@ -206,7 +206,7 @@ const styles = Object.freeze({
       },
     },
   }),
-  PageSplit: styled.div({
+  PageSplit: styled("div", {
     width: "100%",
     display: "flex",
     gap: "2em",
@@ -219,7 +219,7 @@ const styles = Object.freeze({
       flexDirection: "column-reverse",
     },
   }),
-  ContactBlock: styled.div({
+  ContactBlock: styled("div", {
     "> :not(:first-child)": {
       marginBottom: "1em",
     },

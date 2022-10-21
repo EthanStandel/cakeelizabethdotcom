@@ -1,6 +1,6 @@
 import React from "react";
 
-import styled from "@emotion/styled";
+import { styled } from "@stitches/react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -112,13 +112,16 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 };
 
 export const styles = Object.freeze({
-  ProductPage: styled.div({
-    "&": styleUtils.pageContainer,
-    img: {
-      borderRadius: "var(--card-border-radius)",
+  ProductPage: styled(
+    "div",
+    {
+      img: {
+        borderRadius: "var(--card-border-radius)",
+      },
     },
-  }),
-  MainSection: styled.div({
+    styleUtils.pageContainer
+  ),
+  MainSection: styled("div", {
     display: "flex",
     gap: "1em",
     marginBottom: "1em",
@@ -129,15 +132,17 @@ export const styles = Object.freeze({
       width: "100%",
     },
   }),
-  MainImgContainer: styled.div({
+  MainImgContainer: styled("div", {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
 
-    a: {
-      "&": styleUtils.clickableShadow,
-      borderRadius: "var(--card-border-radius)",
-    },
+    a: css(
+      {
+        borderRadius: "var(--card-border-radius)",
+      },
+      styleUtils.clickableShadow
+    ),
 
     [styleUtils.mobile]: {
       scrollMarginTop: 60,
@@ -162,7 +167,7 @@ export const styles = Object.freeze({
       },
     },
   }),
-  SpielContainer: styled.div({
+  SpielContainer: styled("div", {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -173,10 +178,13 @@ export const styles = Object.freeze({
       width: "100%",
     },
   }),
-  ShadowPassthrough: styled.div({
-    "&": styleUtils.htmlRoot,
-    overflow: "visible",
-  }),
+  ShadowPassthrough: styled(
+    "div",
+    {
+      overflow: "visible",
+    },
+    styleUtils.htmlRoot
+  ),
 });
 
 export default Page;

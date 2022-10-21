@@ -1,5 +1,4 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { styled, css } from "@stitches/react";
 import { GetStaticProps, NextPage } from "next";
 
 import MdxRenderer from "../components/MdxRenderer";
@@ -64,7 +63,7 @@ const imageAndTextStyles = css({
 });
 
 const styles = Object.freeze({
-  StoryGroup: styled.div({
+  StoryGroup: styled("div", {
     display: "flex",
     gap: "1em",
     [styleUtils.mobile]: {
@@ -78,28 +77,34 @@ const styles = Object.freeze({
       },
     },
   }),
-  Text: styled.div({
-    "&": imageAndTextStyles,
-    "&, &": styleUtils.htmlRoot,
-    width: "60%",
-    [styleUtils.mobile]: {
-      width: "100%",
+  Text: styled(
+    "div",
+    {
+      width: "60%",
+      [styleUtils.mobile]: {
+        width: "100%",
+      },
     },
-  }),
+    imageAndTextStyles,
+    styleUtils.htmlRoot
+  ),
 
-  Image: styled.div({
-    "&": imageAndTextStyles,
-    width: "40%",
+  Image: styled(
+    "div",
+    {
+      width: "40%",
 
-    maxHeight: "100%",
-    [styleUtils.mobile]: {
-      width: "100%",
+      maxHeight: "100%",
+      [styleUtils.mobile]: {
+        width: "100%",
+      },
+      "> img": {
+        width: "100%",
+        borderRadius: "var(--card-border-radius)",
+      },
     },
-    "> img": {
-      width: "100%",
-      borderRadius: "var(--card-border-radius)",
-    },
-  }),
+    imageAndTextStyles
+  ),
 });
 
 export default Page;

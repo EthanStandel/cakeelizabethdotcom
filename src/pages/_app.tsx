@@ -4,7 +4,7 @@ import "nprogress/nprogress.css";
 import { useEffect } from "react";
 
 import { ChakraProvider } from "@chakra-ui/react";
-import styled from "@emotion/styled";
+import { styled } from "@stitches/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -89,12 +89,12 @@ const App = ({
 };
 
 const styles = Object.freeze({
-  App: styled.div({
+  App: styled("div", {
     display: "flex",
     flexDirection: "column",
     minHeight: "100vh",
   }),
-  Page: styled.div({
+  Page: styled("div", {
     flexGrow: 1,
   }),
 });

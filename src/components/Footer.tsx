@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { styled } from "@stitches/react";
 import { keyword } from "color-convert";
 
 import styleUtils from "../utils/styleUtils";
@@ -18,7 +18,7 @@ const Footer = ({ content }: Props) => (
 );
 
 const styles = Object.freeze({
-  Footer: styled.div({
+  Footer: styled("div", {
     marginTop: "4em",
     zIndex: 3,
     width: "100%",
@@ -39,7 +39,7 @@ const styles = Object.freeze({
       bottom: 0,
     },
   }),
-  ShadowFooter: styled.div({
+  ShadowFooter: styled("div", {
     [styleUtils.desktop]: {
       position: "sticky",
       bottom: 0,
@@ -53,7 +53,7 @@ const styles = Object.freeze({
         .join(",")}, 0.5)`,
     },
   }),
-  ShadowCover: styled.div({
+  ShadowCover: styled("div", {
     [styleUtils.desktop]: {
       transform: "translateY(-2em)",
       background: `linear-gradient(

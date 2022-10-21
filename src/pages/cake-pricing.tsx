@@ -1,5 +1,4 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { styled } from "@stitches/react";
 import { GetStaticProps, NextPage } from "next";
 
 import MdxRenderer from "../components/MdxRenderer";
@@ -34,7 +33,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 const styles = Object.freeze({
-  ContentGroup: styled.div({
+  ContentGroup: styled("div", {
     display: "flex",
     gap: "2rem",
     width: "100%",
@@ -46,16 +45,19 @@ const styles = Object.freeze({
       borderRadius: "var(--card-border-radius)",
     },
   }),
-  BodyContent: styled.div({
-    "&": styleUtils.htmlRoot,
-    [styleUtils.desktop]: {
-      width: "60%",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
+  BodyContent: styled(
+    "div",
+    {
+      [styleUtils.desktop]: {
+        width: "60%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      },
     },
-  }),
-  ImgContainer: styled.div({
+    styleUtils.htmlRoot
+  ),
+  ImgContainer: styled("div", {
     [styleUtils.desktop]: {
       width: "40%",
       display: "flex",

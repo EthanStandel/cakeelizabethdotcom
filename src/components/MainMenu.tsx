@@ -10,8 +10,7 @@ import {
   Icon,
   IconButton,
 } from "@chakra-ui/react";
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { css, styled } from "@stitches/react";
 import { keyword } from "color-convert";
 import Image from "next/image";
 import Link from "next/link";
@@ -59,7 +58,7 @@ const MainMenu = ({ structure }: Props) => (
             ))}
           </div>
         </styles.TopItems>
-        <styles.LogoContainer css={styleUtils.desktopOnly}>
+        <styles.LogoContainer className={styleUtils.desktopOnly()}>
           <Link href={structure.href!}>
             <a>
               <Image
@@ -74,7 +73,7 @@ const MainMenu = ({ structure }: Props) => (
       </styleUtils.ContentContainerFullWidth>
     </styles.MainMenu>
     <MobileStickyMenu structure={structure} />
-    <styles.StickyRoot css={styleUtils.desktopOnly}>
+    <styles.StickyRoot className={styleUtils.desktopOnly()}>
       <styles.MainMenu>
         <styleUtils.ContentContainerFullWidth>
           <MenuItems structure={structure} />
@@ -95,7 +94,7 @@ const MobileStickyMenu = ({ structure }: Props) => {
   }, [router]);
 
   return (
-    <styles.StickyRoot css={styleUtils.mobileOnly}>
+    <styles.StickyRoot className={styleUtils.mobileOnly()}>
       <styles.MainMenu>
         <styleUtils.ContentContainerFullWidth>
           <styles.MobileMenuContainer>
@@ -148,7 +147,7 @@ const MenuItems = ({ structure }: Props) => {
               <ChakraMenu placement={isMobileView ? "bottom" : undefined}>
                 <styles.MenuButton
                   as="button"
-                  css={selectedItem && styles.selected}
+                  className={selectedItem && styles.selected()}
                 >
                   {item.name}
                   {item.children && <ChevronDownIcon h="1.5em" w="1.5em" />}
@@ -158,7 +157,9 @@ const MenuItems = ({ structure }: Props) => {
                     <Link key={subitem.href} href={subitem.href!} passHref>
                       <MenuItem
                         as="a"
-                        css={selectedItem === subitem && styles.selected}
+                        className={
+                          selectedItem === subitem ? styles.selected() : ""
+                        }
                       >
                         {subitem.name}
                       </MenuItem>
@@ -168,7 +169,10 @@ const MenuItems = ({ structure }: Props) => {
               </ChakraMenu>
             ) : (
               <Link href={item.href!} passHref>
-                <a css={selectedItem && styles.selected} key={item.name}>
+                <a
+                  className={selectedItem && styles.selected()}
+                  key={item.name}
+                >
                   {item.name}
                 </a>
               </Link>
@@ -181,15 +185,18 @@ const MenuItems = ({ structure }: Props) => {
 };
 
 const styles = Object.freeze({
-  MainMenu: styled.div({
-    "&": styleUtils.contentContainerParent,
-    background: "var(--primary-color) !important",
-    color: "var(--text-color)",
-    zIndex: 4,
-    width: "100%",
-    position: "sticky",
-  }),
-  TopItems: styled.div({
+  MainMenu: styled(
+    "div",
+    {
+      background: "var(--primary-color) !important",
+      color: "var(--text-color)",
+      zIndex: 4,
+      width: "100%",
+      position: "sticky",
+    },
+    styleUtils.contentContainerParent
+  ),
+  TopItems: styled("div", {
     display: "flex",
     width: "100%",
     justifyContent: "space-between",
@@ -202,20 +209,23 @@ const styles = Object.freeze({
       wordBreak: "keep-all",
     },
   }),
-  SocialLink: styled.a({
+  SocialLink: styled("a", {
     margin: ".25rem",
   }),
-  LogoContainer: styled.div({
-    "&": styleUtils.desktopOnly,
-    display: "flex",
-    justifyContent: "center",
-    width: "100%",
+  LogoContainer: styled(
+    "div",
+    {
+      display: "flex",
+      justifyContent: "center",
+      width: "100%",
 
-    "> button": {
-      margin: ".5rem",
+      "> button": {
+        margin: ".5rem",
+      },
     },
-  }),
-  MenuItems: styled.ul({
+    styleUtils.desktopOnly
+  ),
+  MenuItems: styled("ul", {
     display: "flex",
     width: "100%",
     maxWidth: "100%",
@@ -227,15 +237,15 @@ const styles = Object.freeze({
       listStyleType: "none",
     },
   }),
-  MenuButton: styled(MenuButton)({
+  MenuButton: styled(MenuButton, {
     "& + *": {
-      zIndex: "4 !important" as any,
+      zIndex: "4 !important",
     },
   }),
   selected: css({
-    fontWeight: "bold !important" as any,
+    fontWeight: "bold !important",
   }),
-  RootMenuItem: styled.li({
+  RootMenuItem: styled("li", {
     "&, button, a": {
       textTransform: "uppercase",
       letterSpacing: "0.15em",
@@ -262,18 +272,18 @@ const styles = Object.freeze({
       },
     },
   }),
-  StickyRoot: styled.div({
+  StickyRoot: styled("div", {
     zIndex: 4,
     position: "sticky",
     top: 0,
   }),
 
   // adds a "sliding door" shadow when the header goes sticky
-  ShadowRoot: styled.div({
+  ShadowRoot: styled("div", {
     background: "var(--primary-color)",
     position: "sticky",
     height: 1,
-    marginTop: -1,
+    marginTop: -2,
     zIndex: 1,
     top: 1,
     boxShadow: `5px calc(1.4em + 1.9rem) 20px 5px rgba(${keyword
@@ -282,7 +292,7 @@ const styles = Object.freeze({
     width: "100%",
   }),
 
-  MobileMenuContainer: styled.div({
+  MobileMenuContainer: styled("div", {
     display: "flex",
     width: "100%",
     "& > :last-child": {
@@ -292,7 +302,7 @@ const styles = Object.freeze({
       width: 52,
     },
   }),
-  MobileImageContainer: styled.div({
+  MobileImageContainer: styled("div", {
     flexGrow: 1,
     display: "flex",
     justifyContent: "space-around",
@@ -300,12 +310,12 @@ const styles = Object.freeze({
       height: 52,
     },
   }),
-  MobileMenu: styled(IconButton)({
+  MobileMenu: styled(IconButton, {
     margin: ".5rem 0",
     borderColor: "var(--text-color) !important",
     backgroundColor: "transparent !important",
   }),
-  HiddenMenuContainer: styled.div({
+  HiddenMenuContainer: styled("div", {
     position: "absolute",
     display: "flex",
     alignItems: "center",

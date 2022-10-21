@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { styled } from "@stitches/react";
 import type { GetStaticProps, NextPage } from "next";
 
 import ClickableCard from "../components/ClickableCard";
@@ -52,7 +52,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 const styles = Object.freeze({
-  BannerImageContainer: styled.div({
+  BannerImageContainer: styled("div", {
     minWidth: "100%",
     img: {
       height: 500,
@@ -63,7 +63,7 @@ const styles = Object.freeze({
       },
     },
   }),
-  CakeTypeCards: styled.div({
+  CakeTypeCards: styled("div", {
     display: "grid",
     gap: "2em",
     justifyItems: "center",

@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import styled from "@emotion/styled";
+import { styled } from "@stitches/react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,30 +26,33 @@ const ClickableCard = ({ image, alt, href, cta, title }: Props) => (
 );
 
 const styles = Object.freeze({
-  LinkRoot: styled.a({
-    "&": styleUtils.clickableShadow,
-    display: "block",
-    width: 300,
-    height: 400,
-    maxWidth: 400,
-    borderRadius: "var(--card-border-radius)",
+  LinkRoot: styled(
+    "a",
+    {
+      display: "block",
+      width: 300,
+      height: 400,
+      maxWidth: 400,
+      borderRadius: "var(--card-border-radius)",
 
-    [styleUtils.mobile]: {
-      width: "100%",
-    },
+      [styleUtils.mobile]: {
+        width: "100%",
+      },
 
-    "& > :first-child": {
-      width: "100% !important",
-    },
+      "& > :first-child": {
+        width: "100% !important",
+      },
 
-    img: {
-      objectFit: "cover",
-      objectPosition: "0% 0%",
-      borderTopLeftRadius: "var(--card-border-radius)",
-      borderTopRightRadius: "var(--card-border-radius)",
+      img: {
+        objectFit: "cover",
+        objectPosition: "0% 0%",
+        borderTopLeftRadius: "var(--card-border-radius)",
+        borderTopRightRadius: "var(--card-border-radius)",
+      },
     },
-  }),
-  Container: styled.div({
+    styleUtils.clickableShadow
+  ),
+  Container: styled("div", {
     height: 100,
     padding: "0.5rem 1rem 1rem 1rem",
     display: "flex",

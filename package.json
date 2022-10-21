@@ -26,6 +26,7 @@
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
     "@sendgrid/mail": "^7.6.0",
+    "@stitches/react": "^1.2.8",
     "axios": "^0.25.0",
     "color-convert": "^2.0.1",
     "contentlayer": "^0.2.5",

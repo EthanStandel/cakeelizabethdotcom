@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { styled } from "@stitches/react";
 import { GetStaticProps, NextPage } from "next";
 
 import { FlavorGroup } from "../components/FlavorGroup";
@@ -39,7 +39,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 const styles = Object.freeze({
-  SplitGroup: styled.div({
+  SplitGroup: styled("div", {
     display: "flex",
     gap: "1rem",
     [styleUtils.mobile]: {
@@ -50,7 +50,7 @@ const styles = Object.freeze({
       objectFit: "contain",
     },
   }),
-  LeftPane: styled.div({
+  LeftPane: styled("div", {
     width: "50%",
     [styleUtils.mobile]: {
       width: "100%",
@@ -60,7 +60,7 @@ const styles = Object.freeze({
     alignItems: "center",
     justifyContent: "center",
   }),
-  RightPane: styled.div({
+  RightPane: styled("div", {
     display: "flex",
     justifyContent: "center",
     width: "50%",

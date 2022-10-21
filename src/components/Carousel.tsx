@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import styled from "@emotion/styled";
+import { styled } from "@stitches/react";
 import _isNil from "lodash/isNil";
 import { Swiper, Pagination, Autoplay } from "swiper";
 import {
@@ -42,7 +42,7 @@ const Carousel: <T>(props: CarouselProps<T>) => React.ReactElement = ({
   return (
     <styles.SwiperComponent
       loop
-      css={{ zIndex }}
+      style={{ zIndex }}
       modules={[
         ...(pagination ? [Pagination] : []),
         ...(autoplay ? [Autoplay] : []),
@@ -82,7 +82,7 @@ const Carousel: <T>(props: CarouselProps<T>) => React.ReactElement = ({
 };
 
 const styles = Object.freeze({
-  SwiperComponent: styled(SwiperComponent)({
+  SwiperComponent: styled(SwiperComponent, {
     ".swiper-pagination-bullet-active": {
       backgroundColor: "white",
     },

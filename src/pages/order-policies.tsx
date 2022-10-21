@@ -10,7 +10,7 @@ type Props = { content: Omit<PageContent, "body"> & { body: string } };
 
 const Page: NextPage<Props> = ({ content }) => (
   <styleUtils.PageContainer>
-    <styleUtils.ContentContainer css={styleUtils.htmlRoot}>
+    <styleUtils.ContentContainer className={styleUtils.htmlRoot()}>
       <MdxRenderer input={content.body} />
     </styleUtils.ContentContainer>
   </styleUtils.PageContainer>

@@ -11,8 +11,7 @@ import {
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { css, styled } from "@stitches/react";
 import { useField, FieldAttributes } from "formik";
 import PhoneNumberInput, {
   Props as PhoneNumberInputProps,
@@ -63,7 +62,7 @@ const Input = ({
         {textarea ? (
           <Textarea
             {...(inputProps as TextareaProps)}
-            css={styles.padded}
+            className={styles.padded()}
             size="lg"
           />
         ) : phoneNumber ? (
@@ -71,7 +70,7 @@ const Input = ({
             defaultCountry="US"
             inputComponent={CkInput}
             size="lg"
-            css={styles.padded}
+            className={styles.padded()}
             {...(inputProps as any as PhoneNumberInputProps)}
             onChange={(input: string) => setValue(input ?? "")}
           />
@@ -90,7 +89,7 @@ const styles = Object.freeze({
   padded: css({
     paddingLeft: "var(--chakra-space-10) !important",
   }),
-  Required: styled.span({
+  Required: styled("span", {
     color: "red",
     fontWeight: "bold",
   }),

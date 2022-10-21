@@ -1,7 +1,6 @@
 import React from "react";
 
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { css, styled } from "@stitches/react";
 import { keyword } from "color-convert";
 
 interface Props {
@@ -11,17 +10,17 @@ interface Props {
 
 const InfoBox = ({ children, state = "success" }: Props) => (
   <styles.Box
-    css={[
-      state === "success" && styles.success,
-      state === "error" && styles.error,
-    ]}
+    className={[
+      state === "success" && styles.success(),
+      state === "error" && styles.error(),
+    ].join(" ")}
   >
     {children}
   </styles.Box>
 );
 
 const styles = Object.freeze({
-  Box: styled.div({
+  Box: styled("div", {
     width: "100%",
     border: "solid 2px black",
     padding: "1em",

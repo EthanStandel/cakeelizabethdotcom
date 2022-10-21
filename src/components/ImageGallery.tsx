@@ -1,7 +1,6 @@
 import { FC } from "react";
 
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { css, styled } from "@stitches/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -41,22 +40,24 @@ export const ImageGallery: FC<{ images: Array<{ src: string; alt: string }> }> =
   };
 
 const styles = {
-  ImagesContainer: styled.div({
+  ImagesContainer: styled("div", {
     display: "grid",
     gap: "1em",
     gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
 
     img: {
-      objectFit: "auto" as any,
+      objectFit: "auto",
     },
 
-    "> a": {
-      "&": styleUtils.clickableShadow,
-      borderRadius: "var(--card-border-radius)",
+    "> a": css(
+      {
+        borderRadius: "var(--card-border-radius)",
 
-      "> *": {
-        display: "block !important",
+        "> *": {
+          display: "block !important",
+        },
       },
-    },
+      styleUtils.clickableShadow
+    ),
   }),
 };

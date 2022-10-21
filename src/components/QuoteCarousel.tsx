@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { css, styled } from "@stitches/react";
 
 import styleUtils from "../utils/styleUtils";
 
@@ -41,7 +40,7 @@ const Quote = ({ quote: { text, name } }: { quote: QuoteModel }) => (
 );
 
 const styles = Object.freeze({
-  Quote: styled.div({
+  Quote: styled("div", {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
@@ -55,14 +54,14 @@ const styles = Object.freeze({
       color: "var(--text-color)",
     },
   }),
-  Text: styled.p({
+  Text: styled("p", {
     fontSize: "2.5em",
     fontStyle: "italic",
     [styleUtils.mobile]: {
       fontSize: "1.25em",
     },
   }),
-  Name: styled.p({
+  Name: styled("p", {
     fontSize: "2em",
     textAlign: "right",
     [styleUtils.mobile]: {

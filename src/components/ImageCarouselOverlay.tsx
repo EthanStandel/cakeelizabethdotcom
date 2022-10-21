@@ -3,7 +3,7 @@ import type { UrlObject } from "url";
 
 import { XyzTransition } from "@animxyz/react";
 import { CloseIcon, ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import styled from "@emotion/styled";
+import { styled } from "@stitches/react";
 import { keyword } from "color-convert";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -162,7 +162,7 @@ const ControlButton = ({
 );
 
 const styles = Object.freeze({
-  ImageCarouselOverlay: styled.div({
+  ImageCarouselOverlay: styled("div", {
     position: "fixed",
     top: 0,
     left: 0,
@@ -175,7 +175,7 @@ const styles = Object.freeze({
     alignItems: "center",
     justifyContent: "center",
   }),
-  BackgroundCover: styled.a({
+  BackgroundCover: styled("a", {
     height: "100vh",
     width: "100vw",
     display: "block",
@@ -184,13 +184,13 @@ const styles = Object.freeze({
     left: 0,
     cursor: "auto",
   }),
-  CloseButton: styled.div({
+  CloseButton: styled("div", {
     position: "fixed",
     zIndex: 100,
     top: 25,
     left: 25,
   }),
-  PrevButton: styled.div({
+  PrevButton: styled("div", {
     position: "fixed",
     zIndex: 100,
     left: 25,
@@ -201,7 +201,7 @@ const styles = Object.freeze({
       },
     },
   }),
-  NextButton: styled.div({
+  NextButton: styled("div", {
     position: "fixed",
     zIndex: 100,
     right: 25,
@@ -212,17 +212,20 @@ const styles = Object.freeze({
       },
     },
   }),
-  ControlButton: styled.a({
-    "&": styleUtils.clickableShadow,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    background: "var(--primary-color)",
-  }),
-  CarouselContainer: styled.div({
+  ControlButton: styled(
+    "a",
+    {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+      background: "var(--primary-color)",
+    },
+    styleUtils.clickableShadow
+  ),
+  CarouselContainer: styled("div", {
     marginTop: 100,
     marginBottom: 100,
     [styleUtils.mobile]: {
@@ -238,7 +241,7 @@ const styles = Object.freeze({
       height: "100vh",
     },
   }),
-  CarouselFrame: styled.div({
+  CarouselFrame: styled("div", {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
