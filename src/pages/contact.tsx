@@ -1,29 +1,28 @@
 import React from "react";
 
 import { XyzTransition } from "@animxyz/react";
-import { Icon } from "@chakra-ui/react";
+import CommentIcon from "@fortawesome/fontawesome-free/svgs/solid/comment.svg";
+import EnvelopeIcon from "@fortawesome/fontawesome-free/svgs/solid/envelope.svg";
+import FileIcon from "@fortawesome/fontawesome-free/svgs/solid/file.svg";
+import PhoneIcon from "@fortawesome/fontawesome-free/svgs/solid/phone.svg";
+import UserTagIcon from "@fortawesome/fontawesome-free/svgs/solid/user-tag.svg";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { styled } from "@stitches/react";
-import { Form, Formik } from "formik";
 import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  FaEnvelope,
-  FaPhoneAlt,
-  FaFileAlt,
-  FaPaperPlane,
-  FaUserTag,
-} from "react-icons/fa";
-import { MdChatBubble } from "react-icons/md";
-import { formatPhoneNumber } from "react-phone-number-input";
+import { useForm } from "react-hook-form";
+
+import { InputLabel } from "src/components/core/InputLabel";
 
 import apiClient from "../clients/apiClient";
 import CtaButton from "../components/CtaButton";
 import InfoBox from "../components/InfoBox";
-import Input from "../components/Input";
 import { ContactForm } from "../models/ContactForm";
 import styleUtils from "../utils/styleUtils";
 import contactFormValidator from "../validation/contactFormValidator";
+
+import { PhoneNumberInput } from "./PhoneNumberInput";
 
 import { allPageContents } from ".contentlayer/generated";
 import type { PageContent } from ".contentlayer/generated/types";
@@ -38,6 +37,21 @@ const Page: NextPage<Props> = ({ content }) => {
     | "error"
     | undefined;
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<{
+    name: string;
+    email: string;
+    phoneNumber: string;
+    subject: string;
+    message: string;
+  }>({
+    resolver: yupResolver(contactFormValidator.schema),
+    mode: "onTouched",
+  });
+
   return (
     <styleUtils.PageContainer>
       <styleUtils.ContentContainer>
@@ -46,73 +60,92 @@ const Page: NextPage<Props> = ({ content }) => {
             <XyzTransition xyz="small-25% fade stagger">
               {latestSubmissionResult !== "success" && (
                 <div>
-                  <Formik
-                    initialValues={{
-                      name: "",
-                      email: "",
-                      phoneNumber: "",
-                      subject: "",
-                      message: "",
-                    }}
-                    validationSchema={contactFormValidator.schema}
-                    validateOnMount
-                    onSubmit={async ({ phoneNumber, ...form }: ContactForm) => {
+                  <styles.Form
+                    onSubmit={handleSubmit(async (form: ContactForm) => {
                       setSubmitting(true);
                       router.replace({ pathname: router.pathname });
                       const success = await apiClient.submitContactForm({
                         ...form,
-                        phoneNumber: formatPhoneNumber(phoneNumber),
                       });
                       router.replace({
                         pathname: router.pathname,
                         query: { submission: success ? "success" : "error" },
                       });
                       setSubmitting(false);
-                    }}
+                    })}
                   >
-                    <styles.Form>
-                      <Input
-                        name="name"
-                        left={<Icon color="gray.300" as={FaUserTag} />}
-                        label={content.data.form.name}
-                        required
+                    <InputLabel
+                      label={content.data.form.name}
+                      required
+                      error={!!errors.name}
+                      icon={
+                        <img
+                          src={UserTagIcon.src}
+                          alt={content.data.form.name}
+                        />
+                      }
+                    >
+                      <input {...register("name", { required: true })} />
+                    </InputLabel>
+                    <InputLabel
+                      label={content.data.form.email}
+                      required
+                      error={!!errors.email}
+                      icon={
+                        <img
+                          src={EnvelopeIcon.src}
+                          alt={content.data.form.email}
+                        />
+                      }
+                    >
+                      <input {...register("email", { required: true })} />
+                    </InputLabel>
+                    <InputLabel
+                      label={content.data.form.phoneNumber}
+                      error={!!errors.phoneNumber}
+                      icon={
+                        <img
+                          src={PhoneIcon.src}
+                          alt={content.data.form.phoneNumber}
+                        />
+                      }
+                    >
+                      <PhoneNumberInput {...register("phoneNumber")} />
+                    </InputLabel>
+                    <InputLabel
+                      label={content.data.form.subject}
+                      error={!!errors.subject}
+                      icon={
+                        <img
+                          src={CommentIcon.src}
+                          alt={content.data.form.name}
+                        />
+                      }
+                    >
+                      <input {...register("subject")} />
+                    </InputLabel>
+                    <InputLabel
+                      label={content.data.form.message}
+                      required
+                      error={!!errors.message}
+                      icon={
+                        <img
+                          src={FileIcon.src}
+                          alt={content.data.form.message}
+                        />
+                      }
+                    >
+                      <textarea
+                        rows={3}
+                        {...register("message", { required: true })}
                       />
-                      <Input
-                        name="email"
-                        left={<Icon color="gray.300" as={FaEnvelope} />}
-                        label={content.data.form.email}
-                        required
-                      />
-                      <Input
-                        name="phoneNumber"
-                        left={<Icon color="gray.300" as={FaPhoneAlt} />}
-                        label={content.data.form.phoneNumber}
-                        phoneNumber
-                        type="tel"
-                      />
-                      <Input
-                        name="subject"
-                        left={<Icon color="gray.300" as={MdChatBubble} />}
-                        label={content.data.form.subject}
-                      />
-                      <Input
-                        name="message"
-                        left={<Icon color="gray.300" as={FaFileAlt} />}
-                        label={content.data.form.message}
-                        required
-                        textarea
-                      />
-                      <styles.Submit>
-                        <CtaButton
-                          loading={submitting}
-                          leftIcon={<Icon as={FaPaperPlane} />}
-                          type="submit"
-                        >
-                          {content.data.form.send}
-                        </CtaButton>
-                      </styles.Submit>
-                    </styles.Form>
-                  </Formik>
+                    </InputLabel>
+                    <styles.Submit>
+                      <CtaButton loading={submitting} type="submit">
+                        {content.data.form.send}
+                      </CtaButton>
+                    </styles.Submit>
+                  </styles.Form>
                   <XyzTransition xyz="small-25% fade stagger">
                     {latestSubmissionResult === "error" && (
                       <div>
@@ -180,14 +213,13 @@ const SubmissionStatusBox = ({
   </InfoBox>
 );
 
-export const getStaticProps: GetStaticProps<Props> = async (arg) => {
-  console.log(arg);
+export const getStaticProps: GetStaticProps<Props> = async () => {
   const content = allPageContents.find(({ page }) => page === "contact")!;
   return { props: { content } };
 };
 
 const styles = Object.freeze({
-  Form: styled(Form, {
+  Form: styled("form", {
     display: "flex",
     flexDirection: "column",
     gap: ".5em",

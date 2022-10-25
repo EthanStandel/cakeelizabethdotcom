@@ -2,7 +2,7 @@ import { FC } from "react";
 
 import { css, styled } from "@stitches/react";
 
-import styleUtils from "src/utils/styleUtils";
+import styleUtils from "../utils/styleUtils";
 
 export const FlavorGroup: FC<{
   title: string;

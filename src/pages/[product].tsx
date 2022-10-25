@@ -1,17 +1,16 @@
 import React from "react";
 
-import { styled } from "@stitches/react";
+import { styled, css } from "@stitches/react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { FlavorGroup } from "src/components/FlavorGroup";
-import { ImageGallery } from "src/components/ImageGallery";
-import MdxRenderer from "src/components/MdxRenderer";
-
+import { FlavorGroup } from "../components/FlavorGroup";
 import ImageCarouselOverlay, {
   imageCarouselRouting,
 } from "../components/ImageCarouselOverlay";
+import { ImageGallery } from "../components/ImageGallery";
+import MdxRenderer from "../components/MdxRenderer";
 import styleUtils from "../utils/styleUtils";
 
 import {

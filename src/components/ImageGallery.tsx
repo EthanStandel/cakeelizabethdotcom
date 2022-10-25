@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import styleUtils from "src/utils/styleUtils";
+import styleUtils from "../utils/styleUtils";
 
 import { imageCarouselRouting } from "./ImageCarouselOverlay";
 
