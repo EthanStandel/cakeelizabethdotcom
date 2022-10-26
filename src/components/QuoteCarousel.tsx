@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { css, styled } from "@stitches/react";
+import { styled } from "@stitches/react";
 
 import styleUtils from "../utils/styleUtils";
 

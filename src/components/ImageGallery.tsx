@@ -9,35 +9,36 @@ import styleUtils from "../utils/styleUtils";
 
 import { imageCarouselRouting } from "./ImageCarouselOverlay";
 
-export const ImageGallery: FC<{ images: Array<{ src: string; alt: string }> }> =
-  ({ images }) => {
-    const router = useRouter();
+export const ImageGallery: FC<{
+  images: Array<{ src: string; alt: string }>;
+}> = ({ images }) => {
+  const router = useRouter();
 
-    return (
-      <styles.ImagesContainer>
-        {images
-          .filter((_, index) => index !== 0)
-          .map(({ src, alt }, index) => (
-            <Link
-              key={src}
-              scroll={false}
-              replace
-              href={{
-                pathname: router.pathname,
-                query: {
-                  ...router.query,
-                  ...imageCarouselRouting.queryBuilder(index + 1),
-                },
-              }}
-            >
-              <a>
-                <Image alt={alt} width={150} height={150} src={src} />
-              </a>
-            </Link>
-          ))}
-      </styles.ImagesContainer>
-    );
-  };
+  return (
+    <styles.ImagesContainer>
+      {images
+        .filter((_, index) => index !== 0)
+        .map(({ src, alt }, index) => (
+          <Link
+            key={src}
+            scroll={false}
+            replace
+            href={{
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                ...imageCarouselRouting.queryBuilder(index + 1),
+              },
+            }}
+          >
+            <a>
+              <Image alt={alt} width={150} height={150} src={src} />
+            </a>
+          </Link>
+        ))}
+    </styles.ImagesContainer>
+  );
+};
 
 const styles = {
   ImagesContainer: styled("div", {

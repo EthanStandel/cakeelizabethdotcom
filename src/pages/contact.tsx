@@ -19,11 +19,10 @@ import { InputLabel } from "src/components/core/InputLabel";
 
 import apiClient from "../clients/apiClient";
 import InfoBox from "../components/InfoBox";
+import { PhoneNumberInput } from "../components/PhoneNumberInput";
 import { ContactForm } from "../models/ContactForm";
 import styleUtils from "../utils/styleUtils";
 import contactFormValidator from "../validation/contactFormValidator";
-
-import { PhoneNumberInput } from "./PhoneNumberInput";
 
 import { allPageContents } from ".contentlayer/generated";
 import type { PageContent } from ".contentlayer/generated/types";

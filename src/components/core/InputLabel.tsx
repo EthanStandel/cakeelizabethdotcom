@@ -10,7 +10,7 @@ export const InputLabel: FC<{
   children: React.ReactElement<{
     onChange?: (event: { target: { value: string } }) => unknown;
   }>;
-}> = ({ label, required, error, children: childrenProp, icon, ...props }) => {
+}> = ({ label, required, error, children: childrenProp, icon }) => {
   const [float, setFloat] = useState(false);
   const ref = useRef<HTMLLabelElement>(null);
 
