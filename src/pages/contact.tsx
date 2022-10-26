@@ -4,6 +4,7 @@ import { XyzTransition } from "@animxyz/react";
 import CommentIcon from "@fortawesome/fontawesome-free/svgs/solid/comment.svg";
 import EnvelopeIcon from "@fortawesome/fontawesome-free/svgs/solid/envelope.svg";
 import FileIcon from "@fortawesome/fontawesome-free/svgs/solid/file.svg";
+import PaperPlaneIcon from "@fortawesome/fontawesome-free/svgs/solid/paper-plane.svg";
 import PhoneIcon from "@fortawesome/fontawesome-free/svgs/solid/phone.svg";
 import UserTagIcon from "@fortawesome/fontawesome-free/svgs/solid/user-tag.svg";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,10 +14,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
+import { Button } from "src/components/core/Button";
 import { InputLabel } from "src/components/core/InputLabel";
 
 import apiClient from "../clients/apiClient";
-import CtaButton from "../components/CtaButton";
 import InfoBox from "../components/InfoBox";
 import { ContactForm } from "../models/ContactForm";
 import styleUtils from "../utils/styleUtils";
@@ -141,9 +142,10 @@ const Page: NextPage<Props> = ({ content }) => {
                       />
                     </InputLabel>
                     <styles.Submit>
-                      <CtaButton loading={submitting} type="submit">
+                      <Button loading={submitting} type="submit">
+                        <img src={PaperPlaneIcon.src} alt="Submit" />
                         {content.data.form.send}
-                      </CtaButton>
+                      </Button>
                     </styles.Submit>
                   </styles.Form>
                   <XyzTransition xyz="small-25% fade stagger">

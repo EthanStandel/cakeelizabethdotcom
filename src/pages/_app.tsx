@@ -3,7 +3,6 @@ import "nprogress/nprogress.css";
 
 import { useEffect } from "react";
 
-import { ChakraProvider } from "@chakra-ui/react";
 import { styled } from "@stitches/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
@@ -14,7 +13,6 @@ import Footer from "../components/Footer";
 import MainMenu from "../components/MainMenu";
 import footerContent from "../resources/footer.json";
 import menu from "../resources/menu.json";
-import styleUtils from "../utils/styleUtils";
 
 const App = ({
   Component,
@@ -36,7 +34,7 @@ const App = ({
   });
 
   return (
-    <ChakraProvider>
+    <>
       <Head>
         <link rel="icon" href="/favicon.png" />
         {pageProps.content.description && (
@@ -85,46 +83,16 @@ const App = ({
         </styles.Page>
         <Footer content={footerContent} />
       </styles.App>
-    </ChakraProvider>
+    </>
   );
 };
 
 const styles = Object.freeze({
   App: styled("div", {
-    "--card-border-radius": "5px",
-    "--app-width": "80%",
-    "--primary-color": "#65ffce",
-    "--secondary-color": "springgreen",
-    "--text-color": "#555555",
-    "--border-color": "#aaaaaa",
-    "--transparent-primary": "rgba(127, 255, 212, 0.5)",
     display: "flex",
     flexDirection: "column",
     minHeight: "100vh",
-
-    [styleUtils.mobile]: {
-      "--app-width": "95%",
-    },
-
-    "*": {
-      fontFamily: "Montserrat, sans-serif",
-    },
-    h2: {
-      textTransform: "uppercase",
-      fontSize: "2em",
-      margin: "1rem auto",
-      textAlign: "center",
-    },
-
-    "#nprogress": {
-      ".bar": {
-        background: "var(--text-color) !important",
-      },
-      ".spinner-icon": {
-        borderTopColor: "var(--text-color) !important",
-        borderLeftColor: "var(--text-color) !important",
-      },
-    },
+    position: "relative",
   }),
   Page: styled("main", {
     flexGrow: 1,

@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, useRef } from "react";
+import { InputHTMLAttributes, useRef, forwardRef } from "react";
 
 const formatPhoneNumber = (nums: Array<string>) => {
   let output = "";
@@ -17,15 +17,17 @@ const formatPhoneNumber = (nums: Array<string>) => {
   return output + nums.slice(6, 10).join("");
 };
 
-export const PhoneNumberInput = ({
-  onChange,
-  ...props
-}: InputHTMLAttributes<HTMLInputElement>) => {
+// eslint-disable-next-line react/display-name
+export const PhoneNumberInput = forwardRef<
+  HTMLInputElement,
+  InputHTMLAttributes<HTMLInputElement>
+>(({ onChange, ...props }, ref) => {
   const lastValueLength = useRef(0);
   const lastNumOnlyLength = useRef(0);
 
   return (
     <input
+      ref={ref}
       onChange={(e) => {
         const numOnly = e.target.value
           .split("")
@@ -45,4 +47,4 @@ export const PhoneNumberInput = ({
       {...props}
     />
   );
-};
+});

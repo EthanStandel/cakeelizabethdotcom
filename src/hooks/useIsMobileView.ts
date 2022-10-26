@@ -1,18 +1,25 @@
-import React from "react";
-
-import { useMediaQuery } from "@chakra-ui/media-query";
+import React, { useEffect } from "react";
 
 import { mobileMax } from "src/utils/styleUtils";
+
+const mobileMediaQuery =
+  typeof window !== "undefined" &&
+  window.matchMedia(`(max-width: ${mobileMax}px)`);
 
 const useIsMobileView = () => {
   // we know that the server says false
   const [isMobileView, setIsMobileView] = React.useState(false);
-  const [isMobileViewQuery] = useMediaQuery(`(max-width: ${mobileMax}px)`);
 
   // This helps the Next SSR/hydration cycle
-  React.useEffect(() => {
-    setIsMobileView(isMobileViewQuery);
-  }, [isMobileViewQuery]);
+  useEffect(() => {
+    if (mobileMediaQuery) {
+      const callback = (e: MediaQueryListEvent) => {
+        setIsMobileView(e.matches);
+      };
+      mobileMediaQuery.addEventListener("change", callback);
+      return () => mobileMediaQuery.removeEventListener("change", callback);
+    }
+  }, []);
 
   return isMobileView;
 };

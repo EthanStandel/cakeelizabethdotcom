@@ -76,12 +76,14 @@ const styles = {
           justifyContent: "center",
           alignItems: "center",
           listStyleType: "none",
-          "&:nth-child(2n)": {
-            background: "var(--primary-color)",
-            marginLeft: "-2em",
-            marginRight: "-2em",
-            paddingLeft: "2em",
-            paddingRight: "2em",
+          [styleUtils.mobile]: {
+            "&:nth-child(2n)": {
+              background: "var(--primary-color)",
+              marginLeft: "-2em",
+              marginRight: "-2em",
+              paddingLeft: "2em",
+              paddingRight: "2em",
+            },
           },
         },
       },

@@ -1,29 +1,19 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 
 import { styled } from "@stitches/react";
 
-type NativeInputProps = React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
->;
+export const InputLabel: FC<{
+  label: string | React.ReactElement;
+  required?: boolean;
+  error?: boolean;
+  icon?: React.ReactElement;
+  children: React.ReactElement<{
+    onChange?: (event: { target: { value: string } }) => unknown;
+  }>;
+}> = ({ label, required, error, children: childrenProp, icon, ...props }) => {
+  const [float, setFloat] = useState(false);
+  const ref = useRef<HTMLLabelElement>(null);
 
-type NativeTextAreaProps = React.DetailedHTMLProps<
-  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-  HTMLTextAreaElement
->;
-
-export const InputLabel: FC<
-  (NativeInputProps | NativeTextAreaProps) & {
-    label: string | React.ReactElement;
-    required?: boolean;
-    error?: boolean;
-    icon?: React.ReactElement;
-    children: React.ReactElement<{
-      onChange?: (event: { target: { value: string } }) => unknown;
-    }>;
-  }
-> = ({ label, required, error, children: childrenProp, icon, ...props }) => {
-  const [float, setFloat] = useState(!!props.value);
   const children = React.cloneElement(childrenProp, {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
       setFloat(!!e.target.value);
@@ -32,11 +22,20 @@ export const InputLabel: FC<
   });
 
   useEffect(() => {
-    setFloat(!!props.value);
-  }, [props.value]);
+    if (ref.current) {
+      setFloat(
+        !!(
+          ref.current.querySelector("input, textarea") as
+            | HTMLInputElement
+            | HTMLTextAreaElement
+            | undefined
+        )?.value
+      );
+    }
+  }, []);
 
   return (
-    <styles.InputLabel float={float} error={error} withIcon={!!icon}>
+    <styles.InputLabel ref={ref} float={float} error={error} withIcon={!!icon}>
       <span className="labelText">
         {label} {required && <styles.Required>*</styles.Required>}
       </span>
@@ -58,11 +57,13 @@ const styles = Object.freeze({
       position: "absolute",
       display: "flex",
       height: "100%",
-      width: "2rem",
-      left: "1rem",
-      maxHeight: 56,
-      maxWidth: 28,
-      opacity: 0.5,
+      "&, > img": {
+        width: "2rem",
+        left: "1rem",
+        maxHeight: 56,
+        maxWidth: 28,
+        opacity: 0.5,
+      },
     },
     "> .labelText": {
       transition: ".1s font-size ease, .1s top ease",
@@ -72,7 +73,7 @@ const styles = Object.freeze({
       paddingRight: "1rem",
       fontSize: "1rem",
       left: "1rem",
-      top: "1rem",
+      top: "1.1rem",
       background:
         "linear-gradient(to right, transparent, white 10%, white 90%, transparent)",
     },
@@ -80,12 +81,12 @@ const styles = Object.freeze({
     "&:focus-within": {
       "> .labelText": {
         fontSize: ".8rem",
-        top: "-.5rem",
+        top: "-.4rem",
       },
     },
 
     "> input": {
-      height: "3.5em",
+      height: "3.5rem",
     },
 
     "> textarea": {
@@ -97,8 +98,8 @@ const styles = Object.freeze({
       lineHeight: 1.5,
       transition: ".2s box-shadow ease, .2s border-color linear",
       width: "100%",
-      minHeight: "3.5em",
-      borderRadius: "calc(1.75em + 3px)",
+      minHeight: "3.5rem",
+      borderRadius: "calc(1.75rem + 3px)",
       minWidth: 200,
       display: "inline-flex",
       justifyContent: "center",
@@ -121,7 +122,7 @@ const styles = Object.freeze({
         true: {
           "> .labelText": {
             fontSize: ".8rem",
-            top: "-.5rem",
+            top: "-.4rem",
           },
         },
       },

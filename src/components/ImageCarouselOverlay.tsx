@@ -2,7 +2,9 @@ import React from "react";
 import type { UrlObject } from "url";
 
 import { XyzTransition } from "@animxyz/react";
-import { CloseIcon, ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import ArrowBackIcon from "@fortawesome/fontawesome-free/svgs/solid/arrow-left.svg";
+import ArrowForwardIcon from "@fortawesome/fontawesome-free/svgs/solid/arrow-right.svg";
+import CloseIcon from "@fortawesome/fontawesome-free/svgs/solid/xmark.svg";
 import { styled } from "@stitches/react";
 import { keyword } from "color-convert";
 import Link from "next/link";
@@ -92,17 +94,17 @@ const ImageCarouselOverlay = ({ images }: Props) => {
         <styles.ImageCarouselOverlay>
           <styles.CloseButton>
             <ControlButton href={routes.close}>
-              <CloseIcon />
+              <img src={CloseIcon.src} alt="Close" />
             </ControlButton>
           </styles.CloseButton>
           <styles.PrevButton>
             <ControlButton href={routes.prev}>
-              <ArrowBackIcon />
+              <img src={ArrowBackIcon.src} alt="Close" />
             </ControlButton>
           </styles.PrevButton>
           <styles.NextButton>
             <ControlButton href={routes.next}>
-              <ArrowForwardIcon />
+              <img src={ArrowForwardIcon.src} alt="Close" />
             </ControlButton>
           </styles.NextButton>
           <styles.CarouselContainer>
@@ -222,6 +224,11 @@ const styles = Object.freeze({
       height: 50,
       borderRadius: 25,
       background: "var(--primary-color)",
+      img: {
+        height: 25,
+        width: 25,
+        opacity: 0.7,
+      },
     },
     styleUtils.clickableShadow
   ),

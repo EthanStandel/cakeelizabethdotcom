@@ -1,12 +1,8 @@
-import { css, styled } from "@stitches/react";
-import { keyword } from "color-convert";
+import { css, keyframes, styled, globalCss } from "@stitches/react";
 
-const boxShadowWeight = `rgba(${keyword
-  .rgb("black")
-  .join(",")}, var(--box-shadow-density))`;
 const shadow = css({
-  "--box-shadow-density": 0.25,
-  boxShadow: `5px 5px 10px 5px ${boxShadowWeight} !important`,
+  "--box-shadow-density": 0.5,
+  boxShadow: `3px 3px 5px 5px rgba(0, 0, 0, var(--box-shadow-density)) !important`,
 });
 
 export const mobileMax = 1260;
@@ -100,21 +96,20 @@ const contentContainer = css(
   contentContainerFullWidth
 );
 
-const clickableShadow = css(
-  {
-    transition: "box-shadow 0.15s",
-    outline: "none !important",
+const clickableShadow = css(shadow, {
+  transition: "box-shadow 0.15s",
+  outline: "none !important",
+  "--box-shadow-density": 0.3,
+  border: "1px solid var(--border-color)",
 
-    "&:hover, &:focus-within": {
-      "--box-shadow-density": 0.5,
-    },
-
-    "&:active": {
-      "--box-shadow-density": 0.75,
-    },
+  "&:hover, &:focus-within, &:focus-visible": {
+    "--box-shadow-density": 0.5,
   },
-  shadow
-);
+
+  "&:active": {
+    "--box-shadow-density": 0,
+  },
+});
 
 const center = css({
   display: "flex",
@@ -122,7 +117,84 @@ const center = css({
   alignItems: "center",
 });
 
+const spin = keyframes({
+  "0%": { transform: "rotate(0deg)" },
+  "100%": { transform: "rotate(360deg)" },
+});
+
+const global = globalCss({
+  html: {
+    "--card-border-radius": "1.5em",
+    "--app-width": "80%",
+    "--primary-color": "#65ffce",
+    "--secondary-color": "springgreen",
+    "--text-color": "#555555",
+    "--border-color": "#aaaaaa",
+    "--transparent-primary": "rgba(127, 255, 212, 0.5)",
+
+    body: {
+      margin: 0,
+    },
+
+    "button, ul, a": {
+      all: "unset",
+    },
+
+    "button, a": {
+      cursor: "pointer",
+      "&:focus-visible": {
+        outline: "2px solid var(--text-color)",
+      },
+    },
+
+    "p, h1, h2, h3, h4, h5, h6, ul, ol, li": {
+      margin: 0,
+    },
+
+    img: {
+      maxWidth: "100%",
+      maxHeight: "100%",
+    },
+
+    [mobile]: {
+      "--app-width": "95%",
+    },
+
+    "*": {
+      boxSizing: "border-box",
+      fontFamily: "Montserrat, sans-serif",
+    },
+
+    h2: {
+      textTransform: "uppercase",
+      fontSize: "2em",
+      margin: "1rem auto",
+      textAlign: "center",
+      fontWeight: "normal",
+    },
+
+    h3: {
+      fontWeight: "normal",
+    },
+
+    p: {
+      lineHeight: "1.5em",
+    },
+
+    "#nprogress": {
+      ".bar": {
+        background: "var(--text-color) !important",
+      },
+      ".spinner-icon": {
+        borderTopColor: "var(--text-color) !important",
+        borderLeftColor: "var(--text-color) !important",
+      },
+    },
+  },
+})();
+
 const styleUtils = {
+  global,
   desktop,
   mobile,
   desktopOnly: css({ [mobile]: { display: "none !important" } }),
@@ -142,6 +214,7 @@ const styleUtils = {
   ContentContainer: styled("div", contentContainer),
   center,
   Center: styled("div", center),
+  spin,
 };
 
 export default styleUtils;
