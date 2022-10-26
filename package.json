@@ -36,7 +36,6 @@
     "next-sitemap": "^1.6.203",
     "npm-license-generator": "^1.1.0",
     "nprogress": "^0.2.0",
-    "prettier": "^2.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.38.0",
@@ -70,6 +69,7 @@
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
     "lodash": "^4.17.21",
+    "prettier": "^2.7.1",
     "raw-loader": "^4.0.2",
     "typescript": "4.4.3"
   },
