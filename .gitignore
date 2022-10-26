@@ -38,5 +38,5 @@ yarn-error.log*
 .contentlayer
 licenses.html
 imageManifest.json
-sitemap.xml
+*.xml
 robots.txt
