@@ -124,22 +124,10 @@ const ImageCarouselOverlay = ({ images }: Props) => {
                 )
               }
               items={images}
-              slideComponent={({
-                item: { src, alt },
-                isActive,
-                isPrev,
-                isNext,
-              }) => (
+              slideComponent={({ item: { src, alt }, isClose }) => (
                 <>
-                  {isActive && (
-                    <Link href={routes.close} scroll={false} replace passHref>
-                      <styles.BackgroundCover tabIndex={-1} />
-                    </Link>
-                  )}
                   <styles.CarouselFrame key={src}>
-                    {(isActive || isPrev || isNext) && (
-                      <img src={src} alt={alt} loading="lazy" />
-                    )}
+                    {isClose && <img src={src} alt={alt} loading="lazy" />}
                   </styles.CarouselFrame>
                 </>
               )}
@@ -243,10 +231,6 @@ const styles = Object.freeze({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    ".swiper-initialized": {
-      width: "100vw",
-      height: "100vh",
-    },
   }),
   CarouselFrame: styled("div", {
     display: "flex",
@@ -261,10 +245,6 @@ const styles = Object.freeze({
       maxHeight: "85%",
       maxWidth: "100%",
       zIndex: 100,
-      cursor: "grab",
-      "&:active": {
-        cursor: "grabbing",
-      },
     },
   }),
 });

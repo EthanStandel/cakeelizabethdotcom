@@ -1,14 +1,12 @@
-import axios from "axios";
-
 import { ContactForm } from "../models/ContactForm";
-
-const client = axios.create({ baseURL: "/api" });
 
 const apiClient = {
   submitContactForm: async (form: ContactForm): Promise<boolean> => {
     try {
-      const response = await client.post<{ status: string }>("/contact", form);
-      if (response.data.status === "ok") {
+      const response = await fetch("/api/contact", {
+        body: JSON.stringify(form),
+      });
+      if (response.status === 200) {
         return true;
       }
     } catch (e) {
