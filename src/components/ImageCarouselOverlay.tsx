@@ -73,12 +73,21 @@ const ImageCarouselOverlay = ({ images }: Props) => {
     if (open) {
       const listener = (event: KeyboardEvent) => {
         if (event.key === "Escape") {
-          router.replace(routes.close, undefined, { scroll: false });
+          router.replace(routes.close, undefined, {
+            scroll: false,
+            shallow: true,
+          });
           document.removeEventListener("keydown", listener);
         } else if (event.key === "ArrowRight") {
-          router.replace(routes.next, undefined, { scroll: false });
+          router.replace(routes.next, undefined, {
+            scroll: false,
+            shallow: true,
+          });
         } else if (event.key === "ArrowLeft") {
-          router.replace(routes.prev, undefined, { scroll: false });
+          router.replace(routes.prev, undefined, {
+            scroll: false,
+            shallow: true,
+          });
         }
       };
 
@@ -109,6 +118,7 @@ const ImageCarouselOverlay = ({ images }: Props) => {
           </styles.NextButton>
           <styles.CarouselContainer>
             <Carousel
+              overlay
               index={selectedItem}
               setIndex={(index) =>
                 router.replace(
@@ -120,14 +130,27 @@ const ImageCarouselOverlay = ({ images }: Props) => {
                     },
                   },
                   undefined,
-                  { scroll: false }
+                  { scroll: false, shallow: true }
                 )
               }
               items={images}
-              slideComponent={({ item: { src, alt }, isClose }) => (
+              slideComponent={({ item: { src, alt } }) => (
                 <>
-                  <styles.CarouselFrame key={src}>
-                    {isClose && <img src={src} alt={alt} loading="lazy" />}
+                  <styles.CarouselFrame
+                    key={src}
+                    onClick={() =>
+                      router.replace(routes.close, undefined, {
+                        scroll: false,
+                        shallow: true,
+                      })
+                    }
+                  >
+                    <img
+                      src={src}
+                      alt={alt}
+                      loading="lazy"
+                      onClick={(e) => e.stopPropagation()}
+                    />
                   </styles.CarouselFrame>
                 </>
               )}
@@ -146,7 +169,7 @@ const ControlButton = ({
   href: UrlObject | string;
   children: React.ReactChild;
 }) => (
-  <Link scroll={false} href={href} replace passHref>
+  <Link scroll={false} href={href} replace shallow passHref>
     <styles.ControlButton>{children}</styles.ControlButton>
   </Link>
 );
@@ -202,24 +225,36 @@ const styles = Object.freeze({
       },
     },
   }),
-  ControlButton: styled(
-    "a",
-    {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      width: 50,
-      height: 50,
-      borderRadius: 25,
-      background: "var(--primary-color)",
-      img: {
-        height: 25,
-        width: 25,
-        opacity: 0.7,
+  ControlButton: styled("a", {
+    transition: "border-color 0.15s, box-shadow 0.15s",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 50,
+    height: 50,
+    borderRadius: 33,
+    background: "var(--primary-color)",
+    border: "1px solid transparent",
+    img: {
+      height: 25,
+      width: 25,
+      opacity: 0.7,
+    },
+    outline: "none !important",
+    "&:hover, &:focus": {
+      borderColor: "white",
+      boxShadow: "0 0 5px 5px var(--primary-color)",
+    },
+    "> *": {
+      transition: "transform 0.15s",
+    },
+    "&:active": {
+      boxShadow: "none",
+      "> * ": {
+        transform: "scale(0.8)",
       },
     },
-    styleUtils.clickableShadow
-  ),
+  }),
   CarouselContainer: styled("div", {
     marginTop: 100,
     marginBottom: 100,
@@ -245,6 +280,7 @@ const styles = Object.freeze({
       maxHeight: "85%",
       maxWidth: "100%",
       zIndex: 100,
+      borderRadius: "1.5em",
     },
   }),
 });

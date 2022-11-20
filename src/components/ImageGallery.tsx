@@ -23,6 +23,8 @@ export const ImageGallery: FC<{
             key={src}
             scroll={false}
             replace
+            shallow
+            passHref
             href={{
               pathname: router.pathname,
               query: {
@@ -31,9 +33,9 @@ export const ImageGallery: FC<{
               },
             }}
           >
-            <a>
+            <styles.GallaryThumbnailLink>
               <Image alt={alt} width={150} height={150} src={src} />
-            </a>
+            </styles.GallaryThumbnailLink>
           </Link>
         ))}
     </styles.ImagesContainer>
@@ -48,17 +50,23 @@ const styles = {
 
     img: {
       objectFit: "auto",
+      borderRadius: 0,
     },
-
-    "> a": css(
-      {
-        borderRadius: "var(--card-border-radius)",
-
-        "> *": {
-          display: "block !important",
-        },
-      },
-      styleUtils.clickableShadow
-    ),
   }),
+  GallaryThumbnailLink: styled(
+    "a",
+    {
+      borderRadius: "var(--card-border-radius)",
+      height: 150,
+      width: 150,
+      overflow: "hidden",
+
+      "> *": {
+        display: "block !important",
+        height: "100%",
+        width: "100%",
+      },
+    },
+    styleUtils.clickableShadow
+  ),
 };

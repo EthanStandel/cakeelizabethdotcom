@@ -167,7 +167,6 @@ const MenuButton = ({
   return (
     <>
       <styles.MenuButton
-        as="button"
         className={selectedItem ? styles.selected() : ""}
         onClick={() => setOpen(!open)}
       >
@@ -286,13 +285,14 @@ const styles = Object.freeze({
     top: 0,
   }),
   IconButton: styled("button", {
-    height: "3em",
-    width: "3em",
-    borderRadius: "1.5em",
-    border: "1px solid var(--border-color)",
+    height: "2.5em",
+    width: "2.5em",
+    borderRadius: "1.25em",
+    border: "1px solid black",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
     img: {
       opacity: 0.7,
       height: "1.5em",

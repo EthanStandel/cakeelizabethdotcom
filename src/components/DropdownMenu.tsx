@@ -58,8 +58,7 @@ const styles = Object.freeze({
     transform: "translateX(-50%)",
     border: "1px solid var(--border-color)",
     borderRadius: "1.5em",
-    paddingTop: "1.5em",
-    paddingBottom: "1.5em",
+    overflow: "hidden",
     "> li": {
       height: "3em",
       display: "flex",
@@ -69,6 +68,7 @@ const styles = Object.freeze({
         paddingRight: "1em",
         width: "100%",
         lineHeight: "3em",
+        transition: "background 0.2s ease",
 
         "&:hover, &:focus": {
           background: "rgba(0, 0, 0, 0.1)",

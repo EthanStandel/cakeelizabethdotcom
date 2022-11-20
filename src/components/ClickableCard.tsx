@@ -35,6 +35,7 @@ const styles = Object.freeze({
       height: 400,
       maxWidth: 400,
       borderRadius: "var(--card-border-radius)",
+      overflow: "hidden",
 
       [styleUtils.mobile]: {
         width: "100%",
@@ -47,8 +48,6 @@ const styles = Object.freeze({
       img: {
         objectFit: "cover",
         objectPosition: "0% 0%",
-        borderTopLeftRadius: "var(--card-border-radius)",
-        borderTopRightRadius: "var(--card-border-radius)",
       },
     },
     styleUtils.clickableShadow

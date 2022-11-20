@@ -18,9 +18,8 @@ const QuoteCarousel = ({ quotes }: { quotes: Array<QuoteModel> }) => {
       index={index}
       setIndex={setIndex}
       items={quotes}
-      zIndex={0}
-      autoplay
-      pagination
+      autoplayInterval={5000}
+      hideScroll
       slideComponent={({ item: quote }) => (
         <Quote key={quote.text} quote={quote} />
       )}

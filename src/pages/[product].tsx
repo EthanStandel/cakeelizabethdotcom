@@ -39,6 +39,7 @@ const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
             <Link
               scroll={false}
               replace
+              passHref
               href={{
                 pathname: router.pathname,
                 query: {
@@ -47,9 +48,9 @@ const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
                 },
               }}
             >
-              <a>
+              <styles.HeroImageLink>
                 <img alt={images[0].alt} src={images[0].src} />
-              </a>
+              </styles.HeroImageLink>
             </Link>
           </styles.MainImgContainer>
           <styles.SpielContainer>
@@ -111,15 +112,32 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 };
 
 export const styles = Object.freeze({
-  ProductPage: styled(
-    "div",
+  HeroImageLink: styled(
+    "a",
     {
+      borderRadius: "1.5em",
+      overflow: "hidden",
+      maxWidth: "100%",
+      display: "flex",
+
+      [styleUtils.mobile]: {
+        maxHeight: 500,
+      },
+
+      [styleUtils.desktop]: {
+        maxHeight: 750,
+      },
+
       img: {
-        borderRadius: "var(--card-border-radius)",
+        flexGrow: 1,
+        objectFit: "cover",
+        height: "100%",
+        width: "100%",
       },
     },
-    styleUtils.pageContainer
+    styleUtils.clickableShadow
   ),
+  ProductPage: styled("div", styleUtils.pageContainer),
   MainSection: styled("div", {
     display: "flex",
     gap: "1em",
@@ -136,13 +154,6 @@ export const styles = Object.freeze({
     alignItems: "center",
     justifyContent: "center",
 
-    a: css(
-      {
-        borderRadius: "var(--card-border-radius)",
-      },
-      styleUtils.clickableShadow
-    ),
-
     [styleUtils.mobile]: {
       scrollMarginTop: 60,
       width: "100%",
@@ -151,19 +162,6 @@ export const styles = Object.freeze({
     [styleUtils.desktop]: {
       scrollMarginTop: 115,
       width: "calc(50% - 1em)",
-    },
-
-    img: {
-      objectFit: "cover",
-      maxWidth: "100%",
-
-      [styleUtils.mobile]: {
-        maxHeight: 500,
-      },
-
-      [styleUtils.desktop]: {
-        maxHeight: 750,
-      },
     },
   }),
   SpielContainer: styled("div", {

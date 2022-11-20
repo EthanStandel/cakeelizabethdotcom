@@ -97,13 +97,14 @@ const contentContainer = css(
 );
 
 const clickableShadow = css(shadow, {
-  transition: "box-shadow 0.15s",
+  transition: "box-shadow 0.15s, border-color 0.15s",
   outline: "none !important",
   "--box-shadow-density": 0.3,
-  border: "1px solid var(--border-color)",
+  border: "4px solid var(--border-color)",
 
   "&:hover, &:focus-within, &:focus-visible": {
     "--box-shadow-density": 0.5,
+    borderColor: "var(--primary-color)",
   },
 
   "&:active": {
