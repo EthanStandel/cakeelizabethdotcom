@@ -5,6 +5,13 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import {
+  allPageContents,
+  allImageManifests,
+  allExtendedPageContents,
+} from ".contentlayer/generated";
+import type { PageContent } from ".contentlayer/generated/types";
+
 import { FlavorGroup } from "../components/FlavorGroup";
 import ImageCarouselOverlay, {
   imageCarouselRouting,
@@ -12,13 +19,6 @@ import ImageCarouselOverlay, {
 import { ImageGallery } from "../components/ImageGallery";
 import MdxRenderer from "../components/MdxRenderer";
 import styleUtils from "../utils/styleUtils";
-
-import {
-  allPageContents,
-  allImageManifests,
-  allExtendedPageContents,
-} from ".contentlayer/generated";
-import type { PageContent } from ".contentlayer/generated/types";
 
 interface Props {
   content: Omit<PageContent, "body"> & { body: string };
@@ -37,9 +37,9 @@ const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
         <styles.MainSection>
           <styles.MainImgContainer ref={mainImgRef}>
             <Link
+              className={styles.heroImageLink()}
               scroll={false}
               replace
-              passHref
               href={{
                 pathname: router.pathname,
                 query: {
@@ -48,9 +48,7 @@ const Page: NextPage<Props> = ({ content, images, extendedContentBody }) => {
                 },
               }}
             >
-              <styles.HeroImageLink>
-                <img alt={images[0].alt} src={images[0].src} />
-              </styles.HeroImageLink>
+              <img alt={images[0].alt} src={images[0].src} />
             </Link>
           </styles.MainImgContainer>
           <styles.SpielContainer>
@@ -112,8 +110,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 };
 
 export const styles = Object.freeze({
-  HeroImageLink: styled(
-    "a",
+  heroImageLink: css(
     {
       borderRadius: "1.5em",
       overflow: "hidden",

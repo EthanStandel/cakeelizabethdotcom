@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled, css } from "@stitches/react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,20 +15,17 @@ interface Props {
 }
 
 const ClickableCard = ({ image, alt, href, cta, title }: Props) => (
-  <Link href={href} passHref>
-    <styles.LinkRoot>
-      <Image height={300} width={300} alt={alt} src={image} />
-      <styles.Container>
-        <p>{title}</p>
-        <Button tabIndex={-1}>{cta}</Button>
-      </styles.Container>
-    </styles.LinkRoot>
+  <Link href={href} className={styles.linkRoot()}>
+    <Image height={300} width={300} alt={alt} src={image} />
+    <styles.Container>
+      <p>{title}</p>
+      <Button tabIndex={-1}>{cta}</Button>
+    </styles.Container>
   </Link>
 );
 
 const styles = Object.freeze({
-  LinkRoot: styled(
-    "a",
+  linkRoot: css(
     {
       display: "block",
       width: 300,

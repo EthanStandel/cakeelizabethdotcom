@@ -38,15 +38,14 @@ export const DropdownMenu = ({
         <styles.DropdownMenu>
           {items.map((item) => (
             <li key={item.href}>
-              <Link href={item.href}>
-                <a
-                  onClick={onClose}
-                  style={{
-                    fontWeight: item === selectedItem ? "bold" : "initial",
-                  }}
-                >
-                  {item.name}
-                </a>
+              <Link
+                href={item.href}
+                onClick={onClose}
+                style={{
+                  fontWeight: item === selectedItem ? "bold" : "initial",
+                }}
+              >
+                {item.name}
               </Link>
             </li>
           ))}

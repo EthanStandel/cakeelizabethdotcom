@@ -176,8 +176,14 @@ const ControlButton = ({
   href: UrlObject | string;
   children: React.ReactChild;
 }) => (
-  <Link scroll={false} href={href} replace shallow passHref>
-    <styles.ControlButton>{children}</styles.ControlButton>
+  <Link
+    className={styles.controlButton()}
+    scroll={false}
+    href={href}
+    replace
+    shallow
+  >
+    {children}
   </Link>
 );
 
@@ -270,7 +276,7 @@ const styles = Object.freeze({
       },
     },
   }),
-  ControlButton: styled("a", {
+  controlButton: css({
     transition: "border-color 0.15s, box-shadow 0.15s",
     display: "flex",
     justifyContent: "center",

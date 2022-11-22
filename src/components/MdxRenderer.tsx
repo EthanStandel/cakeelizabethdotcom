@@ -16,11 +16,7 @@ const MdxRenderer = React.memo(
       <Markdown
         options={{
           overrides: {
-            a: ({ href, ...props }) => (
-              <Link href={href}>
-                <a {...props} />
-              </Link>
-            ),
+            a: ({ ...props }) => <Link {...props} />,
             ...components,
           },
         }}

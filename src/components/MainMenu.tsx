@@ -53,14 +53,12 @@ const MainMenu = ({ structure }: Props) => (
         </styles.TopItems>
         <styles.LogoContainer className={styleUtils.desktopOnly()}>
           <Link href={structure.href!}>
-            <a>
-              <Image
-                alt={structure.name}
-                src={structure.logo}
-                height={130}
-                width={225}
-              />
-            </a>
+            <Image
+              alt={structure.name}
+              src={structure.logo}
+              height={130}
+              width={225}
+            />
           </Link>
         </styles.LogoContainer>
       </styleUtils.ContentContainerFullWidth>
@@ -97,14 +95,12 @@ const MobileStickyMenu = ({ structure }: Props) => {
             </styles.IconButton>
             <styles.MobileImageContainer>
               <Link href={structure.href!}>
-                <a>
-                  <Image
-                    alt={structure.name}
-                    src={structure.logo}
-                    height={52}
-                    width={94}
-                  />
-                </a>
+                <Image
+                  alt={structure.name}
+                  src={structure.logo}
+                  height={52}
+                  width={94}
+                />
               </Link>
             </styles.MobileImageContainer>
           </styles.MobileMenuContainer>
@@ -142,17 +138,16 @@ const MenuItems = ({ structure }: Props) => {
             {item.children ? (
               <MenuButton item={item} selectedItem={selectedItem} />
             ) : (
-              <Link href={item.href!} passHref>
-                <a
-                  className={
-                    !!selectedItem || item.href === pathname
-                      ? styles.selected()
-                      : ""
-                  }
-                  key={item.name}
-                >
-                  {item.name}
-                </a>
+              <Link
+                href={item.href!}
+                className={
+                  !!selectedItem || item.href === pathname
+                    ? styles.selected()
+                    : ""
+                }
+                key={item.name}
+              >
+                {item.name}
               </Link>
             )}
           </styles.RootMenuItem>

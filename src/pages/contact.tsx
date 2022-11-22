@@ -14,6 +14,8 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { CSSTransition } from "react-transition-group";
 
+import { allPageContents } from ".contentlayer/generated";
+import type { PageContent } from ".contentlayer/generated/types";
 import { Button } from "src/components/core/Button";
 import { InputLabel } from "src/components/core/InputLabel";
 
@@ -23,9 +25,6 @@ import { PhoneNumberInput } from "../components/PhoneNumberInput";
 import { ContactForm } from "../models/ContactForm";
 import styleUtils from "../utils/styleUtils";
 import contactFormValidator from "../validation/contactFormValidator";
-
-import { allPageContents } from ".contentlayer/generated";
-import type { PageContent } from ".contentlayer/generated/types";
 
 type Props = { content: PageContent };
 
@@ -61,7 +60,7 @@ const Page: NextPage<Props> = ({ content }) => {
     subject: string;
     message: string;
   }>({
-    // resolver: yupResolver(contactFormValidator.schema),
+    resolver: yupResolver(contactFormValidator.schema),
     mode: "onTouched",
   });
 
@@ -88,12 +87,9 @@ const Page: NextPage<Props> = ({ content }) => {
                       undefined,
                       { shallow: true }
                     );
-                    // const success = await apiClient.submitContactForm({
-                    //   ...form,
-                    // });
-                    const success = await new Promise((resolve) =>
-                      setTimeout(() => resolve(Math.random() > 0.5), 3000)
-                    );
+                    const success = await apiClient.submitContactForm({
+                      ...form,
+                    });
                     router.replace(
                       {
                         pathname: router.pathname,
@@ -107,17 +103,17 @@ const Page: NextPage<Props> = ({ content }) => {
                 >
                   <InputLabel
                     label={content.data.form.name}
-                    // required
+                    required
                     error={!!errors.name}
                     icon={
                       <img src={UserTagIcon.src} alt={content.data.form.name} />
                     }
                   >
-                    <input {...register("name", { required: false })} />
+                    <input {...register("name", { required: true })} />
                   </InputLabel>
                   <InputLabel
                     label={content.data.form.email}
-                    // required
+                    required
                     error={!!errors.email}
                     icon={
                       <img
@@ -126,7 +122,7 @@ const Page: NextPage<Props> = ({ content }) => {
                       />
                     }
                   >
-                    <input {...register("email", { required: false })} />
+                    <input {...register("email", { required: true })} />
                   </InputLabel>
                   <InputLabel
                     label={content.data.form.phoneNumber}
@@ -151,7 +147,7 @@ const Page: NextPage<Props> = ({ content }) => {
                   </InputLabel>
                   <InputLabel
                     label={content.data.form.message}
-                    // required
+                    required
                     error={!!errors.message}
                     icon={
                       <img src={FileIcon.src} alt={content.data.form.message} />
@@ -159,7 +155,7 @@ const Page: NextPage<Props> = ({ content }) => {
                   >
                     <textarea
                       rows={3}
-                      {...register("message", { required: false })}
+                      {...register("message", { required: true })}
                     />
                   </InputLabel>
                   <styles.Submit>

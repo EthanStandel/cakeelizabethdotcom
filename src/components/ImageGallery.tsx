@@ -24,7 +24,6 @@ export const ImageGallery: FC<{
             scroll={false}
             replace
             shallow
-            passHref
             href={{
               pathname: router.pathname,
               query: {
@@ -32,10 +31,9 @@ export const ImageGallery: FC<{
                 ...imageCarouselRouting.queryBuilder(index + 1),
               },
             }}
+            className={styles.gallaryThumbnailLink()}
           >
-            <styles.GallaryThumbnailLink>
-              <Image alt={alt} width={150} height={150} src={src} />
-            </styles.GallaryThumbnailLink>
+            <Image alt={alt} width={150} height={150} src={src} />
           </Link>
         ))}
     </styles.ImagesContainer>
@@ -53,8 +51,7 @@ const styles = {
       borderRadius: 0,
     },
   }),
-  GallaryThumbnailLink: styled(
-    "a",
+  gallaryThumbnailLink: css(
     {
       borderRadius: "var(--card-border-radius)",
       height: 150,
