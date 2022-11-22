@@ -6,6 +6,7 @@
   "license": "ISC",
   "scripts": {
     "prepare": "husky install",
+    "predev": "npm run prebuild",
     "dev": "next dev",
     "prebuild": "npm run generate-licenses && npm run generate-image-manifests",
     "build": "next build",
