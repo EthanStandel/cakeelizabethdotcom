@@ -17,7 +17,7 @@ interface Props {
 const ClickableCard = ({ image, alt, href, cta, title }: Props) => (
   <Link href={href} passHref>
     <styles.LinkRoot>
-      <Image height="300px" width="300px" alt={alt} src={image} />
+      <Image height={300} width={300} alt={alt} src={image} />
       <styles.Container>
         <p>{title}</p>
         <Button tabIndex={-1}>{cta}</Button>

@@ -5,9 +5,9 @@
 - **Framework**: [Next.js](https://nextjs.org/)
 - **Deployment**: [Vercel](https://vercel.com)
 - **Content**: [contentlayer](https://github.com/contentlayerdev/contentlayer)
-- **Styling**: [Emotion](https://emotion.sh/)
-- **Components**: [Chakra](https://chakra-ui.com/)
-- **Animations**: [AnimXYZ](https://animxyz.com/docs/)
+- **Styling**: [Stitches](https://stitches.dev/)
+- **Animations**: [react-transition-group](https://reactcommunity.org/react-transition-group/)
+- **Forms**: [react-hook-form](https://react-hook-form.com/)
 - **Mailer**: [Sendgrid](https://sendgrid.com/)
 - **Logging**: [LogFlare](https://logflare.app/)
 

@@ -57,8 +57,8 @@ const MainMenu = ({ structure }: Props) => (
               <Image
                 alt={structure.name}
                 src={structure.logo}
-                height="130px"
-                width="225px"
+                height={130}
+                width={225}
               />
             </a>
           </Link>
@@ -101,8 +101,8 @@ const MobileStickyMenu = ({ structure }: Props) => {
                   <Image
                     alt={structure.name}
                     src={structure.logo}
-                    height="52px"
-                    width="94px"
+                    height={52}
+                    width={94}
                   />
                 </a>
               </Link>
