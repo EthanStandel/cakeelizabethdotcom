@@ -106,6 +106,7 @@ const styles = Object.freeze({
       alignItems: "center",
       paddingLeft: "1.5rem",
       paddingRight: "1.5rem",
+      fontSize: "1rem",
       "> *": {
         flexGrow: 1,
       },

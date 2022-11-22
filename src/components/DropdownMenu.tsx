@@ -1,11 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-import { styled } from "@stitches/react";
+import { styled, css } from "@stitches/react";
 import Link from "next/link";
+import { CSSTransition } from "react-transition-group";
 
 import { MenuItem } from "src/models/Menu";
-
-import { AnimatePresence } from "./AnimatePresence";
 
 export const DropdownMenu = ({
   items,
@@ -18,6 +17,7 @@ export const DropdownMenu = ({
   items: Array<{ name: string; href: string }>;
   selectedItem?: MenuItem;
 }) => {
+  const rootRef = useRef(null);
   useEffect(() => {
     if (open) {
       setTimeout(() => {
@@ -27,28 +27,56 @@ export const DropdownMenu = ({
   }, [open]);
 
   return (
-    <AnimatePresence show={open}>
-      <styles.DropdownMenu>
-        {items.map((item) => (
-          <li key={item.href}>
-            <Link href={item.href}>
-              <a
-                onClick={onClose}
-                style={{
-                  fontWeight: item === selectedItem ? "bold" : "initial",
-                }}
-              >
-                {item.name}
-              </a>
-            </Link>
-          </li>
-        ))}
-      </styles.DropdownMenu>
-    </AnimatePresence>
+    <CSSTransition
+      timeout={200}
+      in={open}
+      nodeRef={rootRef}
+      classNames="dropdown"
+      unmountOnExit
+    >
+      <div className={styles.transitionalRoot()} ref={rootRef}>
+        <styles.DropdownMenu>
+          {items.map((item) => (
+            <li key={item.href}>
+              <Link href={item.href}>
+                <a
+                  onClick={onClose}
+                  style={{
+                    fontWeight: item === selectedItem ? "bold" : "initial",
+                  }}
+                >
+                  {item.name}
+                </a>
+              </Link>
+            </li>
+          ))}
+        </styles.DropdownMenu>
+      </div>
+    </CSSTransition>
   );
 };
 
 const styles = Object.freeze({
+  transitionalRoot: css({
+    "&.dropdown-enter": {
+      opacity: 0,
+      transform: "scale(.6)",
+    },
+    "&.dropdown-enter-active": {
+      opacity: 1,
+      transform: "none",
+      transition: "opacity .2s ease, transform .2s ease",
+    },
+    "&.dropdown-exit": {
+      opacity: 1,
+      transform: "none",
+    },
+    "&.dropdown-exit-active": {
+      transition: "opacity .2s ease, transform .2s ease",
+      transform: "scale(.6)",
+      opacity: 0,
+    },
+  }),
   DropdownMenu: styled("ul", {
     zIndex: 100,
     background: "white",

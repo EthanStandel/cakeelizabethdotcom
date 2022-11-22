@@ -24,7 +24,7 @@ const Carousel: <T>(props: CarouselProps<T>) => React.ReactElement = ({
   const carouselRef = useRef<HTMLDivElement>(null);
   const previousIndex = useRef(currentIndex);
   useEffect(() => {
-    if (carouselRef.current) {
+    if (carouselRef.current && Number.isInteger(currentIndex)) {
       const hasWrapped =
         (previousIndex.current === 0 && currentIndex === items.length - 1) ||
         (previousIndex.current === items.length - 1 && currentIndex === 0);

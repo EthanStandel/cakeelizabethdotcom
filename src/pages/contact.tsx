@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import { XyzTransition } from "@animxyz/react";
 import CommentIcon from "@fortawesome/fontawesome-free/svgs/solid/comment.svg";
 import EnvelopeIcon from "@fortawesome/fontawesome-free/svgs/solid/envelope.svg";
 import FileIcon from "@fortawesome/fontawesome-free/svgs/solid/file.svg";
@@ -8,11 +7,12 @@ import PaperPlaneIcon from "@fortawesome/fontawesome-free/svgs/solid/paper-plane
 import PhoneIcon from "@fortawesome/fontawesome-free/svgs/solid/phone.svg";
 import UserTagIcon from "@fortawesome/fontawesome-free/svgs/solid/user-tag.svg";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { styled } from "@stitches/react";
+import { styled, css } from "@stitches/react";
 import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { CSSTransition } from "react-transition-group";
 
 import { Button } from "src/components/core/Button";
 import { InputLabel } from "src/components/core/InputLabel";
@@ -31,11 +31,24 @@ type Props = { content: PageContent };
 
 const Page: NextPage<Props> = ({ content }) => {
   const router = useRouter();
-  const [submitting, setSubmitting] = React.useState(false);
+  const formRef = useRef(null);
+  const successBoxRef = useRef(null);
+  const errorBoxRef = useRef(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [formGone, setFormGone] = useState(false);
   const latestSubmissionResult = router.query.submission as
     | "success"
     | "error"
     | undefined;
+
+  useEffect(() => {
+    if (latestSubmissionResult === "success") {
+      const timeout = setTimeout(() => {
+        setFormGone(true);
+      }, 250);
+      return () => clearTimeout(timeout);
+    }
+  }, [latestSubmissionResult]);
 
   const {
     register,
@@ -48,7 +61,7 @@ const Page: NextPage<Props> = ({ content }) => {
     subject: string;
     message: string;
   }>({
-    resolver: yupResolver(contactFormValidator.schema),
+    // resolver: yupResolver(contactFormValidator.schema),
     mode: "onTouched",
   });
 
@@ -57,117 +70,135 @@ const Page: NextPage<Props> = ({ content }) => {
       <styleUtils.ContentContainer>
         <styles.PageSplit>
           <div>
-            <XyzTransition xyz="small-25% fade stagger">
-              {latestSubmissionResult !== "success" && (
-                <div>
-                  <styles.Form
-                    onSubmit={handleSubmit(async (form: ContactForm) => {
-                      setSubmitting(true);
-                      router.replace({ pathname: router.pathname });
-                      const success = await apiClient.submitContactForm({
-                        ...form,
-                      });
-                      router.replace({
+            <CSSTransition
+              timeout={200}
+              unmountOnExit
+              in={latestSubmissionResult !== "success"}
+              nodeRef={formRef}
+              classNames="form"
+            >
+              <div ref={formRef} className={styles.transitionalRoot()}>
+                <styles.Form
+                  onSubmit={handleSubmit(async (form: ContactForm) => {
+                    setSubmitting(true);
+                    router.replace(
+                      {
+                        pathname: router.pathname,
+                      },
+                      undefined,
+                      { shallow: true }
+                    );
+                    // const success = await apiClient.submitContactForm({
+                    //   ...form,
+                    // });
+                    const success = await new Promise((resolve) =>
+                      setTimeout(() => resolve(Math.random() > 0.5), 3000)
+                    );
+                    router.replace(
+                      {
                         pathname: router.pathname,
                         query: { submission: success ? "success" : "error" },
-                      });
-                      setSubmitting(false);
-                    })}
+                      },
+                      undefined,
+                      { shallow: true }
+                    );
+                    setSubmitting(false);
+                  })}
+                >
+                  <InputLabel
+                    label={content.data.form.name}
+                    // required
+                    error={!!errors.name}
+                    icon={
+                      <img src={UserTagIcon.src} alt={content.data.form.name} />
+                    }
                   >
-                    <InputLabel
-                      label={content.data.form.name}
-                      required
-                      error={!!errors.name}
-                      icon={
-                        <img
-                          src={UserTagIcon.src}
-                          alt={content.data.form.name}
-                        />
-                      }
-                    >
-                      <input {...register("name", { required: true })} />
-                    </InputLabel>
-                    <InputLabel
-                      label={content.data.form.email}
-                      required
-                      error={!!errors.email}
-                      icon={
-                        <img
-                          src={EnvelopeIcon.src}
-                          alt={content.data.form.email}
-                        />
-                      }
-                    >
-                      <input {...register("email", { required: true })} />
-                    </InputLabel>
-                    <InputLabel
-                      label={content.data.form.phoneNumber}
-                      error={!!errors.phoneNumber}
-                      icon={
-                        <img
-                          src={PhoneIcon.src}
-                          alt={content.data.form.phoneNumber}
-                        />
-                      }
-                    >
-                      <PhoneNumberInput {...register("phoneNumber")} />
-                    </InputLabel>
-                    <InputLabel
-                      label={content.data.form.subject}
-                      error={!!errors.subject}
-                      icon={
-                        <img
-                          src={CommentIcon.src}
-                          alt={content.data.form.name}
-                        />
-                      }
-                    >
-                      <input {...register("subject")} />
-                    </InputLabel>
-                    <InputLabel
-                      label={content.data.form.message}
-                      required
-                      error={!!errors.message}
-                      icon={
-                        <img
-                          src={FileIcon.src}
-                          alt={content.data.form.message}
-                        />
-                      }
-                    >
-                      <textarea
-                        rows={3}
-                        {...register("message", { required: true })}
+                    <input {...register("name", { required: false })} />
+                  </InputLabel>
+                  <InputLabel
+                    label={content.data.form.email}
+                    // required
+                    error={!!errors.email}
+                    icon={
+                      <img
+                        src={EnvelopeIcon.src}
+                        alt={content.data.form.email}
                       />
-                    </InputLabel>
-                    <styles.Submit>
-                      <Button loading={submitting} type="submit">
-                        <img src={PaperPlaneIcon.src} alt="Submit" />
-                        {content.data.form.send}
-                      </Button>
-                    </styles.Submit>
-                  </styles.Form>
-                  <XyzTransition xyz="small-25% fade stagger">
-                    {latestSubmissionResult === "error" && (
-                      <div>
-                        <SubmissionStatusBox
-                          content={content}
-                          submissionResult={latestSubmissionResult}
-                        />
-                      </div>
-                    )}
-                  </XyzTransition>
-                </div>
-              )}
-              {latestSubmissionResult === "success" && (
-                <div>
-                  <SubmissionStatusBox
-                    content={content}
-                    submissionResult={latestSubmissionResult}
-                  />
-                </div>
-              )}
-            </XyzTransition>
+                    }
+                  >
+                    <input {...register("email", { required: false })} />
+                  </InputLabel>
+                  <InputLabel
+                    label={content.data.form.phoneNumber}
+                    error={!!errors.phoneNumber}
+                    icon={
+                      <img
+                        src={PhoneIcon.src}
+                        alt={content.data.form.phoneNumber}
+                      />
+                    }
+                  >
+                    <PhoneNumberInput {...register("phoneNumber")} />
+                  </InputLabel>
+                  <InputLabel
+                    label={content.data.form.subject}
+                    error={!!errors.subject}
+                    icon={
+                      <img src={CommentIcon.src} alt={content.data.form.name} />
+                    }
+                  >
+                    <input {...register("subject")} />
+                  </InputLabel>
+                  <InputLabel
+                    label={content.data.form.message}
+                    // required
+                    error={!!errors.message}
+                    icon={
+                      <img src={FileIcon.src} alt={content.data.form.message} />
+                    }
+                  >
+                    <textarea
+                      rows={3}
+                      {...register("message", { required: false })}
+                    />
+                  </InputLabel>
+                  <styles.Submit>
+                    <Button loading={submitting} type="submit">
+                      <img src={PaperPlaneIcon.src} alt="Submit" />
+                      {content.data.form.send}
+                    </Button>
+                  </styles.Submit>
+                </styles.Form>
+                <CSSTransition
+                  timeout={200}
+                  unmountOnExit
+                  in={latestSubmissionResult === "error"}
+                  nodeRef={errorBoxRef}
+                  classNames="form"
+                >
+                  <div ref={errorBoxRef} className={styles.transitionalRoot()}>
+                    <SubmissionStatusBox
+                      content={content}
+                      submissionResult="error"
+                    />
+                  </div>
+                </CSSTransition>
+              </div>
+            </CSSTransition>
+            <CSSTransition
+              nodeRef={successBoxRef}
+              timeout={200}
+              unmountOnExit
+              in={latestSubmissionResult === "success" && formGone}
+              classNames="form"
+            >
+              <div ref={successBoxRef} className={styles.transitionalRoot()}>
+                <SubmissionStatusBox
+                  content={content}
+                  submissionResult="success"
+                />
+              </div>
+            </CSSTransition>
           </div>
           <styles.ContactBlock>
             <h2>{content.data.contact.name}</h2>
@@ -220,6 +251,26 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 const styles = Object.freeze({
+  transitionalRoot: css({
+    "&.form-enter": {
+      opacity: 0,
+      transform: "scale(.6)",
+    },
+    "&.form-enter-active": {
+      opacity: 1,
+      transform: "none",
+      transition: "opacity .2s ease, transform .2s ease",
+    },
+    "&.form-exit": {
+      opacity: 1,
+      transform: "none",
+    },
+    "&.form-exit-active": {
+      transition: "opacity .2s ease, transform .2s ease",
+      transform: "scale(.6)",
+      opacity: 0,
+    },
+  }),
   Form: styled("form", {
     display: "flex",
     flexDirection: "column",
@@ -233,9 +284,10 @@ const styles = Object.freeze({
   Submit: styled("div", {
     width: "100%",
     marginTop: "1em",
+    display: "flex",
     "> button": {
       [styleUtils.mobile]: {
-        width: "100%",
+        flexGrow: 1,
       },
     },
   }),

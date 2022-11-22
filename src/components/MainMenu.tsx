@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
-import { XyzTransition } from "@animxyz/react";
 import FacebookIcon from "@fortawesome/fontawesome-free/svgs/brands/facebook-f.svg";
 import InstagramIcon from "@fortawesome/fontawesome-free/svgs/brands/instagram.svg";
 import HamburgerIcon from "@fortawesome/fontawesome-free/svgs/solid/bars.svg";
@@ -11,6 +10,7 @@ import { keyword } from "color-convert";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { CSSTransition } from "react-transition-group";
 
 import { Menu, MenuItem } from "../models/Menu";
 import styleUtils from "../utils/styleUtils";
@@ -78,7 +78,8 @@ const MainMenu = ({ structure }: Props) => (
 
 const MobileStickyMenu = ({ structure }: Props) => {
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const rootTransitionalRef = useRef(null);
 
   React.useEffect(() => {
     const closeMenu = () => setOpen(false);
@@ -109,13 +110,19 @@ const MobileStickyMenu = ({ structure }: Props) => {
           </styles.MobileMenuContainer>
         </styleUtils.ContentContainerFullWidth>
       </styles.MainMenu>
-      <XyzTransition xyz="up-100%">
-        {open && (
+      <CSSTransition
+        timeout={200}
+        in={open}
+        nodeRef={rootTransitionalRef}
+        classNames="mobile-menu"
+        unmountOnExit
+      >
+        <div ref={rootTransitionalRef} className={styles.transitionalRoot()}>
           <styles.HiddenMenuContainer>
             <MenuItems structure={structure} />
           </styles.HiddenMenuContainer>
-        )}
-      </XyzTransition>
+        </div>
+      </CSSTransition>
     </styles.StickyRoot>
   );
 };
@@ -312,7 +319,22 @@ const styles = Object.freeze({
       .join(",")}, 0.5)`,
     width: "100%",
   }),
-
+  transitionalRoot: css({
+    "&.mobile-menu-enter > *": {
+      transform: "translateX(-100%)",
+    },
+    "&.mobile-menu-enter-active > *": {
+      transform: "none",
+      transition: "transform .2s ease",
+    },
+    "&.mobile-menu-exit > *": {
+      transform: "none",
+    },
+    "&.mobile-menu-exit-active > *": {
+      transition: "transform .2s ease",
+      transform: "translateX(-100%)",
+    },
+  }),
   MobileMenuContainer: styled("div", {
     display: "flex",
     width: "100%",

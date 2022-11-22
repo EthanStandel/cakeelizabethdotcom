@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useRef } from "react";
 import type { UrlObject } from "url";
 
-import { XyzTransition } from "@animxyz/react";
 import ArrowBackIcon from "@fortawesome/fontawesome-free/svgs/solid/arrow-left.svg";
 import ArrowForwardIcon from "@fortawesome/fontawesome-free/svgs/solid/arrow-right.svg";
 import CloseIcon from "@fortawesome/fontawesome-free/svgs/solid/xmark.svg";
-import { styled } from "@stitches/react";
+import { css, styled } from "@stitches/react";
 import { keyword } from "color-convert";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { CSSTransition } from "react-transition-group";
 
 import styleUtils from "../utils/styleUtils";
 
@@ -96,10 +96,17 @@ const ImageCarouselOverlay = ({ images }: Props) => {
       return () => document.removeEventListener("keydown", listener);
     }
   });
+  const rootRef = useRef(null);
 
   return (
-    <XyzTransition xyz="fade">
-      {open && (
+    <CSSTransition
+      timeout={200}
+      nodeRef={rootRef}
+      in={open}
+      classNames="image-carousel"
+      unmountOnExit
+    >
+      <div ref={rootRef} className={styles.transitionalRoot()}>
         <styles.ImageCarouselOverlay>
           <styles.CloseButton>
             <ControlButton href={routes.close}>
@@ -157,8 +164,8 @@ const ImageCarouselOverlay = ({ images }: Props) => {
             />
           </styles.CarouselContainer>
         </styles.ImageCarouselOverlay>
-      )}
-    </XyzTransition>
+      </div>
+    </CSSTransition>
   );
 };
 
@@ -175,6 +182,44 @@ const ControlButton = ({
 );
 
 const styles = Object.freeze({
+  transitionalRoot: css({
+    "&.image-carousel-enter": {
+      "> *": {
+        opacity: 0,
+      },
+      "[data-index] img": {
+        transform: "scale(.6)",
+      },
+    },
+    "&.image-carousel-enter-active": {
+      "> *": {
+        opacity: 1,
+        transition: "opacity .2s ease",
+      },
+      "[data-index] img": {
+        transition: "transform .2s ease",
+        transform: "none",
+      },
+    },
+    "&.image-carousel-exit": {
+      "> *": {
+        opacity: 1,
+      },
+      "[data-index] img": {
+        transform: "none",
+      },
+    },
+    "&.image-carousel-exit-active": {
+      "> *": {
+        transition: "opacity .2s ease",
+        opacity: 0,
+      },
+      "[data-index] img": {
+        transition: "transform .2s ease",
+        transform: "scale(.6)",
+      },
+    },
+  }),
   ImageCarouselOverlay: styled("div", {
     position: "fixed",
     top: 0,

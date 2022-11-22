@@ -1,4 +1,3 @@
-import "@animxyz/core";
 import "nprogress/nprogress.css";
 
 import { useEffect } from "react";
