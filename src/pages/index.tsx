@@ -1,12 +1,13 @@
 import { styled } from "@stitches/react";
 import type { GetStaticProps, NextPage } from "next";
 
+import { allPageContents } from ".contentlayer/generated";
+import type { PageContent } from ".contentlayer/generated/types";
+
 import ClickableCard from "../components/ClickableCard";
 import QuoteCarousel from "../components/QuoteCarousel";
 import styleUtils from "../utils/styleUtils";
 
-import { allPageContents } from ".contentlayer/generated";
-import type { PageContent } from ".contentlayer/generated/types";
 interface Props {
   content: PageContent;
 }

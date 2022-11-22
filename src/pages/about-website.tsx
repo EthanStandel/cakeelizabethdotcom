@@ -1,12 +1,12 @@
 import { GetStaticProps, NextPage } from "next";
 import sanitizeHtml from "sanitize-html";
 
+import { allPageContents } from ".contentlayer/generated";
+import type { PageContent } from ".contentlayer/generated/types";
+
 import MdxRenderer from "../components/MdxRenderer";
 import licenses from "../resources/licenses.html";
 import styleUtils from "../utils/styleUtils";
-
-import { allPageContents } from ".contentlayer/generated";
-import type { PageContent } from ".contentlayer/generated/types";
 
 type Props = {
   licenses: string;

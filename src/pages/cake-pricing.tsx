@@ -1,11 +1,11 @@
 import { styled } from "@stitches/react";
 import { GetStaticProps, NextPage } from "next";
 
-import MdxRenderer from "../components/MdxRenderer";
-import styleUtils from "../utils/styleUtils";
-
 import { allPageContents } from ".contentlayer/generated";
 import type { PageContent } from ".contentlayer/generated/types";
+
+import MdxRenderer from "../components/MdxRenderer";
+import styleUtils from "../utils/styleUtils";
 
 type Props = { content: Omit<PageContent, "body"> & { body: string } };
 
