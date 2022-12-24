@@ -25,15 +25,12 @@ const Carousel: <T>(props: CarouselProps<T>) => React.ReactElement = ({
   const previousIndex = useRef(currentIndex);
   useEffect(() => {
     if (carouselRef.current && Number.isInteger(currentIndex)) {
-      const hasWrapped =
-        (previousIndex.current === 0 && currentIndex === items.length - 1) ||
-        (previousIndex.current === items.length - 1 && currentIndex === 0);
       const firstRender = previousIndex.current === currentIndex;
       previousIndex.current = currentIndex;
 
       carouselRef.current.scroll({
-        behavior: firstRender || hasWrapped ? undefined : "smooth",
-        left: carouselRef.current.clientWidth * (currentIndex + 1),
+        behavior: firstRender ? undefined : "smooth",
+        left: carouselRef.current.clientWidth * currentIndex,
       });
     }
   }, [currentIndex, items.length]);
@@ -41,7 +38,7 @@ const Carousel: <T>(props: CarouselProps<T>) => React.ReactElement = ({
   useEffect(() => {
     if (autoplayInterval) {
       const timeout = setTimeout(() => {
-        setIndex(currentIndex + 1 > items.length - 1 ? 0 : currentIndex + 1);
+        setIndex(currentIndex + 1 > items.length ? 0 : currentIndex + 1);
       }, autoplayInterval);
       return () => clearTimeout(timeout);
     }
@@ -56,20 +53,15 @@ const Carousel: <T>(props: CarouselProps<T>) => React.ReactElement = ({
         const container = e.target as HTMLDivElement;
         const width = (container.firstChild as HTMLDivElement).clientWidth;
         if (container.scrollLeft % width === 0) {
-          setIndex((container.scrollLeft - width) / width);
+          setIndex(container.scrollLeft / width);
         }
       }}
     >
-      {[items[items.length - 1], ...items, items[0]].map(
-        (item, effectiveIndex) => {
-          const index = effectiveIndex - 1;
-          return (
-            <styles.CarouselSlide key={index} data-index={index}>
-              <SlideComponent index={index} item={item} />
-            </styles.CarouselSlide>
-          );
-        }
-      )}
+      {items.map((item, index) => (
+        <styles.CarouselSlide key={index} data-index={index}>
+          <SlideComponent index={index} item={item} />
+        </styles.CarouselSlide>
+      ))}
     </styles.Carousel>
   );
 };

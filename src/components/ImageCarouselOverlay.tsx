@@ -106,7 +106,10 @@ const ImageCarouselOverlay = ({ images }: Props) => {
       classNames="image-carousel"
       unmountOnExit
     >
-      <div ref={rootRef} className={styles.transitionalRoot()}>
+      <div
+        ref={rootRef}
+        className={`${styles.transitionalRoot()} image-carousel-enter-active`}
+      >
         <styles.ImageCarouselOverlay>
           <styles.CloseButton>
             <ControlButton href={routes.close}>
@@ -189,38 +192,47 @@ const ControlButton = ({
 
 const styles = Object.freeze({
   transitionalRoot: css({
-    "&.image-carousel-enter": {
+    /**
+     * Because all image-carousel state transitions are route-based,
+     * Chrome + Next's router will use a cached version on certain
+     * transitions. This can put us in a situation where the transitions
+     * fail to fire because react-transition-group isn't always aware of
+     * when components come back in. Because of that, the transition starting
+     * .image-carousel-enter-active class sometimes never gets applied. That's
+     * why that class is manually applied on initial render. Unfortunately,
+     * we still need to use animation, rather than transition to get the
+     * initial render here.
+     *
+     * tl;dr this is a hack to force the transitions to fire.
+     */
+    "&.image-carousel-enter-active": {
       "> *": {
         opacity: 0,
+        animation: `${styleUtils.fadeIn} .2s ease forwards`,
       },
       "[data-index] img": {
         transform: "scale(.6)",
-      },
-    },
-    "&.image-carousel-enter-active": {
-      "> *": {
-        opacity: 1,
-        transition: "opacity .2s ease",
-      },
-      "[data-index] img": {
-        transition: "transform .2s ease",
-        transform: "none",
+        animation: `${styleUtils.growIn} .2s ease forwards`,
       },
     },
     "&.image-carousel-exit": {
       "> *": {
+        animation: "none",
         opacity: 1,
       },
       "[data-index] img": {
+        animation: "none",
         transform: "none",
       },
     },
     "&.image-carousel-exit-active": {
       "> *": {
+        animation: "none",
         transition: "opacity .2s ease",
         opacity: 0,
       },
       "[data-index] img": {
+        animation: "none",
         transition: "transform .2s ease",
         transform: "scale(.6)",
       },

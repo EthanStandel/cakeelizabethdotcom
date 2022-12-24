@@ -123,6 +123,16 @@ const spin = keyframes({
   "100%": { transform: "rotate(360deg)" },
 });
 
+const fadeIn = keyframes({
+  "0%": { opacity: 0 },
+  "100%": { opacity: 1 },
+});
+
+const growIn = keyframes({
+  "0%": { transform: "scale(.6)" },
+  "100%": { transform: "scale(1)" },
+});
+
 const global = globalCss({
   html: {
     "--card-border-radius": "1.5em",
@@ -216,6 +226,8 @@ const styleUtils = {
   center,
   Center: styled("div", center),
   spin,
+  fadeIn,
+  growIn,
 };
 
 export default styleUtils;
