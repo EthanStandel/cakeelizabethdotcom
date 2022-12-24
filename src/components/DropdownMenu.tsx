@@ -84,7 +84,7 @@ const styles = Object.freeze({
     left: "50%",
     transform: "translateX(-50%)",
     border: "1px solid var(--border-color)",
-    borderRadius: "1.5em",
+    borderRadius: "var(--card-border-radius)",
     overflow: "hidden",
     "> li": {
       height: "3em",

@@ -112,7 +112,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 export const styles = Object.freeze({
   heroImageLink: css(
     {
-      borderRadius: "1.5em",
+      borderRadius: "var(--card-border-radius)",
       overflow: "hidden",
       maxWidth: "100%",
       display: "flex",

@@ -331,7 +331,7 @@ const styles = Object.freeze({
       maxHeight: "85%",
       maxWidth: "100%",
       zIndex: 100,
-      borderRadius: "1.5em",
+      borderRadius: "var(--card-border-radius)",
     },
   }),
 });

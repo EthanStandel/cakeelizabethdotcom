@@ -19,7 +19,7 @@ export const Button: FC<ButtonProps> = ({ children, ...props }) => (
 export const BaseButton = styled("button", {
   height: "3em",
   lineHeight: "3em",
-  borderRadius: "1.5em",
+  borderRadius: "var(--card-border-radius)",
   textTransform: "uppercase",
   letterSpacing: "0.2em",
   paddingLeft: "1.5em",

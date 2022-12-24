@@ -186,17 +186,13 @@ const MenuButton = ({
 };
 
 const styles = Object.freeze({
-  MainMenu: styled(
-    "div",
-    {
-      background: "var(--primary-color) !important",
-      color: "var(--text-color)",
-      zIndex: 4,
-      width: "100%",
-      position: "sticky",
-    },
-    styleUtils.contentContainerParent
-  ),
+  MainMenu: styled("div", styleUtils.contentContainerParent, {
+    background: "var(--primary-color) !important",
+    color: "var(--text-color)",
+    zIndex: 5,
+    width: "100%",
+    position: "sticky",
+  }),
   TopItems: styled("div", {
     display: "flex",
     width: "100%",

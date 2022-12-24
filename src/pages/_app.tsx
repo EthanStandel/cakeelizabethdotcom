@@ -92,6 +92,14 @@ const styles = Object.freeze({
     flexDirection: "column",
     minHeight: "100vh",
     position: "relative",
+    "a, button": {
+      "&:focus-visible": {
+        transform: "outline-width 0.2s ease-in-out",
+        borderRadius: "var(--card-border-radius)",
+        outline: "2px solid var(--text-color)",
+        outlineOffset: "calc(var(--card-border-radius) / 4)",
+      },
+    },
   }),
   Page: styled("main", {
     flexGrow: 1,
