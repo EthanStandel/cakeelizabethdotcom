@@ -67,7 +67,7 @@ const SubNavMenuPopout = ({
           href={item.url}
           key={item.label}
           className={cx(
-            "uppercase transition-colors tracking-widest py-2 lg:py-3 hover:bg-gray-100 focus:bg-gray-100 active:bg-gray-200 px-4 focus:outline-none",
+            "uppercase transition-colors tracking-widest py-2 desktop:py-3 hover:bg-gray-100 focus:bg-gray-100 active:bg-gray-200 px-4 focus:outline-none",
             pathname.startsWith(item.url) ? "font-bold" : "font-medium"
           )}
         >
