@@ -5,69 +5,208 @@ import { usePathname } from "next/navigation";
 import { useTina } from "tinacms/dist/react";
 import { GlobalQuery } from "../../../../.tina/__generated__/types";
 import cx from "classnames";
-import { DesktopSubNavMenu } from "./components/DesktopSubNavMenu";
+import { SubNavMenu } from "./components/SubNavMenu";
 import Image from "next/image";
+import FaFacebook from "./FaFacebook.svg";
+import FaInstagram from "./FaInstagram.svg";
+import { usePresence, usePresenceSwitch } from "../../../utils/usePresence";
+import { DetailedHTMLProps, FC, HTMLAttributes, useState } from "react";
+import MobileMenuOpenIcon from "./CgMenuLeftAlt.svg";
+import MobileMenuCloseIcon from "./GrClose.svg";
+
+const socialLinkIcons = {
+  Facebook: FaFacebook,
+  Instagram: FaInstagram,
+};
 
 export const NavigationClient = ({
   query,
 }: {
   query: Parameters<typeof useTina<GlobalQuery>>[0];
 }) => {
-  const pathname = usePathname();
   const { data } = useTina<GlobalQuery>(query);
-  const { phoneNumber, navigation, logo } = data.global.header;
+  const { phoneNumber, navigation, logo, socialLinks } = data.global.header;
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-primary py-2 lg:py-4 text-text px-4 lg:px-32">
-      <div className="flex">
-        <a
-          href={
-            "tel:" +
-            phoneNumber
-              .split("")
-              .filter((char) => /\d/.test(char))
-              .join("")
-          }
-        >
-          {phoneNumber}
-        </a>
-      </div>
-      <div className="flex justify-center items-center my-2">
-        <Link href="/">
-          <Image
-            src={logo}
-            height={130}
-            width={225}
-            alt="Logo"
-            className="lg:h-[130px] lg:w-[225px] h-[52px] w-[94px]"
-          />
-        </Link>
-      </div>
-      <nav className="flex justify-between uppercase tracking-[0.15em]">
-        {navigation.map((item) => {
-          if (item.url) {
-            const isActive =
-              pathname === "/"
-                ? item.url === "/"
-                : item.url
-                ? pathname.startsWith(item.url)
-                : item.subNavItem.some((subItem) =>
-                    pathname.startsWith(subItem.url)
-                  );
-            return (
-              <Link
-                key={item.label}
-                href={item.url}
-                className={cx({ "font-bold": isActive }, "font-sans")}
-              >
-                {item.label}
-              </Link>
-            );
-          } else {
-            return <DesktopSubNavMenu item={item} />;
-          }
-        })}
-      </nav>
-    </header>
+    <div className="relative z-10">
+      <HeaderSection>
+        <div className="flex justify-between">
+          <a
+            href={
+              "tel:" +
+              phoneNumber
+                .split("")
+                .filter((char) => /\d/.test(char))
+                .join("")
+            }
+          >
+            {phoneNumber}
+          </a>
+          <div className="flex gap-2">
+            {socialLinks
+              .filter(({ label }) => !!socialLinkIcons[label])
+              .map(({ label, url }) => {
+                const Icon = socialLinkIcons[label];
+                return (
+                  <a href={url} key={label} aria-label={label}>
+                    <Icon className="h-[32px] w-[32px]" />
+                  </a>
+                );
+              })}
+          </div>
+        </div>
+      </HeaderSection>
+      <HeaderSection>
+        <div className="flex justify-center items-center my-2 relative">
+          <div className="lg:hidden flex items-center">
+            <MobileMenuStateToggleButton
+              open={mobileMenuOpen}
+              toggle={() => setMobileMenuOpen((open) => !open)}
+            />
+          </div>
+          <div className="flex-grow flex justify-center">
+            <Link href="/">
+              <Image
+                src={logo}
+                height={130}
+                width={225}
+                alt="Logo"
+                className="lg:h-[130px] lg:w-[225px] h-[52px] w-[94px]"
+              />
+            </Link>
+          </div>
+        </div>
+      </HeaderSection>
+      <Navigation
+        navigation={navigation}
+        mobileOpen={mobileMenuOpen}
+        closeMobile={() => setMobileMenuOpen(false)}
+      />
+    </div>
   );
 };
+
+const Navigation = ({
+  navigation,
+  mobileOpen,
+  closeMobile,
+}: {
+  navigation: GlobalQuery["global"]["header"]["navigation"];
+  mobileOpen: boolean;
+  closeMobile: () => void;
+}) => {
+  const pathname = usePathname();
+  const { isMounted, isVisible } = usePresence(mobileOpen);
+
+  return (
+    <>
+      <button
+        tabIndex={-1}
+        aria-hidden
+        onClick={() => closeMobile()}
+        className={cx(
+          "-z-10 bg-black h-screen w-screen fixed top-0 left-0 lg:hidden transition-opacity",
+          {
+            "opacity-0": !isVisible,
+            "opacity-30": isVisible,
+            "max-lg:hidden": !isMounted,
+          }
+        )}
+      />
+      <div
+        className={cx(
+          "uppercase tracking-widest font-medium transition absolute left-0 top-full w-full items-center text-center -z-10",
+          {
+            "max-lg:opacity-0 max-lg:-translate-y-full": !isVisible,
+            "max-lg:hidden": !isMounted,
+          }
+        )}
+      >
+        <HeaderSection>
+          <div className="w-full h-5 lg:hidden" />
+          <nav className="flex flex-col lg:flex-row gap-5 lg:gap-2 justify-between">
+            {navigation.map((item) => {
+              if (item.url) {
+                const isActive =
+                  pathname === "/"
+                    ? item.url === "/"
+                    : item.url
+                    ? pathname.startsWith(item.url)
+                    : item.subNavItem.some((subItem) =>
+                        pathname.startsWith(subItem.url)
+                      );
+                return (
+                  <div key={item.label}>
+                    <Link
+                      href={item.url}
+                      className={cx(isActive ? "font-bold" : "font-medium")}
+                    >
+                      {item.label}
+                    </Link>
+                  </div>
+                );
+              } else {
+                return (
+                  <div key={item.label}>
+                    <SubNavMenu item={item} />
+                  </div>
+                );
+              }
+            })}
+          </nav>
+        </HeaderSection>
+        <div className="w-full h-10 bg-gradient-to-b from-primary to-transparent gradient lg:hidden" />
+      </div>
+    </>
+  );
+};
+
+const mobileMenuStateIcon = {
+  open: MobileMenuOpenIcon as FC<any>,
+  closed: MobileMenuCloseIcon as FC<any>,
+};
+
+const MobileMenuStateToggleButton = ({
+  open,
+  toggle,
+}: {
+  open: boolean;
+  toggle: () => void;
+}) => {
+  const { isMounted, mountedItem, isEntering, isExiting } = usePresenceSwitch(
+    !open ? "open" : "closed",
+    { transitionDuration: 100 }
+  );
+  const Icon = mobileMenuStateIcon[mountedItem];
+
+  if (!isMounted) return null;
+
+  return (
+    <button
+      aria-label="Toggle mobile menu"
+      onClick={toggle}
+      className={cx("absolute left-0 transition duration-150", {
+        "linear ": isExiting,
+        "ease-out": isEntering,
+        "-rotate-90 opacity-0": (isEntering && open) || (isExiting && !open),
+        "rotate-90 opacity-0": (isExiting && open) || (isEntering && !open),
+      })}
+    >
+      <Icon className="h-8 w-8" />
+    </button>
+  );
+};
+
+const HeaderSection = ({
+  className,
+  ...props
+}: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) => (
+  <header
+    className={cx(
+      "bg-primary py-2 lg:py-4 text-text px-4 lg:px-28 lg:text-lg text-md",
+      className
+    )}
+    {...props}
+  />
+);
