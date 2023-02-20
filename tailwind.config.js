@@ -6,9 +6,7 @@ module.exports = {
   purge: ["./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
-    screens: {
-      lg: "1260px",
-    },
+    defaultTheme,
     transitionDuration: {
       DEFAULT: "250ms",
     },
@@ -19,71 +17,12 @@ module.exports = {
       text: "#555555",
       black: colors.black,
       white: colors.white,
-      teal: colors.cyan,
-      green: colors.emerald,
-      red: colors.rose,
-      purple: colors.purple,
-      pink: colors.pink,
-      yellow: colors.yellow,
-      gray: {
-        50: "#F6F6F9",
-        100: "#EDECF3",
-        150: "#E6E3EF",
-        200: "#E1DDEC",
-        250: "#C9C5D5",
-        300: "#b2adbe",
-        400: "#918c9e",
-        500: "#716c7f",
-        600: "#565165",
-        700: "#433e52",
-        800: "#363145",
-        900: "#252336",
-        1000: "#1c1b2e",
-      },
-      blue: {
-        50: "#DCEEFF",
-        100: "#B4DBFF",
-        200: "#85C5FE",
-        300: "#4EABFE",
-        400: "#2296fe",
-        500: "#0084FF",
-        600: "#0574e4",
-        700: "#0D5DBD",
-        800: "#144696",
-        900: "#1D2C6C",
-        1000: "#241748",
-      },
-      orange: {
-        200: "#EB7752",
-        300: "#EA6C45",
-        400: "#E85C30",
-        500: "#EC4815",
-        600: "#DC4419",
-        700: "#D04017",
-        800: "#C1360F",
-      },
+      gray: colors.gray,
     },
     screens: {
-      sm: "600px",
-      md: "900px",
-      lg: "1200px",
-      xl: "1500px",
-      "2xl": "1800px",
+      desktop: "1024px",
     },
-    fontSize: {
-      xs: ".875rem",
-      sm: "1rem",
-      base: "1.125rem",
-      lg: "1.25rem",
-      xl: "1.5rem",
-      "2xl": "1.75rem",
-      "3xl": "2rem",
-      "4xl": "2.5rem",
-      "5xl": "3.25rem",
-      "6xl": "4rem",
-      "7xl": "5rem",
-      "8xl": "6rem",
-    },
+
     borderWidth: {
       DEFAULT: "3px",
       0: "0",
@@ -94,20 +33,6 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["var(--font-montserrat)", ...defaultTheme.fontFamily.sans],
-      },
-      textDecoration: ["active"],
-      opacity: {
-        7: ".075",
-        15: ".15",
-      },
-      maxWidth: {
-        "8xl": "86rem",
-      },
-      spacing: {
-        128: "32rem",
-      },
-      zIndex: {
-        "-1": "-1",
       },
       typography: (theme) => ({
         DEFAULT: {

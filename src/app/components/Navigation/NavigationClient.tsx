@@ -59,7 +59,7 @@ export const NavigationClient = ({
       </HeaderSection>
       <HeaderSection>
         <div className="flex justify-center items-center my-2 relative">
-          <div className="lg:hidden flex items-center">
+          <div className="desktop:hidden flex items-center">
             <MobileMenuStateToggleButton
               open={mobileMenuOpen}
               toggle={() => setMobileMenuOpen((open) => !open)}
@@ -72,7 +72,7 @@ export const NavigationClient = ({
                 height={130}
                 width={225}
                 alt="Logo"
-                className="lg:h-[130px] lg:w-[225px] h-[52px] w-[94px]"
+                className="desktop:h-[130px] desktop:w-[225px] h-[52px] w-[94px]"
               />
             </Link>
           </div>
@@ -106,11 +106,11 @@ const Navigation = ({
         aria-hidden
         onClick={() => closeMobile()}
         className={cx(
-          "-z-10 bg-black h-screen w-screen fixed top-0 left-0 lg:hidden transition-opacity",
+          "-z-10 bg-black h-screen w-screen fixed top-0 left-0 desktop:hidden transition-opacity",
           {
             "opacity-0": !isVisible,
             "opacity-30": isVisible,
-            "max-lg:hidden": !isMounted,
+            "max-desktop:hidden": !isMounted,
           }
         )}
       />
@@ -118,14 +118,14 @@ const Navigation = ({
         className={cx(
           "uppercase tracking-widest font-medium transition absolute left-0 top-full w-full items-center text-center -z-10",
           {
-            "max-lg:opacity-0 max-lg:-translate-y-full": !isVisible,
-            "max-lg:hidden": !isMounted,
+            "max-desktop:opacity-0 max-desktop:-translate-y-full": !isVisible,
+            "max-desktop:hidden": !isMounted,
           }
         )}
       >
         <HeaderSection>
-          <div className="w-full h-5 lg:hidden" />
-          <nav className="flex flex-col lg:flex-row gap-5 lg:gap-2 justify-between">
+          <div className="w-full h-5 desktop:hidden" />
+          <nav className="flex flex-col desktop:flex-row gap-5 desktop:gap-2 justify-between">
             {navigation.map((item) => {
               if (item.url) {
                 const isActive =
@@ -156,7 +156,7 @@ const Navigation = ({
             })}
           </nav>
         </HeaderSection>
-        <div className="w-full h-10 bg-gradient-to-b from-primary to-transparent gradient lg:hidden" />
+        <div className="w-full h-10 bg-gradient-to-b from-primary to-transparent gradient desktop:hidden" />
       </div>
     </>
   );
@@ -204,7 +204,7 @@ const HeaderSection = ({
 }: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) => (
   <header
     className={cx(
-      "bg-primary py-2 lg:py-4 text-text px-4 lg:px-28 lg:text-lg text-md",
+      "bg-primary py-2 desktop:py-4 text-text px-4 desktop:px-28 desktop:text-lg text-md",
       className
     )}
     {...props}
