@@ -6,9 +6,17 @@ module.exports = {
   purge: ["./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
+    screens: {
+      lg: "1260px",
+    },
+    transitionDuration: {
+      DEFAULT: "250ms",
+    },
     colors: {
       transparent: "transparent",
       current: "currentColor",
+      primary: "#65ffce",
+      text: "#555555",
       black: colors.black,
       white: colors.white,
       teal: colors.cyan,
@@ -84,6 +92,9 @@ module.exports = {
       4: "4px",
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-montserrat)", ...defaultTheme.fontFamily.sans],
+      },
       textDecoration: ["active"],
       opacity: {
         7: ".075",
@@ -97,10 +108,6 @@ module.exports = {
       },
       zIndex: {
         "-1": "-1",
-      },
-      fontFamily: {
-        nunito: ["Nunito", ...defaultTheme.fontFamily.sans],
-        lato: ["Lato", ...defaultTheme.fontFamily.sans],
       },
       typography: (theme) => ({
         DEFAULT: {

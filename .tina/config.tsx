@@ -162,6 +162,59 @@ const config = defineConfig({
               iconSchema as any,
               {
                 type: "string",
+                label: "Phone number",
+                name: "phoneNumber",
+                required: true,
+              },
+              {
+                type: "image",
+                label: "Logo",
+                name: "logo",
+                required: true,
+              },
+              {
+                type: "object",
+                label: "Navigation",
+                name: "navigation",
+                list: true,
+                fields: [
+                  {
+                    type: "string",
+                    label: "Label",
+                    name: "label",
+                    required: true,
+                    isTitle: true,
+                  },
+                  {
+                    type: "string",
+                    label: "URL",
+                    name: "url",
+                  },
+                  {
+                    type: "object",
+                    label: "Sub Navigation",
+                    name: "subNavItem",
+                    list: true,
+                    fields: [
+                      {
+                        type: "string",
+                        label: "Label",
+                        name: "label",
+                        required: true,
+                        isTitle: true,
+                      },
+                      {
+                        type: "string",
+                        label: "URL",
+                        name: "url",
+                        required: true,
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: "string",
                 label: "Name",
                 name: "name",
               },
