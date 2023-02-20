@@ -1,5 +1,5 @@
 import * as React from "react";
-import GlobalData from "../../content/global/index.json";
+import GlobalData from "../../../content/global/index.json";
 
 const ThemeContext = React.createContext(GlobalData.theme);
 
