@@ -1,0 +1,66 @@
+{
+  "header": {
+    "phoneNumber": "207 370-4008",
+    "logo": "/uploads/logo.svg",
+    "navigation": [
+      {
+        "label": "Home",
+        "url": "/"
+      },
+      {
+        "label": "Contact us",
+        "url": "/contact"
+      },
+      {
+        "label": "Weddings",
+        "url": "/weddings"
+      },
+      {
+        "label": "Cakes",
+        "subNavItem": [
+          {
+            "label": "Children's cakes",
+            "url": "/childrens-cake"
+          },
+          {
+            "label": "Birthday cakes",
+            "url": "/birthday-cakes"
+          },
+          {
+            "label": "Shower cakes",
+            "url": "/shower-cakes"
+          },
+          {
+            "label": "Special occasion cakes",
+            "url": "/special-occasion-cakes"
+          },
+          {
+            "label": "Sculpted cakes",
+            "url": "/sculpted-cakes"
+          },
+          {
+            "label": "Religious cakes",
+            "url": "/religious-cakes"
+          },
+          {
+            "label": "Holiday cakes",
+            "url": "/holiday-cakes"
+          }
+        ]
+      },
+      {
+        "label": "Sweets",
+        "subNavItem": [
+          {
+            "label": "Cupcakes",
+            "url": "/cupcakes"
+          },
+          {
+            "label": "Cake pops & cookies",
+            "url": "/cake-pops-cookies"
+          }
+        ]
+      }
+    ]
+  }
+}

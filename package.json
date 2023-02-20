@@ -26,7 +26,9 @@
   },
   "dependencies": {
     "@headlessui/react": "1.7.5",
+    "@next/font": "^13.1.6",
     "@tailwindcss/typography": "^0.5.8",
+    "classnames": "^2.3.2",
     "date-fns": "^2.23.0",
     "next": "^13.1.6",
     "react": "^18.2.0",
@@ -35,7 +37,8 @@
     "react-is": "^17.0.2",
     "tailwindcss": "^3.2.4",
     "tinacms": "^1.1.5",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.2",
+    "use-presence": "^1.2.0"
   },
   "resolutions": {
     "final-form": "4.20.1"
