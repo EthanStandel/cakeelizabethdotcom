@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import ChevronDown from "./FaChevronDown.svg";
 
-export const DesktopSubNavMenu = ({
+export const SubNavMenu = ({
   item,
 }: {
   item: GlobalQuery["global"]["header"]["navigation"][number];
@@ -27,23 +27,23 @@ export const DesktopSubNavMenu = ({
   );
 
   return (
-    <div className="relative">
+    <div className="relative flex justify-center">
       <button
         onClick={() => setOpen(true)}
         className={cx(
           { "font-bold": isActive },
-          "uppercase tracking-[0.15em] flex items-center gap-2"
+          "uppercase tracking-widest flex items-center gap-1"
         )}
       >
         <span>{item.label}</span>
         <ChevronDown className={cx({ "rotate-180": open }, "transition")} />
       </button>
-      <DesktopSubNavMenuPopout open={open} items={item.subNavItem} />
+      <SubNavMenuPopout open={open} items={item.subNavItem} />
     </div>
   );
 };
 
-const DesktopSubNavMenuPopout = ({
+const SubNavMenuPopout = ({
   open,
   items,
 }: {
@@ -58,7 +58,7 @@ const DesktopSubNavMenuPopout = ({
   return (
     <div
       className={cx(
-        "absolute top-full left-1/2 -translate-x-1/2 translate-y-4 bg-white shadow-lg border-[1px] rounded-xl flex flex-col whitespace-nowrap overflow-hidden transition",
+        "absolute top-full left-1/2 -translate-x-1/2 translate-y-4 bg-white shadow-lg border-[1px] rounded-xl flex flex-col whitespace-nowrap overflow-hidden transition z-10",
         { "opacity-0 -translate-y-1/4 scale-75": !isVisible }
       )}
     >
@@ -67,8 +67,8 @@ const DesktopSubNavMenuPopout = ({
           href={item.url}
           key={item.label}
           className={cx(
-            "uppercase transition-colors tracking-[0.15em] py-3 hover:bg-gray-100 focus:bg-gray-100 active:bg-gray-200 px-4 focus:outline-none",
-            { "font-bold": pathname.startsWith(item.url) }
+            "uppercase transition-colors tracking-widest py-2 lg:py-3 hover:bg-gray-100 focus:bg-gray-100 active:bg-gray-200 px-4 focus:outline-none",
+            pathname.startsWith(item.url) ? "font-bold" : "font-medium"
           )}
         >
           {item.label}

@@ -1,6 +1,16 @@
 {
   "header": {
     "phoneNumber": "207 370-4008",
+    "socialLinks": [
+      {
+        "label": "Instagram",
+        "url": "https://www.instagram.com/cakeelizabethmaine/"
+      },
+      {
+        "label": "Facebook",
+        "url": "https://www.facebook.com/cakeelizabeth/"
+      }
+    ],
     "logo": "/uploads/logo.svg",
     "navigation": [
       {
@@ -58,6 +68,36 @@
           {
             "label": "Cake pops & cookies",
             "url": "/cake-pops-cookies"
+          }
+        ]
+      },
+      {
+        "label": "Info",
+        "subNavItem": [
+          {
+            "label": "Cake flavors",
+            "url": "/cake-flavors"
+          },
+          {
+            "label": "Cake pricing",
+            "url": "/cake-pricing"
+          },
+          {
+            "label": "Order policies",
+            "url": "/order-policies"
+          }
+        ]
+      },
+      {
+        "label": "About",
+        "subNavItem": [
+          {
+            "label": "About us",
+            "url": "/about-us"
+          },
+          {
+            "label": "About this website",
+            "url": "/about-website"
           }
         ]
       }

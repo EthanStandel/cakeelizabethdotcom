@@ -151,7 +151,7 @@ const config = defineConfig({
         path: "content/global",
         format: "json",
         ui: {
-          global: true,
+          // global: true,
         },
         fields: [
           {
@@ -165,6 +165,26 @@ const config = defineConfig({
                 label: "Phone number",
                 name: "phoneNumber",
                 required: true,
+              },
+              {
+                type: "object",
+                label: "Social Links",
+                name: "socialLinks",
+                list: true,
+                fields: [
+                  {
+                    type: "string",
+                    label: "Label",
+                    name: "label",
+                    required: true,
+                  },
+                  {
+                    type: "string",
+                    label: "URL",
+                    name: "url",
+                    required: true,
+                  },
+                ],
               },
               {
                 type: "image",
