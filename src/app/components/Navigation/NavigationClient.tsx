@@ -116,7 +116,7 @@ const Navigation = ({
       />
       <div
         className={cx(
-          "uppercase tracking-widest font-medium transition absolute left-0 top-full w-full items-center text-center -z-10",
+          "uppercase tracking-widest font-medium transition absolute desktop:sticky left-0 top-full desktop:top-0 w-full items-center text-center -z-10",
           {
             "max-desktop:opacity-0 max-desktop:-translate-y-full": !isVisible,
             "max-desktop:hidden": !isMounted,
