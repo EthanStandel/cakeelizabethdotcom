@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .ts,.tsx"
   },
   "devDependencies": {
+    "@emotion/css": "^11.10.6",
     "@svgr/webpack": "^6.3.1",
     "@tinacms/cli": "^1.0.9",
     "@types/js-cookie": "^3.0.0",
