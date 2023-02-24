@@ -22,6 +22,9 @@ export const globalModel: Collection = {
           label: "Social Links",
           name: "socialLinks",
           list: true,
+          ui: {
+            itemProps: (item) => ({ label: item.label }),
+          },
           fields: [
             {
               type: "string",
@@ -48,13 +51,15 @@ export const globalModel: Collection = {
           label: "Navigation",
           name: "navigation",
           list: true,
+          ui: {
+            itemProps: (item) => ({ label: item.label }),
+          },
           fields: [
             {
               type: "string",
               label: "Label",
               name: "label",
               required: true,
-              isTitle: true,
             },
             {
               type: "string",
@@ -66,6 +71,9 @@ export const globalModel: Collection = {
               label: "Sub Navigation",
               name: "subNavItem",
               list: true,
+              ui: {
+                itemProps: (item) => ({ label: item.label }),
+              },
               fields: [
                 {
                   type: "string",
