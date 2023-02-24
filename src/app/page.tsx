@@ -1,3 +1,12 @@
-const Page = () => <>Empty page in appDir</>;
+import client from "../../.tina/__generated__/client";
+import { HomePageClient } from "./components/Home/HomePageClient";
+
+const Page = async () => {
+  const { data, query, variables } = await client.queries.homePage({
+    relativePath: "home-page.md",
+  });
+
+  return <HomePageClient homePageQuery={{ data, query, variables }} />;
+};
 
 export default Page;
