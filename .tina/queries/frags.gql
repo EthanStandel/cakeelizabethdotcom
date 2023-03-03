@@ -1,0 +1,7 @@
+fragment HomePageProductParts on Product {
+  hidden
+  title
+  images {
+    image
+  }
+}

@@ -12,6 +12,11 @@ export const homePageModel: Collection = {
       name: "heroImage",
     },
     {
+      type: "string",
+      label: "CTA",
+      name: "cta",
+    },
+    {
       type: "rich-text",
       label: "Body",
       name: "body",

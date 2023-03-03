@@ -58,7 +58,7 @@ const SubNavMenuPopout = ({
   return (
     <div
       className={cx(
-        "absolute top-full left-1/2 -translate-x-1/2 translate-y-4 bg-white shadow-lg border-[1px] rounded-xl flex flex-col whitespace-nowrap overflow-hidden transition z-10",
+        "absolute top-full left-1/2 -translate-x-1/2 translate-y-4 bg-white shadow border-[1px] rounded flex flex-col whitespace-nowrap overflow-hidden transition z-10 text-text",
         { "opacity-0 -translate-y-1/4 scale-75": !isVisible }
       )}
     >
