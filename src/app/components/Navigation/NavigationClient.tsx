@@ -29,8 +29,8 @@ export const NavigationClient = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="relative z-10">
-      <HeaderSection>
+    <>
+      <HeaderSection className="relative z-20">
         <div className="flex justify-between">
           <a
             href={
@@ -57,14 +57,8 @@ export const NavigationClient = ({
           </div>
         </div>
       </HeaderSection>
-      <HeaderSection>
-        <div className="flex justify-center items-center my-2 relative">
-          <div className="desktop:hidden flex items-center">
-            <MobileMenuStateToggleButton
-              open={mobileMenuOpen}
-              toggle={() => setMobileMenuOpen((open) => !open)}
-            />
-          </div>
+      <HeaderSection className="max-desktop:hidden">
+        <div className="flex justify-center items-center relative">
           <div className="flex-grow flex justify-center">
             <Link href="/">
               <Image
@@ -78,12 +72,35 @@ export const NavigationClient = ({
           </div>
         </div>
       </HeaderSection>
-      <Navigation
-        navigation={navigation}
-        mobileOpen={mobileMenuOpen}
-        closeMobile={() => setMobileMenuOpen(false)}
-      />
-    </div>
+      <div className="sticky top-0">
+        <HeaderSection className="desktop:hidden">
+          <div className="flex justify-center items-center relative">
+            <div className="flex items-center">
+              <MobileMenuStateToggleButton
+                open={mobileMenuOpen}
+                toggle={() => setMobileMenuOpen((open) => !open)}
+              />
+            </div>
+            <div className="flex-grow flex justify-center">
+              <Link href="/">
+                <Image
+                  src={logo}
+                  height={130}
+                  width={225}
+                  alt="Logo"
+                  className="desktop:h-[130px] desktop:w-[225px] h-[52px] w-[94px]"
+                />
+              </Link>
+            </div>
+          </div>
+        </HeaderSection>
+        <Navigation
+          navigation={navigation}
+          mobileOpen={mobileMenuOpen}
+          closeMobile={() => setMobileMenuOpen(false)}
+        />
+      </div>
+    </>
   );
 };
 
@@ -116,7 +133,7 @@ const Navigation = ({
       />
       <div
         className={cx(
-          "uppercase tracking-widest font-medium transition absolute desktop:sticky left-0 top-full desktop:top-0 w-full items-center text-center -z-10",
+          "uppercase tracking-widest font-medium transition absolute desktop:sticky desktop:z-10 left-0 top-full desktop:top-0 w-full items-center text-center -z-10",
           {
             "max-desktop:opacity-0 max-desktop:-translate-y-full": !isVisible,
             "max-desktop:hidden": !isMounted,
