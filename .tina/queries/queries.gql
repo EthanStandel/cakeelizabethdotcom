@@ -1,4 +1,5 @@
-query homePageProducts(
+query homePageData(
+  $relativePath: String!
   $before: String
   $after: String
   $first: Float
@@ -6,6 +7,20 @@ query homePageProducts(
   $sort: String
   $filter: ProductFilter
 ) {
+  homePage(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...HomePageParts
+  }
   productConnection(
     before: $before
     after: $after
