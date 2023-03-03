@@ -22,7 +22,6 @@ module.exports = {
     screens: {
       desktop: "1024px",
     },
-
     borderWidth: {
       DEFAULT: "3px",
       0: "0",
@@ -33,6 +32,18 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["var(--font-montserrat)", ...defaultTheme.fontFamily.sans],
+      },
+      borderRadius: {
+        DEFAULT: "24px",
+      },
+      boxShadow: {
+        DEFAULT: "2px 2px 5px 5px",
+      },
+      boxShadowColor: {
+        DEFAULT: "rgba(0, 0, 0, 0.3)",
+      },
+      letterSpacing: {
+        widerest: ".2em",
       },
       typography: (theme) => ({
         DEFAULT: {
