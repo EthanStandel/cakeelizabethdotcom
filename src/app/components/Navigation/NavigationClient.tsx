@@ -57,7 +57,7 @@ export const NavigationClient = ({
           </div>
         </div>
       </HeaderSection>
-      <HeaderSection className="max-desktop:hidden">
+      <HeaderSection className="max-desktop:hidden z-10">
         <div className="flex justify-center items-center relative">
           <div className="flex-grow flex justify-center">
             <Link href="/">
@@ -72,7 +72,7 @@ export const NavigationClient = ({
           </div>
         </div>
       </HeaderSection>
-      <div className="sticky top-0">
+      <div className="sticky top-0 z-10">
         <HeaderSection className="desktop:hidden">
           <div className="flex justify-center items-center relative">
             <div className="flex items-center">

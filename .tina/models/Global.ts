@@ -94,5 +94,18 @@ export const globalModel: Collection = {
         },
       ],
     },
+    {
+      type: "object",
+      label: "Footer",
+      name: "footer",
+      fields: [
+        {
+          type: "string",
+          label: "Label",
+          name: "label",
+          required: true,
+        },
+      ],
+    },
   ],
 };
