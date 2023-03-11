@@ -42,3 +42,27 @@ query homePageData(
     }
   }
 }
+
+query footerData(
+  $before: String
+  $after: String
+  $first: Float
+  $last: Float
+  $sort: String
+  $filter: GlobalFilter
+) {
+  globalConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    edges {
+      node {
+        ...FooterDetails
+      }
+    }
+  }
+}

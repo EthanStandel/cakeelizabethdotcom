@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { Navigation } from "./components/Navigation";
 import { Montserrat } from "@next/font/google";
 import cx from "classnames";
+import { Footer } from "./components/Footer";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -11,9 +12,10 @@ const montserrat = Montserrat({
 
 const Layout = ({ children }: { children: ReactNode }) => (
   <html lang="en" className={cx(montserrat.variable, "font-sans")}>
-    <body>
+    <body className="flex flex-col relative">
       <Navigation />
-      <main>{children}</main>
+      <main className="flex-grow">{children}</main>
+      <Footer />
     </body>
   </html>
 );

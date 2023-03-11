@@ -5,3 +5,9 @@ fragment HomePageProductParts on Product {
     image
   }
 }
+
+fragment FooterDetails on Global {
+  footer {
+    label
+  }
+}
