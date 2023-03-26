@@ -28,7 +28,7 @@ export const HomePageClient = ({
           .map(({ node }) => (
             <Link
               key={node._sys.filename}
-              href={`/${node._sys.filename}`}
+              href={`/products/${node._sys.filename}`}
               className="bg-white shadow hover:shadow-primary focus-visible:shadow-primary active:shadow-none transition-[box-shadow,border-color] rounded desktop:max-w-xs max-w-sm overflow-hidden text-text border border-gray-400 hover:border-primary focus-visible:border-primary active:border-primary w-full"
             >
               <Image

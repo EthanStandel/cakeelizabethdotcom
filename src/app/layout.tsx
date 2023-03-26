@@ -12,7 +12,7 @@ const montserrat = Montserrat({
 
 const Layout = ({ children }: { children: ReactNode }) => (
   <html lang="en" className={cx(montserrat.variable, "font-sans")}>
-    <body className="flex flex-col relative">
+    <body className="flex flex-col relative min-h-screen">
       <Navigation />
       <main className="flex-grow">{children}</main>
       <Footer />
