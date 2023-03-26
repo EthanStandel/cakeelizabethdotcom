@@ -20,7 +20,7 @@ export const FooterServer = asyncComponent(async () => {
       />
       <div
         className="sticky h-[1px] hidden desktop:block w-full -mb-[1px] -translate-y-[1px] bottom-0 bg-primary"
-        style={{ boxShadow: "5px -1.5em 20px 5px rgb(0 0 0 / 50%);" }}
+        style={{ boxShadow: "5px -1.5em 20px 5px rgb(0 0 0 / 50%)" }}
       />
     </>
   );

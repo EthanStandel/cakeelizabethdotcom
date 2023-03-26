@@ -23,38 +23,38 @@
       },
       {
         "label": "Weddings",
-        "url": "/weddings"
+        "url": "/product/weddings"
       },
       {
         "label": "Cakes",
         "subNavItem": [
           {
             "label": "Children's cakes",
-            "url": "/childrens-cake"
+            "url": "/product/childrens-cake"
           },
           {
             "label": "Birthday cakes",
-            "url": "/birthday-cakes"
+            "url": "/product/birthday-cakes"
           },
           {
             "label": "Shower cakes",
-            "url": "/shower-cakes"
+            "url": "/product/shower-cakes"
           },
           {
             "label": "Special occasion cakes",
-            "url": "/special-occasion-cakes"
+            "url": "/product/special-occasion-cakes"
           },
           {
             "label": "Sculpted cakes",
-            "url": "/sculpted-cakes"
+            "url": "/product/sculpted-cakes"
           },
           {
             "label": "Religious cakes",
-            "url": "/religious-cakes"
+            "url": "/product/religious-cakes"
           },
           {
             "label": "Holiday cakes",
-            "url": "/holiday-cakes"
+            "url": "/product/holiday-cakes"
           }
         ]
       },
@@ -63,11 +63,11 @@
         "subNavItem": [
           {
             "label": "Cupcakes",
-            "url": "/cupcakes"
+            "url": "/product/cupcakes"
           },
           {
             "label": "Cake pops & cookies",
-            "url": "/cake-pops-cookies"
+            "url": "/product/cake-pops-cookies"
           }
         ]
       },
