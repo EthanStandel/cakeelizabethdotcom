@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useTina } from "tinacms/dist/react";
 import { HomePageDataQuery } from "../../../../.tina/__generated__/types";
+import { CardLink } from "../../../components/CardLink";
 import { Markdown } from "../../../components/Markdown";
 
 export const HomePageClient = ({
@@ -26,10 +26,10 @@ export const HomePageClient = ({
         {data.productConnection.edges
           .filter(({ node }) => !node.hidden)
           .map(({ node }) => (
-            <Link
+            <CardLink
               key={node._sys.filename}
-              href={`/products/${node._sys.filename}`}
-              className="bg-white shadow hover:shadow-primary focus-visible:shadow-primary active:shadow-none transition-[box-shadow,border-color] rounded desktop:max-w-xs max-w-sm overflow-hidden text-text border border-gray-400 hover:border-primary focus-visible:border-primary active:border-primary w-full"
+              href={`/product/${node._sys.filename}`}
+              className="w-full!"
             >
               <Image
                 src={node.images[0].image}
@@ -43,7 +43,7 @@ export const HomePageClient = ({
                   {data.homePage.cta}
                 </div>
               </div>
-            </Link>
+            </CardLink>
           ))}
       </div>
     </>

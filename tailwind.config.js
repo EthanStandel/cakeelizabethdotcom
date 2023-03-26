@@ -15,6 +15,7 @@ module.exports = {
       current: "currentColor",
       primary: "#65ffce",
       text: "#555555",
+      link: "#0062ff",
       black: colors.black,
       white: colors.white,
       gray: colors.gray,
@@ -38,6 +39,7 @@ module.exports = {
       },
       boxShadow: {
         DEFAULT: "2px 2px 5px 5px",
+        even: "0px 0px 5px 5px",
       },
       boxShadowColor: {
         DEFAULT: "rgba(0, 0, 0, 0.3)",
