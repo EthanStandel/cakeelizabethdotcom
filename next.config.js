@@ -3,7 +3,7 @@ const { withContentlayer } = require("next-contentlayer");
 
 module.exports = withContentlayer({
   reactStrictMode: true,
-  redirects: (async () => [
+  redirects: async () => [
     {
       source: "/schedule-your-tasting",
       destination: "/contact",
@@ -12,14 +12,19 @@ module.exports = withContentlayer({
     {
       source: "/cake-pricing-flavors",
       destination: "/cake-flavors",
-      permanent: true
+      permanent: true,
     },
     {
       source: "/delivery-and-order-policies",
       destination: "/order-policies",
       permanent: true,
-    }
-  ]),
+    },
+    {
+      source: "/sculpted-cakes",
+      destination: "/",
+      permanent: false,
+    },
+  ],
   webpack: (config) => {
     config.module.rules.push({
       test: /\.html$/i,
