@@ -1,5 +1,5 @@
 import client from "../../.tina/__generated__/client";
-import { HomePageClient } from "./components/Home/HomePageClient";
+import { HomePageClient } from "./_components/Home/HomePageClient";
 
 const Page = async () => {
   const { data, query, variables } = await client.queries.homePageData({

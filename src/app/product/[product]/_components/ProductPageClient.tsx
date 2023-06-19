@@ -55,7 +55,14 @@ export const ProductPageClient = ({
                 },
               }}
             >
-              <Image src={image} width={150} height={150} alt="" aria-hidden />
+              <Image
+                src={image}
+                width={150}
+                height={150}
+                alt=""
+                className="w-[150px] h-[150px]"
+                aria-hidden
+              />
             </CardLink>
           ))}
         </div>

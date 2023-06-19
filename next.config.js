@@ -22,6 +22,18 @@ module.exports = {
         source: "/admin",
         destination: "/admin/index.html",
       },
+      {
+        source: "/cake-flavors",
+        destination: "/flavors",
+      },
+      {
+        source: "/cake-pricing",
+        destination: "/policies-and-pricing",
+      },
+      {
+        source: "/order-policies",
+        destination: "/policies-and-pricing",
+      },
     ];
   },
 };

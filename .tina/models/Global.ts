@@ -5,6 +5,12 @@ export const globalModel: Collection = {
   name: "global",
   path: "content/global",
   format: "json",
+  ui: {
+    allowedActions: {
+      create: false,
+      delete: false,
+    },
+  },
   fields: [
     {
       type: "object",

@@ -1,17 +1,17 @@
 import { Collection } from "tinacms";
-import { imageList } from "./imageList";
 
-export const productModel: Collection = {
-  label: "Products",
-  name: "product",
-  path: "content/product",
+export const aboutThisWebsite: Collection = {
+  label: "About this website",
+  name: "aboutThisWebsite",
+  path: "content/about-this-website",
   format: "md",
-  fields: [
-    {
-      type: "boolean",
-      label: "Hidden",
-      name: "hidden",
+  ui: {
+    allowedActions: {
+      create: false,
+      delete: false,
     },
+  },
+  fields: [
     {
       type: "string",
       label: "Title",
@@ -24,6 +24,5 @@ export const productModel: Collection = {
       name: "body",
       isBody: true,
     },
-    imageList(),
   ],
 };
