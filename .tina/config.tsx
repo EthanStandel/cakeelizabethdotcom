@@ -1,7 +1,12 @@
 import { defineConfig } from "tinacms";
+import { aboutUsPage } from "./models/AboutUsPage";
+import { flavorPageModel } from "./models/FlavorPage";
 import { globalModel } from "./models/Global";
 import { homePageModel } from "./models/HomePage";
+import { policiesAndPricingPageModel } from "./models/PoliciesAndPricingPage";
 import { productModel } from "./models/Product";
+import { aboutThisWebsite } from "./models/AboutThisWebsite";
+import { contactUsPage } from "./models/ContactUsPage";
 
 const config = defineConfig({
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID!,
@@ -27,7 +32,16 @@ const config = defineConfig({
     outputFolder: "admin", // within the public folder
   },
   schema: {
-    collections: [globalModel, homePageModel, productModel],
+    collections: [
+      globalModel,
+      homePageModel,
+      flavorPageModel,
+      productModel,
+      policiesAndPricingPageModel,
+      aboutUsPage,
+      aboutThisWebsite,
+      contactUsPage,
+    ],
   },
 });
 

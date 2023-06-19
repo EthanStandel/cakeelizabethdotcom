@@ -45,10 +45,6 @@
             "url": "/product/special-occasion-cakes"
           },
           {
-            "label": "Sculpted cakes",
-            "url": "/product/sculpted-cakes"
-          },
-          {
             "label": "Religious cakes",
             "url": "/product/religious-cakes"
           },
@@ -76,15 +72,11 @@
         "subNavItem": [
           {
             "label": "Cake flavors",
-            "url": "/cake-flavors"
+            "url": "/flavors"
           },
           {
-            "label": "Cake pricing",
-            "url": "/cake-pricing"
-          },
-          {
-            "label": "Order policies",
-            "url": "/order-policies"
+            "label": "Policies & Pricing",
+            "url": "/policies-and-pricing"
           }
         ]
       },

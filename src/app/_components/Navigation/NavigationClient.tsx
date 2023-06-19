@@ -146,8 +146,8 @@ const Navigation = ({
             {navigation.map((item) => {
               if (item.url) {
                 const isActive =
-                  pathname === "/"
-                    ? item.url === "/"
+                  item.url === "/"
+                    ? item.url === pathname
                     : item.url
                     ? pathname.startsWith(item.url)
                     : item.subNavItem.some((subItem) =>
@@ -157,7 +157,9 @@ const Navigation = ({
                   <div key={item.label}>
                     <Link
                       href={item.url}
-                      className={cx(isActive ? "font-bold" : "font-medium")}
+                      className={cx("transition-[font-weight]", {
+                        "font-bold": isActive,
+                      })}
                     >
                       {item.label}
                     </Link>
