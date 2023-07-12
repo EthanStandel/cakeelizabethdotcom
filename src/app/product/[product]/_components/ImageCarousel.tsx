@@ -1,19 +1,16 @@
-import {
-  useRef,
-  useState,
-  DetailedHTMLProps,
-  AnchorHTMLAttributes,
-  useEffect,
-} from "react";
+import { useRef, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { usePresence } from "../../../../utils/usePresence";
-import cx from "classnames";
 import { useKeyboardEvent } from "@react-hookz/web";
 import { useRouter } from "next/navigation";
 import FaArrowRight from "./FaArrowRight.svg";
 import FaArrowLeft from "./FaArrowLeft.svg";
 import FaTimes from "./FaTimes.svg";
 import { useLayoutEffect } from "../../../../utils/useLayoutEffect";
+import Link from "next/link";
+import { PropsOf } from "../../../../utils/PropsOf";
+import { e } from "easy-tailwind";
+import cx from "classnames";
 
 export const ImageCarousel = ({ images }: { images: Array<string> }) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -23,25 +20,7 @@ export const ImageCarousel = ({ images }: { images: Array<string> }) => {
   const router = useRouter();
   const carouselIndex = params.get("carouselIndex");
   const { isMounted, isVisible } = usePresence(!!carouselIndex);
-  const parsedIndexSource = parseInt(carouselIndex) % images.length;
-  const [index, setIndex] = useState(parsedIndexSource);
-  useEffect(() => {
-    setIndex(parsedIndexSource);
-  }, [parsedIndexSource]);
-  const silentlyUpdateParam = (newIndex: number, blockSmooth = false) => {
-    if (blockSmooth) {
-      blockSmoothUpdateRef.current = true;
-    } else if (blockSmoothUpdateRef.current) {
-      blockSmoothUpdateRef.current = false;
-    }
-    if (newIndex === index) return;
-    window.history.replaceState(
-      null,
-      "",
-      `${pathname}?carouselIndex=${newIndex}`
-    );
-    setIndex(newIndex);
-  };
+  const index = parseInt(carouselIndex) % images.length;
 
   useLayoutEffect(() => {
     const dialog = dialogRef.current;
@@ -62,20 +41,25 @@ export const ImageCarousel = ({ images }: { images: Array<string> }) => {
   }, [isMounted]);
 
   const blockSmoothUpdateRef = useRef(false);
+  const updateIndex = (newIndex: number, blockSmooth = false) => {
+    if (blockSmooth) {
+      blockSmoothUpdateRef.current = true;
+    } else if (blockSmoothUpdateRef.current) {
+      blockSmoothUpdateRef.current = false;
+    }
+    if (newIndex !== index)
+      router.push(`${pathname}?carouselIndex=${newIndex}`, { scroll: false });
+  };
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
-    if (
-      !scrollContainer ||
-      blockSmoothUpdateRef.current ||
-      isNaN(parsedIndexSource)
-    )
+    if (!scrollContainer || blockSmoothUpdateRef.current || isNaN(index))
       return;
 
     scrollContainer.scrollTo({
       left: scrollContainer.clientWidth * index,
       behavior: "smooth",
     });
-  }, [index, parsedIndexSource]);
+  }, [index]);
 
   const nextIndex = index + 1 >= images.length ? 0 : index + 1;
   const nextPath = `${pathname}?carouselIndex=${nextIndex}`;
@@ -89,15 +73,15 @@ export const ImageCarousel = ({ images }: { images: Array<string> }) => {
       className="backdrop:hidden bg-transparent"
       onCancel={(e) => {
         e.preventDefault();
-        router.replace(closePath);
+        router.push(closePath, { scroll: false });
       }}
-      onClose={() => router.replace(closePath)}
+      onClose={() => router.push(closePath, { scroll: false })}
     >
       {isMounted && (
         <div
-          className={cx(
+          className={e(
             "fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity backdrop-blur",
-            { "opacity-0": !isVisible }
+            !isVisible && "opacity-0"
           )}
         >
           <ul
@@ -105,32 +89,35 @@ export const ImageCarousel = ({ images }: { images: Array<string> }) => {
             // for the love of god, do not ask me why this needs backdrop-blur-0
             // but the native x-bar starts trying to account for the y-bar without it ¯\_(ツ)_/¯
             className="flex overflow-x-auto snap-x snap-mandatory backdrop-blur-0 h-full"
-            onScroll={() => {
-              const scrollContainer = scrollContainerRef.current;
+            onScroll={(e) => {
+              const scrollContainer = e.currentTarget;
               const scrollIndex = Math.round(
                 scrollContainer.scrollLeft / scrollContainer.clientWidth
               );
-              if (!scrollContainer || index === scrollIndex) return;
-              silentlyUpdateParam(scrollIndex, true);
+              if (index === scrollIndex) return;
+              updateIndex(scrollIndex, true);
             }}
           >
             {images.map((image, index) => (
               <li
                 key={index}
                 className="snap-start snap-always w-full h-full flex justify-center items-center flex-shrink-0"
-                onClick={() => router.push(closePath)}
+                onClick={() => router.push(closePath, { scroll: false })}
               >
                 <img
                   src={image}
                   alt=""
                   loading="lazy"
                   aria-hidden
+                  // this prevents the background-click closure
                   onClick={(e) => e.stopPropagation()}
-                  className={cx(
-                    "rounded transition-transform max-h-full max-w-[calc(100%-1rem)] desktop:max-h-[calc(100%-11rem)] desktop:max-w-[calc(100%-11rem)]",
+                  className={e(
+                    "rounded transition-transform max-h-full max-w-[calc(100%-1rem)]",
                     {
-                      "scale-50": !isVisible,
-                    }
+                      desktop:
+                        "max-w-[calc(100%-11rem)] max-h-[calc(100%-11rem)]",
+                    },
+                    !isVisible && "scale-50"
                   )}
                 />
               </li>
@@ -140,7 +127,8 @@ export const ImageCarousel = ({ images }: { images: Array<string> }) => {
             <ControlButton
               className="fixed left-4 top-1/2 -translate-y-1/2"
               href={prevPath}
-              onClick={() => silentlyUpdateParam(prevIndex)}
+              onClick={() => (blockSmoothUpdateRef.current = false)}
+              replace
               eventKey="ArrowLeft"
               aria-label="Previous image"
             >
@@ -149,7 +137,8 @@ export const ImageCarousel = ({ images }: { images: Array<string> }) => {
             <ControlButton
               className="fixed right-4 top-1/2 -translate-y-1/2"
               href={nextPath}
-              onClick={() => silentlyUpdateParam(nextIndex)}
+              onClick={() => (blockSmoothUpdateRef.current = false)}
+              replace
               eventKey="ArrowRight"
               aria-label="Next image"
             >
@@ -158,7 +147,6 @@ export const ImageCarousel = ({ images }: { images: Array<string> }) => {
             <ControlButton
               className="fixed right-4 top-4"
               href={closePath}
-              onClick={() => router.push(closePath)}
               eventKey="Escape"
               aria-label="Close image gallary"
             >
@@ -173,33 +161,40 @@ export const ImageCarousel = ({ images }: { images: Array<string> }) => {
 
 const ControlButton = ({
   eventKey,
-  onClick,
-  className,
+  className = "",
   ...props
 }: {
   eventKey: "Escape" | "ArrowLeft" | "ArrowRight";
   href: string;
-  onClick: () => void;
-} & DetailedHTMLProps<
-  AnchorHTMLAttributes<HTMLAnchorElement>,
-  HTMLAnchorElement
->) => {
-  useKeyboardEvent("keydown", (event) => {
-    if (event.key === eventKey) {
-      onClick();
-    }
-  });
+  onClick?: () => void;
+} & Omit<PropsOf<typeof Link>, "href" | "onClick">) => {
+  const router = useRouter();
+  useKeyboardEvent(
+    eventKey,
+    () => {
+      props.onClick?.();
+      router.push(props.href, { scroll: false });
+    },
+    [props.href],
+    { event: "keydown", target: window }
+  );
 
   return (
-    <a
+    <Link
       className={cx(
         className,
-        "z-50 bg-primary text-text w-14 h-14 rounded-full border-[1px] border-primary flex justify-center items-center opacity-75 desktop:opacity-100 hover:border-white focus-visible:border-white !shadow-primary hover:shadow-even focus-visible:shadow-even transition-all active:!shadow-none focus:outline-none"
+        e(
+          "z-50 bg-primary text-text w-14 h-14 rounded-full border-[1px] border-primary flex justify-center items-center opacity-75 !shadow-primary transition-all",
+          {
+            desktop: "opacity-100",
+            hover: "border-white shadow-even",
+            "focus-visible": "border-white shadow-even",
+            focus: "outline-none",
+            active: "!shadow-none",
+          }
+        )
       )}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick();
-      }}
+      scroll={false}
       {...props}
     />
   );

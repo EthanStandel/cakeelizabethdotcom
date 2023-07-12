@@ -1,5 +1,6 @@
 import { PropsOf } from "../utils/PropsOf";
 import Link from "next/link";
+import { e } from "easy-tailwind";
 import cx from "classnames";
 
 export const CardLink = ({ className, ...props }: PropsOf<typeof Link>) => (
@@ -7,7 +8,14 @@ export const CardLink = ({ className, ...props }: PropsOf<typeof Link>) => (
     {...props}
     className={cx(
       className,
-      "bg-white h-auto w-auto shadow hover:shadow-primary focus-visible:shadow-primary active:shadow-none transition-[box-shadow,border-color] rounded overflow-hidden text-text border border-gray-400 hover:border-primary focus-visible:border-primary active:border-primary"
+      e(
+        "bg-white h-auto w-auto shadow transition-[box-shadow,border-color] rounded overflow-hidden text-text border border-gray-400",
+        {
+          hover: "shadow-primary border-primary",
+          "focus-visible": "shadow-primary border-primary",
+          active: "shadow-none border-primary",
+        }
+      )
     )}
   />
 );

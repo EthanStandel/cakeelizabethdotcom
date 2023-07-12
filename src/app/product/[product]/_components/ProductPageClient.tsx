@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 import { useTina } from "tinacms/dist/react";
 import { ProductQuery } from "../../../../../.tina/__generated__/types";
 import { CardLink } from "../../../../components/CardLink";
 import { Markdown } from "../../../../components/Markdown";
 import { ImageCarousel } from "./ImageCarousel";
+import { e } from "easy-tailwind";
 
 export const ProductPageClient = ({
   query,
@@ -18,11 +20,18 @@ export const ProductPageClient = ({
 
   return (
     <>
-      <ImageCarousel images={data.product.images.map(({ image }) => image)} />
-      <div className="px-4 desktop:px-28 py-4">
-        <div className="desktop:grid desktop:grid-cols-2 flex flex-col-reverse gap-4 items-center py-4">
+      <Suspense fallback={null}>
+        <ImageCarousel images={data.product.images.map(({ image }) => image)} />
+      </Suspense>
+      <div className={e("px-4 py-4", { desktop: "px-28" })}>
+        <div
+          className={e("flex flex-col-reverse gap-4 items-center py-4", {
+            desktop: "grid grid-cols-2",
+          })}
+        >
           <CardLink
             className=""
+            scroll={false}
             href={{
               pathname,
               query: {
@@ -48,6 +57,7 @@ export const ProductPageClient = ({
           {data.product.images.slice(1).map(({ image }, index) => (
             <CardLink
               key={index}
+              scroll={false}
               href={{
                 pathname,
                 query: {

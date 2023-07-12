@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTina } from "tinacms/dist/react";
 import { GlobalQuery } from "../../../../.tina/__generated__/types";
-import cx from "classnames";
 import { SubNavMenu } from "./components/SubNavMenu";
 import Image from "next/image";
 import FaFacebook from "./FaFacebook.svg";
@@ -13,6 +12,9 @@ import { usePresence, usePresenceSwitch } from "../../../utils/usePresence";
 import { DetailedHTMLProps, FC, HTMLAttributes, useState } from "react";
 import MobileMenuOpenIcon from "./CgMenuLeftAlt.svg";
 import MobileMenuCloseIcon from "./GrClose.svg";
+import { usePathChange } from "../../../hooks/usePathChange";
+import { e } from "easy-tailwind";
+import cx from "classnames";
 
 const socialLinkIcons = {
   Facebook: FaFacebook,
@@ -57,7 +59,7 @@ export const NavigationClient = ({
           </div>
         </div>
       </HeaderSection>
-      <HeaderSection className="max-desktop:hidden z-10">
+      <HeaderSection className={e("z-10", { "max-desktop": "hidden" })}>
         <div className="flex justify-center items-center relative">
           <div className="flex-grow flex justify-center">
             <Link href="/">
@@ -66,14 +68,16 @@ export const NavigationClient = ({
                 height={130}
                 width={225}
                 alt="Logo"
-                className="desktop:h-[130px] desktop:w-[225px] h-[52px] w-[94px]"
+                className={e("h-[52px] w-[94px]", {
+                  desktop: "h-[130px] w-[225px]",
+                })}
               />
             </Link>
           </div>
         </div>
       </HeaderSection>
       <div className="sticky top-0 z-10">
-        <HeaderSection className="desktop:hidden">
+        <HeaderSection className={e({ desktop: "hidden" })}>
           <div className="flex justify-center items-center relative">
             <div className="flex items-center">
               <MobileMenuStateToggleButton
@@ -88,7 +92,9 @@ export const NavigationClient = ({
                   height={130}
                   width={225}
                   alt="Logo"
-                  className="desktop:h-[130px] desktop:w-[225px] h-[52px] w-[94px]"
+                  className={e("h-[52px] w-[94px]", {
+                    desktop: "h-[130px] w-[225px]",
+                  })}
                 />
               </Link>
             </div>
@@ -122,27 +128,32 @@ const Navigation = ({
         tabIndex={-1}
         aria-hidden
         onClick={() => closeMobile()}
-        className={cx(
-          "-z-10 bg-black h-screen w-screen fixed top-0 left-0 desktop:hidden transition-opacity",
-          {
-            "opacity-0": !isVisible,
-            "opacity-30": isVisible,
-            "max-desktop:hidden": !isMounted,
-          }
+        className={e(
+          "-z-10 bg-black h-screen w-screen fixed top-0 left-0 transition-opacity",
+          { desktop: "hidden", "max-desktop": !isMounted && "hidden" },
+          !isVisible && "opacity-0",
+          isVisible && "opacity-30"
         )}
       />
       <div
-        className={cx(
-          "uppercase tracking-widest font-medium transition absolute desktop:sticky desktop:z-10 left-0 top-full desktop:top-0 w-full items-center text-center -z-10",
+        className={e(
+          "uppercase tracking-widest font-medium transition absolute left-0 top-full w-full items-center text-center -z-10",
           {
-            "max-desktop:opacity-0 max-desktop:-translate-y-full": !isVisible,
-            "max-desktop:hidden": !isMounted,
+            desktop: "sticky z-10 top-0",
+            "max-desktop": [
+              !isVisible && "opacity-0 -translate-y-full",
+              !isMounted && "hidden",
+            ],
           }
         )}
       >
         <HeaderSection>
-          <div className="w-full h-5 desktop:hidden" />
-          <nav className="flex flex-col desktop:flex-row gap-5 desktop:gap-2 justify-between">
+          <div className={e("w-full h-5", { desktop: "hidden" })} />
+          <nav
+            className={e("flex flex-col gap-5 justify-between", {
+              desktop: "flex-row gap-2",
+            })}
+          >
             {navigation.map((item) => {
               if (item.url) {
                 const isActive =
@@ -157,9 +168,10 @@ const Navigation = ({
                   <div key={item.label}>
                     <Link
                       href={item.url}
-                      className={cx("transition-[font-weight]", {
-                        "font-bold": isActive,
-                      })}
+                      className={e(
+                        "transition-[font-weight]",
+                        isActive && "font-bold"
+                      )}
                     >
                       {item.label}
                     </Link>
@@ -175,7 +187,12 @@ const Navigation = ({
             })}
           </nav>
         </HeaderSection>
-        <div className="w-full h-10 bg-gradient-to-b from-primary to-transparent gradient desktop:hidden" />
+        <div
+          className={e(
+            "w-full h-10 bg-gradient-to-b from-primary to-transparent gradient",
+            { desktop: "hidden" }
+          )}
+        />
       </div>
     </>
   );
@@ -198,19 +215,25 @@ const MobileMenuStateToggleButton = ({
     { transitionDuration: 100 }
   );
   const Icon = mobileMenuStateIcon[mountedItem];
+  usePathChange(() => {
+    if (open) toggle();
+  });
 
   if (!isMounted) return null;
+  const rotateBack = (isEntering && open) || (isExiting && !open);
+  const rotate = (isExiting && open) || (isEntering && !open);
 
   return (
     <button
       aria-label="Toggle mobile menu"
       onClick={toggle}
-      className={cx("absolute left-0 transition duration-150", {
-        "linear ": isExiting,
-        "ease-out": isEntering,
-        "-rotate-90 opacity-0": (isEntering && open) || (isExiting && !open),
-        "rotate-90 opacity-0": (isExiting && open) || (isEntering && !open),
-      })}
+      className={e(
+        "absolute left-0 transition duration-150",
+        isExiting && "linear",
+        isEntering && "ease-out",
+        rotateBack && "-rotate-90 opacity-0",
+        rotate && "rotate-90 opacity-0"
+      )}
     >
       <Icon className="h-8 w-8" />
     </button>
@@ -223,8 +246,10 @@ const HeaderSection = ({
 }: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) => (
   <header
     className={cx(
-      "bg-primary py-2 desktop:py-4 text-text px-4 desktop:px-28 desktop:text-lg text-md",
-      className
+      className,
+      e("bg-primary py-2 text-text px-4 text-md", {
+        desktop: "py-4 px-28 text-lg",
+      })
     )}
     {...props}
   />

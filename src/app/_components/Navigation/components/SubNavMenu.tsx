@@ -1,10 +1,10 @@
 import { GlobalQuery } from "../../../../../.tina/__generated__/types";
 import { usePathname } from "next/navigation";
-import cx from "classnames";
 import { usePresence } from "../../../../utils/usePresence";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ChevronDown from "./FaChevronDown.svg";
+import { e } from "easy-tailwind";
 
 export const SubNavMenu = ({
   item,
@@ -30,13 +30,13 @@ export const SubNavMenu = ({
     <div className="relative flex justify-center">
       <button
         onClick={() => setOpen(true)}
-        className={cx(
-          { "font-bold": isActive },
+        className={e(
+          isActive && "font-bold",
           "uppercase tracking-widest flex items-center gap-1"
         )}
       >
         <span>{item.label}</span>
-        <ChevronDown className={cx({ "rotate-180": open }, "transition")} />
+        <ChevronDown className={e(open && "rotate-180", "transition")} />
       </button>
       <SubNavMenuPopout open={open} items={item.subNavItem} />
     </div>
@@ -57,23 +57,32 @@ const SubNavMenuPopout = ({
 
   return (
     <div
-      className={cx(
+      className={e(
         "absolute top-full left-1/2 -translate-x-1/2 translate-y-4 bg-white shadow border-[1px] rounded flex flex-col whitespace-nowrap overflow-hidden transition z-10 text-text",
-        { "opacity-0 -translate-y-1/4 scale-75": !isVisible }
+        !isVisible && "opacity-0 -translate-y-1/4 scale-75"
       )}
     >
-      {items.map((item) => (
-        <Link
-          href={item.url}
-          key={item.label}
-          className={cx(
-            "uppercase transition-colors tracking-widest py-2 desktop:py-3 hover:bg-gray-100 focus:bg-gray-100 active:bg-gray-200 px-4 focus:outline-none",
-            pathname.startsWith(item.url) ? "font-bold" : "font-medium"
-          )}
-        >
-          {item.label}
-        </Link>
-      ))}
+      {items.map((item) => {
+        const isSelected = pathname.startsWith(item.url);
+        return (
+          <Link
+            href={item.url}
+            key={item.label}
+            className={e(
+              "uppercase transition-colors tracking-widest py-2 font-medium px-4",
+              {
+                desktop: "py-3",
+                focus: "bg-gray-100 outline-none",
+                hover: "bg-gray-100",
+                active: "bg-gray-200",
+              },
+              isSelected && "!font-bold"
+            )}
+          >
+            {item.label}
+          </Link>
+        );
+      })}
     </div>
   );
 };

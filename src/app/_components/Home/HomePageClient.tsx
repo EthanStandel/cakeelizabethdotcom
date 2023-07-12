@@ -6,6 +6,7 @@ import { HomePageDataQuery } from "../../../../.tina/__generated__/types";
 import { CardLink } from "../../../components/CardLink";
 import { Markdown } from "../../../components/Markdown";
 import { QuoteCarousel } from "./_components/QuoteCarousel";
+import { e } from "easy-tailwind";
 
 export const HomePageClient = ({
   homePageQuery,
@@ -20,10 +21,15 @@ export const HomePageClient = ({
         className="w-full max-h-80 object-cover"
         src={data.homePage.heroImage}
       />
-      <div className="px-4 desktop:px-28">
+      <div className={e("px-4", { desktop: "px-28" })}>
         <Markdown className="my-12">{data.homePage.body}</Markdown>
       </div>
-      <ul className="w-full px-4 desktop:px-28 grid gap-8 grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] desktop:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))] justify-items-center">
+      <ul
+        className={e(
+          "w-full px-4 grid gap-8 grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] justify-items-center",
+          { desktop: "px-28 grid-cols-[repeat(auto-fill,minmax(24rem,1fr))]" }
+        )}
+      >
         {data.productConnection.edges
           .filter(({ node }) => !node.hidden)
           .map(({ node }) => (
