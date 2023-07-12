@@ -1,8 +1,10 @@
 const colors = require("tailwindcss/colors");
 const defaultTheme = require("tailwindcss/defaultTheme");
+const { content } = require("easy-tailwind/transform");
 
 module.exports = {
   mode: "jit",
+  content,
   purge: ["./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {

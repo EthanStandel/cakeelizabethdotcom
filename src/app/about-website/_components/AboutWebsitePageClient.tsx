@@ -2,6 +2,8 @@
 
 import { useTina } from "tinacms/dist/react";
 import { AboutThisWebsiteQuery } from "../../../../.tina/__generated__/types";
+import { Markdown } from "../../../components/Markdown";
+import { e } from "easy-tailwind";
 
 export const AboutWebsitePageClient = ({
   query,
@@ -11,8 +13,11 @@ export const AboutWebsitePageClient = ({
   const { data } = useTina<AboutThisWebsiteQuery>(query);
 
   return (
-    <code>
-      <pre>{JSON.stringify(data, undefined, 2)}</pre>
-    </code>
+    <div className={e("px-4 py-4 justify-center", { desktop: "px-28" })}>
+      <h1 className="uppercase text-center text-4xl pb-4">
+        {data.aboutThisWebsite.title}
+      </h1>
+      <Markdown>{data.aboutThisWebsite.body}</Markdown>
+    </div>
   );
 };

@@ -1,7 +1,8 @@
-import cx from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { useErgoState } from "use-ergo-state";
 import classes from "./QuoteCarousel.module.css";
+import { e } from "easy-tailwind";
+import cx from "classnames";
 
 export const QuoteCarousel = ({
   quotes = [],
@@ -31,7 +32,11 @@ export const QuoteCarousel = ({
 
   return (
     !!quotes.length && (
-      <div className="w-full overflow py-10 desktop:py-20 bg-primary my-10 desktop:my-20">
+      <div
+        className={e("w-full overflow py-10 bg-primary my-10", {
+          desktop: "py-20 my-20",
+        })}
+      >
         <ul
           ref={scrollContainerRef}
           style={{ scrollbarWidth: "none" }}
@@ -51,41 +56,53 @@ export const QuoteCarousel = ({
           {quotes.map(({ quote, name }) => (
             <li
               key={name}
-              className="snap-start snap-always w-full flex-shrink-0 text-text px-4 desktop:px-28 flex flex-col gap-8"
+              className={e(
+                "snap-start snap-always w-full flex-shrink-0 text-text px-4 flex flex-col gap-8",
+                { desktop: "px-28" }
+              )}
             >
-              <p className="text-2xl desktop:text-4xl font-semibold flex-grow text-center">
+              <p
+                className={e("text-2xl font-semibold flex-grow text-center", {
+                  desktop: "text-4xl",
+                })}
+              >
                 "{quote}"
               </p>
-              <p className="text-lg desktop:text-2xl font-bold w-full text-right">
+              <p
+                className={e("text-lg font-bold w-full text-right", {
+                  desktop: "text-2xl",
+                })}
+              >
                 - {name}
               </p>
             </li>
           ))}
         </ul>
         <ul className="flex justify-center w-full gap-2">
-          {quotes.map((_, index) => (
-            <li key={index}>
-              <button
-                className={cx(
-                  "transition-opacity rounded-full w-3 h-3 bg-text",
-                  {
-                    "opacity-25 hover:opacity-50 active:opacity-75 focus-visible:opacity-50":
-                      currentIndex() !== index,
-                  }
-                )}
-                onClick={() => {
-                  const scrollContainer = scrollContainerRef.current;
-                  if (!scrollContainer) return;
-                  scrollContainer.scrollTo({
-                    left: document.documentElement.clientWidth * index,
-                    behavior: "smooth",
-                  });
-                  setAutoplay(false);
-                }}
-                aria-label={`Select index ${index}`}
-              />
-            </li>
-          ))}
+          {quotes.map((_, index) => {
+            const isNotSelected = currentIndex() !== index;
+            return (
+              <li key={index}>
+                <button
+                  className={e(
+                    "transition-opacity rounded-full w-3 h-3 bg-text",
+                    isNotSelected &&
+                      "opacity-25 hover:opacity-50 active:opacity-75 focus-visible:opacity-50"
+                  )}
+                  onClick={() => {
+                    const scrollContainer = scrollContainerRef.current;
+                    if (!scrollContainer) return;
+                    scrollContainer.scrollTo({
+                      left: document.documentElement.clientWidth * index,
+                      behavior: "smooth",
+                    });
+                    setAutoplay(false);
+                  }}
+                  aria-label={`Select index ${index}`}
+                />
+              </li>
+            );
+          })}
         </ul>
       </div>
     )
