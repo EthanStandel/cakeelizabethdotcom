@@ -16,16 +16,14 @@ const config = defineConfig({
     "feat/tina-rewrite", // initial default value
   token: process.env.TINA_TOKEN!,
   media: {
-    // If you wanted cloudinary do this
-    // loadCustomStore: async () => {
-    //   const pack = await import("next-tinacms-cloudinary");
-    //   return pack.TinaCloudCloudinaryMediaStore;
-    // },
-    // this is the config for the tina cloud media store
     tina: {
       publicFolder: "public",
       mediaRoot: "uploads",
     },
+  },
+  cmsCallback: (cms) => {
+    cms.flags.set("branch-switcher", true);
+    return cms;
   },
   build: {
     publicFolder: "public", // The public asset folder for your framework
