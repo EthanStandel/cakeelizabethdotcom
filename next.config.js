@@ -12,6 +12,9 @@ module.exports = {
   experimental: {
     serverActions: true,
   },
+  images: {
+    domains: ["assets.tina.io"],
+  },
   async rewrites() {
     return [
       {
