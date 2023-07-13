@@ -1,7 +1,9 @@
 {
-  "name": "@tinacms/starter",
-  "version": "0.1.0",
+  "name": "cakeelizabeth",
+  "version": "3.0.0",
   "private": true,
+  "author": "ethan@standel.io",
+  "license": "ISC",
   "scripts": {
     "dev": "tinacms dev -c \"next dev\"",
     "build": "tinacms build && next build",
@@ -51,5 +53,9 @@
   },
   "resolutions": {
     "final-form": "4.20.1"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
   }
 }
