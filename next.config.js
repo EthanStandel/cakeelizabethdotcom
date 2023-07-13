@@ -10,7 +10,7 @@ module.exports = {
     return config;
   },
   experimental: {
-    appDir: true,
+    serverActions: true,
   },
   async rewrites() {
     return [

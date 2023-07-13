@@ -11,16 +11,15 @@ module.exports = {
     defaultTheme,
     transitionDuration: {
       DEFAULT: "250ms",
+      quick: "150ms",
     },
     colors: {
+      ...colors,
       transparent: "transparent",
       current: "currentColor",
       primary: "#65ffce",
       text: "#555555",
       link: "#0062ff",
-      black: colors.black,
-      white: colors.white,
-      gray: colors.gray,
     },
     screens: {
       desktop: "1024px",
@@ -41,13 +40,18 @@ module.exports = {
       },
       boxShadow: {
         DEFAULT: "2px 2px 5px 5px",
-        even: "0px 0px 5px 5px",
+        even: "0 0 5px 5px",
+        "sm-even": "0 0 3px 3px",
       },
       boxShadowColor: {
         DEFAULT: "rgba(0, 0, 0, 0.3)",
       },
       letterSpacing: {
         widerest: ".2em",
+      },
+      backgroundImage: {
+        labelGradient:
+          "linear-gradient(90deg, transparent 0%, white 8px, white calc(100% - 8px), transparent 100%)",
       },
       typography: (theme) => ({
         DEFAULT: {
