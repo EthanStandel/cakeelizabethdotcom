@@ -13,7 +13,7 @@ export const AboutUsPageClient = ({
   const { data } = useTina<AboutUsPageQuery>(query);
 
   return (
-    <div className="px-4 desktop:px-28 py-4 justify-center">
+    <div className={e("px-4 py-4 justify-center", { desktop: "px-28" })}>
       <h1 className="text-center text-5xl pb-4">{data.aboutUsPage.title}</h1>
       <section
         className={e("flex gap-8 flex-col mt-6", { desktop: "flex-row" })}
