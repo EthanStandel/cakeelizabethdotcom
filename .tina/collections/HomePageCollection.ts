@@ -11,6 +11,7 @@ export const HomePageCollection: Collection = {
       create: false,
       delete: false,
     },
+    router: () => "/",
   },
   fields: [
     MetadataField,

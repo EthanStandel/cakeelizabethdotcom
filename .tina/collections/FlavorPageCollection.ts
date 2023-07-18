@@ -11,6 +11,7 @@ export const FlavorPageCollection: Collection = {
       create: false,
       delete: false,
     },
+    router: () => "/flavors",
   },
   fields: [
     MetadataField,

@@ -11,6 +11,7 @@ export const AboutThisWebsitePageCollection: Collection = {
       create: false,
       delete: false,
     },
+    router: () => "/about-website",
   },
   fields: [
     MetadataField,

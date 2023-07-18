@@ -71,7 +71,8 @@ var AboutUsPageCollection = {
     allowedActions: {
       create: false,
       delete: false
-    }
+    },
+    router: () => "/about-us"
   },
   fields: [
     MetadataField,
@@ -106,7 +107,8 @@ var FlavorPageCollection = {
     allowedActions: {
       create: false,
       delete: false
-    }
+    },
+    router: () => "/flavors"
   },
   fields: [
     MetadataField,
@@ -165,7 +167,8 @@ var GlobalCollection = {
     allowedActions: {
       create: false,
       delete: false
-    }
+    },
+    router: () => "/"
   },
   fields: [
     {
@@ -282,7 +285,8 @@ var HomePageCollection = {
     allowedActions: {
       create: false,
       delete: false
-    }
+    },
+    router: () => "/"
   },
   fields: [
     MetadataField,
@@ -336,7 +340,8 @@ var PoliciesAndPricingPageCollection = {
     allowedActions: {
       create: false,
       delete: false
-    }
+    },
+    router: () => "/policies-and-pricing"
   },
   fields: [
     MetadataField,
@@ -367,6 +372,9 @@ var ProductPageCollection = {
   name: "ProductPageCollection",
   path: "content/ProductPageCollection",
   format: "md",
+  ui: {
+    router: ({ document }) => `/products/${document._sys.filename.slice(0, -3)}`
+  },
   fields: [
     MetadataField,
     {
@@ -400,7 +408,8 @@ var AboutThisWebsitePageCollection = {
     allowedActions: {
       create: false,
       delete: false
-    }
+    },
+    router: () => "/about-website"
   },
   fields: [
     MetadataField,
@@ -429,7 +438,8 @@ var ContactUsPageCollection = {
     allowedActions: {
       create: false,
       delete: false
-    }
+    },
+    router: () => "/contact"
   },
   fields: [
     MetadataField,

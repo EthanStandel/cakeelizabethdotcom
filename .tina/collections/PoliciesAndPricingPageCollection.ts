@@ -11,6 +11,7 @@ export const PoliciesAndPricingPageCollection: Collection = {
       create: false,
       delete: false,
     },
+    router: () => "/policies-and-pricing",
   },
   fields: [
     MetadataField,

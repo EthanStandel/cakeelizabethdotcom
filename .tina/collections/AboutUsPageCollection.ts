@@ -12,6 +12,7 @@ export const AboutUsPageCollection: Collection = {
       create: false,
       delete: false,
     },
+    router: () => "/about-us",
   },
   fields: [
     MetadataField,
