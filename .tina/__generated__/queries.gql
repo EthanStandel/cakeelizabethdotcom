@@ -1,0 +1,423 @@
+query GlobalCollection($relativePath: String!) {
+  GlobalCollection(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...GlobalCollectionParts
+  }
+}
+
+query GlobalCollectionConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: GlobalCollectionFilter) {
+  GlobalCollectionConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...GlobalCollectionParts
+      }
+    }
+  }
+}
+
+query HomePageCollection($relativePath: String!) {
+  HomePageCollection(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...HomePageCollectionParts
+  }
+}
+
+query HomePageCollectionConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: HomePageCollectionFilter) {
+  HomePageCollectionConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...HomePageCollectionParts
+      }
+    }
+  }
+}
+
+query FlavorPageCollection($relativePath: String!) {
+  FlavorPageCollection(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...FlavorPageCollectionParts
+  }
+}
+
+query FlavorPageCollectionConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: FlavorPageCollectionFilter) {
+  FlavorPageCollectionConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...FlavorPageCollectionParts
+      }
+    }
+  }
+}
+
+query ProductPageCollection($relativePath: String!) {
+  ProductPageCollection(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...ProductPageCollectionParts
+  }
+}
+
+query ProductPageCollectionConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: ProductPageCollectionFilter) {
+  ProductPageCollectionConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...ProductPageCollectionParts
+      }
+    }
+  }
+}
+
+query PoliciesAndPricingPageCollection($relativePath: String!) {
+  PoliciesAndPricingPageCollection(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...PoliciesAndPricingPageCollectionParts
+  }
+}
+
+query PoliciesAndPricingPageCollectionConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: PoliciesAndPricingPageCollectionFilter) {
+  PoliciesAndPricingPageCollectionConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...PoliciesAndPricingPageCollectionParts
+      }
+    }
+  }
+}
+
+query AboutUsPageCollection($relativePath: String!) {
+  AboutUsPageCollection(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...AboutUsPageCollectionParts
+  }
+}
+
+query AboutUsPageCollectionConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: AboutUsPageCollectionFilter) {
+  AboutUsPageCollectionConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...AboutUsPageCollectionParts
+      }
+    }
+  }
+}
+
+query AboutThisWebsitePageCollection($relativePath: String!) {
+  AboutThisWebsitePageCollection(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...AboutThisWebsitePageCollectionParts
+  }
+}
+
+query AboutThisWebsitePageCollectionConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: AboutThisWebsitePageCollectionFilter) {
+  AboutThisWebsitePageCollectionConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...AboutThisWebsitePageCollectionParts
+      }
+    }
+  }
+}
+
+query ContactUsPageCollection($relativePath: String!) {
+  ContactUsPageCollection(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...ContactUsPageCollectionParts
+  }
+}
+
+query ContactUsPageCollectionConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: ContactUsPageCollectionFilter) {
+  ContactUsPageCollectionConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...ContactUsPageCollectionParts
+      }
+    }
+  }
+}
