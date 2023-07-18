@@ -6,9 +6,9 @@
   "license": "ISC",
   "scripts": {
     "dev": "tinacms dev -c \"next dev\"",
-    "build": "tinacms build && next build",
+    "build": "tinacms build --local && next build",
     "postbuild": "next-sitemap",
-    "start": "tinacms build && next start",
+    "start": "tinacms build --local && next start",
     "export": "npm run build && next export",
     "lint": "eslint . --ext .ts,.tsx"
   },

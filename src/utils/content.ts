@@ -54,5 +54,10 @@ const getContentMetadata = async <Type extends ContentTypeWithMetadata>(
 
 export const getPageMetadataGenerator =
   <Type extends ContentTypeWithMetadata>(type: Type, key?: string) =>
-  () =>
-    getContentMetadata(type, key);
+  async () => {
+    const metadata = await getContentMetadata(type, key);
+    return {
+      ...metadata,
+      title: (metadata.title ? `${metadata.title} | ` : "") + "Cake Elizabeth",
+    };
+  };
