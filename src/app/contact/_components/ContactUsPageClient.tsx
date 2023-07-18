@@ -1,18 +1,17 @@
 "use client";
 
-import { useTina } from "tinacms/dist/react";
-import { ContactUsPageQuery } from "../../../../.tina/__generated__/types";
 import { e } from "easy-tailwind";
 import { Markdown } from "../../../components/Markdown";
 import { FormSection } from "./FormSection";
 import { Suspense } from "react";
+import { Content, useContentData } from "../../../utils/content";
 
 export const ContactUsPageClient = ({
-  query,
+  content,
 }: {
-  query: Parameters<typeof useTina<ContactUsPageQuery>>[0];
+  content: Content<"ContactUsPageCollection">;
 }) => {
-  const { data } = useTina<ContactUsPageQuery>(query);
+  const data = useContentData(content);
 
   return (
     <div className={e("px-4 py-4 justify-center", { desktop: "px-28" })}>
@@ -20,7 +19,7 @@ export const ContactUsPageClient = ({
         className={e("flex flex-col gap-8", { desktop: "flex-row-reverse" })}
       >
         <section className={e({ desktop: "w-1/3" })}>
-          <Markdown noCenter>{data.contactUsPage.contactDetails}</Markdown>
+          <Markdown noCenter>{data.contactDetails}</Markdown>
         </section>
         <section className={e({ desktop: "w-2/3" })}>
           <Suspense>

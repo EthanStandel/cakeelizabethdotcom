@@ -1,12 +1,12 @@
-import client from "../../../.tina/__generated__/client";
 import { AboutUsPageClient } from "./_components/AboutUsPageClient";
+import { getContent, getPageMetadataGenerator } from "../../utils/content";
 
-const Page = async () => {
-  const { data, query, variables } = await client.queries.aboutUsPage({
-    relativePath: "aboutUs.md",
-  });
-
-  return <AboutUsPageClient query={{ data, query, variables }} />;
-};
+const Page = async () => (
+  <AboutUsPageClient content={await getContent("AboutUsPageCollection")} />
+);
 
 export default Page;
+
+export const generateMetadata = getPageMetadataGenerator(
+  "AboutUsPageCollection"
+);

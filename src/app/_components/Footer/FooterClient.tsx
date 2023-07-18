@@ -1,13 +1,13 @@
 "use client";
-import { useTina } from "tinacms/dist/react";
-import { FooterDataQuery } from "../../../../.tina/__generated__/types";
+
+import { Content, useContentData } from "../../../utils/content";
 
 export const FooterClient = ({
-  query,
+  content,
 }: {
-  query: Parameters<typeof useTina<FooterDataQuery>>[0];
+  content: Content<"GlobalCollection">;
 }) => {
-  const { data } = useTina<FooterDataQuery>(query);
+  const data = useContentData(content);
 
-  return <>{data.globalConnection.edges[0].node.footer.label}</>;
+  return <>{data.footer.label}</>;
 };

@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTina } from "tinacms/dist/react";
-import { GlobalQuery } from "../../../../.tina/__generated__/types";
 import { SubNavMenu } from "./components/SubNavMenu";
 import Image from "next/image";
 import FaFacebook from "./FaFacebook.svg";
@@ -15,6 +13,7 @@ import MobileMenuCloseIcon from "./GrClose.svg";
 import { usePathChange } from "../../../hooks/usePathChange";
 import { e } from "easy-tailwind";
 import cx from "classnames";
+import { Content, ContentData, useContentData } from "../../../utils/content";
 
 const socialLinkIcons = {
   Facebook: FaFacebook,
@@ -22,12 +21,12 @@ const socialLinkIcons = {
 };
 
 export const NavigationClient = ({
-  query,
+  content,
 }: {
-  query: Parameters<typeof useTina<GlobalQuery>>[0];
+  content: Content<"GlobalCollection">;
 }) => {
-  const { data } = useTina<GlobalQuery>(query);
-  const { phoneNumber, navigation, logo, socialLinks } = data.global.header;
+  const data = useContentData(content);
+  const { phoneNumber, navigation, logo, socialLinks } = data.header;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -115,7 +114,7 @@ const Navigation = ({
   mobileOpen,
   closeMobile,
 }: {
-  navigation: GlobalQuery["global"]["header"]["navigation"];
+  navigation: ContentData<"GlobalCollection">["header"]["navigation"];
   mobileOpen: boolean;
   closeMobile: () => void;
 }) => {

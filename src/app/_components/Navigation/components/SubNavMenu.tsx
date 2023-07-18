@@ -1,15 +1,15 @@
-import { GlobalQuery } from "../../../../../.tina/__generated__/types";
 import { usePathname } from "next/navigation";
 import { usePresence } from "../../../../utils/usePresence";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ChevronDown from "./FaChevronDown.svg";
 import { e } from "easy-tailwind";
+import { ContentData } from "../../../../utils/content";
 
 export const SubNavMenu = ({
   item,
 }: {
-  item: GlobalQuery["global"]["header"]["navigation"][number];
+  item: ContentData<"GlobalCollection">["header"]["navigation"][number];
 }) => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -48,7 +48,7 @@ const SubNavMenuPopout = ({
   items,
 }: {
   open: boolean;
-  items: GlobalQuery["global"]["header"]["navigation"][number]["subNavItem"];
+  items: ContentData<"GlobalCollection">["header"]["navigation"][number]["subNavItem"];
 }) => {
   const pathname = usePathname();
   const { isMounted, isVisible } = usePresence(open);

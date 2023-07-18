@@ -1,12 +1,8 @@
-import { client } from "../../../../.tina/__generated__/client";
 import { asyncComponent } from "../../../utils/asyncComponent";
+import { getContent } from "../../../utils/content";
 import { NavigationClient } from "./NavigationClient";
 
 export const NavigationServer = asyncComponent(async () => {
-  const { data, query, variables } = await client.queries.global({
-    relativePath: "global.json",
-  });
-
   return (
     <>
       <div
@@ -15,7 +11,7 @@ export const NavigationServer = asyncComponent(async () => {
           boxShadow: "5px 60px 20px 5px rgba(0,0,0, 0.5)",
         }}
       />
-      <NavigationClient query={{ data, query, variables }} />
+      <NavigationClient content={await getContent("GlobalCollection")} />
     </>
   );
 });

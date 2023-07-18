@@ -4,6 +4,7 @@ import { Navigation } from "./_components/Navigation";
 import { Montserrat } from "next/font/google";
 import cx from "classnames";
 import { Footer } from "./_components/Footer";
+import { Metadata } from "next";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -19,5 +20,13 @@ const Layout = ({ children }: { children: ReactNode }) => (
     </body>
   </html>
 );
+
+export const generateMetadata = async (): Promise<Metadata> => ({
+  title: "Cake Elizabeth",
+  viewport: "width=device-width,initial-scale=1.0",
+  icons: {
+    icon: "/favicon.png",
+  },
+});
 
 export default Layout;

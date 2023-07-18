@@ -1,17 +1,16 @@
 "use client";
 
-import { useTina } from "tinacms/dist/react";
-import { FlavorPageQuery } from "../../../../.tina/__generated__/types";
 import { Markdown } from "../../../components/Markdown";
 import { FlavorGroupCard } from "./FlavorGroupCard";
 import { e } from "easy-tailwind";
+import { Content, useContentData } from "../../../utils/content";
 
 export const FlavorsPageClient = ({
-  query,
+  content,
 }: {
-  query: Parameters<typeof useTina<FlavorPageQuery>>[0];
+  content: Content<"FlavorPageCollection">;
 }) => {
-  const { data } = useTina<FlavorPageQuery>(query);
+  const data = useContentData(content);
 
   return (
     <div className={e("px-4 py-4 justify-center", { desktop: "px-28" })}>
@@ -21,20 +20,18 @@ export const FlavorsPageClient = ({
         })}
       >
         <div>
-          <h1 className="uppercase text-center text-4xl pb-4">
-            {data.flavorPage.title}
-          </h1>
-          <Markdown>{data.flavorPage.body}</Markdown>
-          <FlavorGroupCard {...data.flavorPage.flavorGroups[0]} />
+          <h1 className="uppercase text-center text-4xl pb-4">{data.title}</h1>
+          <Markdown>{data.body}</Markdown>
+          <FlavorGroupCard {...data.flavorGroups[0]} />
         </div>
-        <img className="rounded" src={data.flavorPage.heroImage} />
+        <img className="rounded" src={data.heroImage} />
       </div>
       <div
         className={e("flex flex-col gap-4 items-center py-4", {
           desktop: "grid grid-cols-2",
         })}
       >
-        {data.flavorPage.flavorGroups.slice(1).map((group, index) => (
+        {data.flavorGroups.slice(1).map((group, index) => (
           <FlavorGroupCard key={index} {...group} />
         ))}
       </div>

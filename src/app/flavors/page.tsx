@@ -1,12 +1,12 @@
-import client from "../../../.tina/__generated__/client";
+import { getContent, getPageMetadataGenerator } from "../../utils/content";
 import { FlavorsPageClient } from "./_components/FlavorsPageClient";
 
-const Page = async () => {
-  const { data, query, variables } = await client.queries.flavorPage({
-    relativePath: "flavors.md",
-  });
-
-  return <FlavorsPageClient query={{ data, query, variables }} />;
-};
+const Page = async () => (
+  <FlavorsPageClient content={await getContent("FlavorPageCollection")} />
+);
 
 export default Page;
+
+export const generateMetadata = getPageMetadataGenerator(
+  "FlavorPageCollection"
+);
