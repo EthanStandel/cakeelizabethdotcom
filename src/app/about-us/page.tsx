@@ -1,8 +1,14 @@
+import { AboutUsPage } from "./_components/AboutUsPage";
+import { getPageMetadataGenerator } from "../../utils/content";
+import { LiveContentData } from "../../utils/LiveContentData";
 import { AboutUsPageClient } from "./_components/AboutUsPageClient";
-import { getContent, getPageMetadataGenerator } from "../../utils/content";
 
 const Page = async () => (
-  <AboutUsPageClient content={await getContent("AboutUsPageCollection")} />
+  <LiveContentData
+    type="AboutUsPageCollection"
+    server={AboutUsPage}
+    client={AboutUsPageClient}
+  />
 );
 
 export default Page;
