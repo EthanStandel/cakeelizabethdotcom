@@ -14,7 +14,7 @@ export const generateMetadata = ({ params }) =>
 
 export const generateStaticParams = async () => {
   const { data } = await getContent("ProductPageCollectionConnection");
-  data.ProductPageCollectionConnection.edges.map((page) => ({
+  return data.ProductPageCollectionConnection.edges.map((page) => ({
     product: page.node._sys.filename.slice(0, -3),
   }));
 };
