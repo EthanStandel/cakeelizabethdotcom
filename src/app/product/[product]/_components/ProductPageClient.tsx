@@ -3,25 +3,24 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
-import { useTina } from "tinacms/dist/react";
-import { ProductQuery } from "../../../../../.tina/__generated__/types";
 import { CardLink } from "../../../../components/CardLink";
 import { Markdown } from "../../../../components/Markdown";
 import { ImageCarousel } from "./ImageCarousel";
 import { e } from "easy-tailwind";
+import { Content, useContentData } from "../../../../utils/content";
 
 export const ProductPageClient = ({
-  query,
+  content,
 }: {
-  query: Parameters<typeof useTina<ProductQuery>>[0];
+  content: Content<"ProductPageCollection">;
 }) => {
-  const { data } = useTina<ProductQuery>(query);
+  const data = useContentData(content);
   const pathname = usePathname();
 
   return (
     <>
       <Suspense fallback={null}>
-        <ImageCarousel images={data.product.images.map(({ image }) => image)} />
+        <ImageCarousel images={data.images.map(({ image }) => image)} />
       </Suspense>
       <div className={e("px-4 py-4", { desktop: "px-28" })}>
         <div
@@ -40,7 +39,7 @@ export const ProductPageClient = ({
             }}
           >
             <img
-              src={data.product.images[0].image}
+              src={data.images[0].image}
               alt=""
               aria-hidden
               className="w-full h-full"
@@ -48,13 +47,13 @@ export const ProductPageClient = ({
           </CardLink>
           <div>
             <h1 className="uppercase text-center text-4xl py-4">
-              {data.product.title}
+              {data.title}
             </h1>
-            <Markdown>{data.product.body}</Markdown>
+            <Markdown>{data.body}</Markdown>
           </div>
         </div>
         <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(150px,1fr))] place-items-center">
-          {data.product.images.slice(1).map(({ image }, index) => (
+          {data.images.slice(1).map(({ image }, index) => (
             <CardLink
               key={index}
               scroll={false}

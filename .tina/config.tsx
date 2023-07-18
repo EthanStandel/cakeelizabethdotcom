@@ -1,12 +1,12 @@
 import { defineConfig } from "tinacms";
-import { aboutUsPage } from "./models/AboutUsPage";
-import { flavorPageModel } from "./models/FlavorPage";
-import { globalModel } from "./models/Global";
-import { homePageModel } from "./models/HomePage";
-import { policiesAndPricingPageModel } from "./models/PoliciesAndPricingPage";
-import { productModel } from "./models/Product";
-import { aboutThisWebsite } from "./models/AboutThisWebsite";
-import { contactUsPage } from "./models/ContactUsPage";
+import { AboutUsPageCollection } from "./collections/AboutUsPageCollection";
+import { FlavorPageCollection } from "./collections/FlavorPageCollection";
+import { GlobalCollection } from "./collections/GlobalCollection";
+import { HomePageCollection } from "./collections/HomePageCollection";
+import { PoliciesAndPricingPageCollection } from "./collections/PoliciesAndPricingPageCollection";
+import { ProductPageCollection } from "./collections/ProductPageCollection";
+import { AboutThisWebsitePageCollection } from "./collections/AboutThisWebsitePageCollection";
+import { ContactUsPageCollection } from "./collections/ContactUsPageCollection";
 
 const config = defineConfig({
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID!,
@@ -31,14 +31,14 @@ const config = defineConfig({
   },
   schema: {
     collections: [
-      globalModel,
-      homePageModel,
-      flavorPageModel,
-      productModel,
-      policiesAndPricingPageModel,
-      aboutUsPage,
-      aboutThisWebsite,
-      contactUsPage,
+      GlobalCollection,
+      HomePageCollection,
+      FlavorPageCollection,
+      ProductPageCollection,
+      PoliciesAndPricingPageCollection,
+      AboutUsPageCollection,
+      AboutThisWebsitePageCollection,
+      ContactUsPageCollection,
     ],
   },
 });

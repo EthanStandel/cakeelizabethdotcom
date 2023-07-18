@@ -1,12 +1,13 @@
-import client from "../../../../.tina/__generated__/client";
+import { getContent, getPageMetadataGenerator } from "../../../utils/content";
 import { ProductPageClient } from "./_components/ProductPageClient";
 
-const Page = async ({ params }) => {
-  const { data, query, variables } = await client.queries.product({
-    relativePath: `${params.product}.md`,
-  });
-
-  return <ProductPageClient query={{ data, query, variables }} />;
-};
+const Page = async ({ params }) => (
+  <ProductPageClient
+    content={await getContent("ProductPageCollection", params.product)}
+  />
+);
 
 export default Page;
+
+export const generateMetadata = ({ params }) =>
+  getPageMetadataGenerator("ProductPageCollection", params.product)();

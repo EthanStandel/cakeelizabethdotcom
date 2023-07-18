@@ -1,28 +1,27 @@
 "use client";
 
 import Image from "next/image";
-import { useTina } from "tinacms/dist/react";
-import { HomePageDataQuery } from "../../../../.tina/__generated__/types";
 import { CardLink } from "../../../components/CardLink";
 import { Markdown } from "../../../components/Markdown";
 import { QuoteCarousel } from "./_components/QuoteCarousel";
 import { e } from "easy-tailwind";
+import { Content, useContentData } from "../../../utils/content";
 
 export const HomePageClient = ({
-  homePageQuery,
+  content,
+  products,
 }: {
-  homePageQuery: Parameters<typeof useTina<HomePageDataQuery>>[0];
+  content: Content<"HomePageCollection">;
+  products: Content<"ProductPageCollectionConnection">;
 }) => {
-  const { data } = useTina<HomePageDataQuery>(homePageQuery);
+  const data = useContentData(content);
+  const productData = useContentData(products);
 
   return (
     <>
-      <img
-        className="w-full max-h-80 object-cover"
-        src={data.homePage.heroImage}
-      />
+      <img className="w-full max-h-96 object-cover" src={data.heroImage} />
       <div className={e("px-4", { desktop: "px-28" })}>
-        <Markdown className="my-12">{data.homePage.body}</Markdown>
+        <Markdown className="my-12">{data.body}</Markdown>
       </div>
       <ul
         className={e(
@@ -30,7 +29,7 @@ export const HomePageClient = ({
           { desktop: "px-28 grid-cols-[repeat(auto-fill,minmax(24rem,1fr))]" }
         )}
       >
-        {data.productConnection.edges
+        {productData.edges
           .filter(({ node }) => !node.hidden)
           .map(({ node }) => (
             <li key={node._sys.filename} className="w-full! flex">
@@ -44,14 +43,14 @@ export const HomePageClient = ({
                 <div className="p-3 flex flex-col items-center font-semibold gap-2">
                   {node.title}
                   <div className="w-full rounded-full font-bold bg-primary uppercase tracking-widerest py-4 flex justify-center items-center">
-                    {data.homePage.cta}
+                    {data.cta}
                   </div>
                 </div>
               </CardLink>
             </li>
           ))}
       </ul>
-      <QuoteCarousel quotes={data.homePage.quotes} />
+      <QuoteCarousel quotes={data.quotes} />
     </>
   );
 };
