@@ -1,4 +1,8 @@
-import { getContent, getPageMetadataGenerator } from "../../../utils/content";
+import {
+  getContent,
+  getContentData,
+  getPageMetadataGenerator,
+} from "../../../utils/content";
 import { ProductPageClient } from "./_components/ProductPageClient";
 
 const Page = async ({ params }) => (
@@ -13,8 +17,8 @@ export const generateMetadata = ({ params }) =>
   getPageMetadataGenerator("ProductPageCollection", params.product)();
 
 export const generateStaticParams = async () => {
-  const { data } = await getContent("ProductPageCollectionConnection");
-  return data.ProductPageCollectionConnection.edges.map((page) => ({
+  const data = await getContentData("ProductPageCollectionConnection");
+  return data.edges.map((page) => ({
     product: page.node._sys.filename,
   }));
 };
