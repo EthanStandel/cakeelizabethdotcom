@@ -11,3 +11,10 @@ export default Page;
 
 export const generateMetadata = ({ params }) =>
   getPageMetadataGenerator("ProductPageCollection", params.product)();
+
+export const generateStaticParams = async () => {
+  const { data } = await getContent("ProductPageCollectionConnection");
+  data.ProductPageCollectionConnection.edges.map((page) => ({
+    product: page.node._sys.filename.slice(0, -3),
+  }));
+};

@@ -15,28 +15,30 @@ module.exports = {
   images: {
     domains: ["assets.tina.io"],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/",
-        destination: "/home",
-      },
-      {
-        source: "/admin",
-        destination: "/admin/index.html",
-      },
-      {
-        source: "/cake-flavors",
-        destination: "/flavors",
-      },
-      {
-        source: "/cake-pricing",
-        destination: "/policies-and-pricing",
-      },
-      {
-        source: "/order-policies",
-        destination: "/policies-and-pricing",
-      },
-    ];
-  },
+  rewrites: () => [
+    {
+      source: "/",
+      destination: "/home",
+    },
+    {
+      source: "/admin",
+      destination: "/admin/index.html",
+    },
+    {
+      source: "/preview",
+      destination: "/admin#~",
+    },
+    {
+      source: "/cake-flavors",
+      destination: "/flavors",
+    },
+    {
+      source: "/cake-pricing",
+      destination: "/policies-and-pricing",
+    },
+    {
+      source: "/order-policies",
+      destination: "/policies-and-pricing",
+    },
+  ],
 };

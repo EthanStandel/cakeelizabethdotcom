@@ -11,6 +11,7 @@ export const ContactUsPageCollection: Collection = {
       create: false,
       delete: false,
     },
+    router: () => "/contact",
   },
   fields: [
     MetadataField,

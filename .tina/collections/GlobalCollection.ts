@@ -10,6 +10,7 @@ export const GlobalCollection: Collection = {
       create: false,
       delete: false,
     },
+    router: () => "/",
   },
   fields: [
     {
