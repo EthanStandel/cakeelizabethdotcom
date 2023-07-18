@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tinacms dev -c \"next dev\"",
     "build": "tinacms build && next build",
-    "postbuild": "next-sitemap --config awesome.config.js",
+    "postbuild": "next-sitemap",
     "start": "tinacms build && next start",
     "export": "npm run build && next export",
     "lint": "eslint . --ext .ts,.tsx"
