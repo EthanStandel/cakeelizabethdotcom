@@ -1,5 +1,5 @@
 import { useTina } from "tinacms/dist/react";
-import client from "../../.tina/__generated__/client";
+import client from "../../tina/__generated__/client";
 
 type Queries = typeof client.queries;
 type ContentType = keyof Queries;
