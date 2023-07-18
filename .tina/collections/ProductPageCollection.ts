@@ -8,8 +8,7 @@ export const ProductPageCollection: Collection = {
   path: "content/ProductPageCollection",
   format: "md",
   ui: {
-    router: ({ document }) =>
-      `/products/${document._sys.filename.slice(0, -3)}`,
+    router: ({ document }) => `/products/${document._sys.filename.slice(0)}`,
   },
   fields: [
     MetadataField,
