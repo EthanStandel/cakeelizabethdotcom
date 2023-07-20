@@ -27,10 +27,10 @@ export const ContactEmail = ({
     </div>
     <div style={{ maxWidth: "calc(100% - 2rem)", padding: "1rem" }}>
       <p>
-        Name: <span style={{ fontWeight: "bold" }}>{fullName}</span>.
+        Name: <span style={{ fontWeight: "bold" }}>{fullName}</span>
       </p>
       <p>
-        Email: <span style={{ fontWeight: "bold" }}>{email}</span>.
+        Email: <span style={{ fontWeight: "bold" }}>{email}</span>
       </p>
       {!!phoneNumber && (
         <p>
