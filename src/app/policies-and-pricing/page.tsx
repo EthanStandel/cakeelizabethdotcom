@@ -1,9 +1,13 @@
+import { PoliciesAndPricingPage } from "./_components/PoliciesAndPricingPage";
+import { getPageMetadataGenerator } from "../../utils/content";
+import { LiveContentData } from "../../utils/LiveContentData";
 import { PoliciesAndPricingPageClient } from "./_components/PoliciesAndPricingPageClient";
-import { getContent, getPageMetadataGenerator } from "../../utils/content";
 
 const Page = async () => (
-  <PoliciesAndPricingPageClient
-    content={await getContent("PoliciesAndPricingPageCollection")}
+  <LiveContentData
+    component={PoliciesAndPricingPage}
+    clientWrapper={PoliciesAndPricingPageClient}
+    type="PoliciesAndPricingPageCollection"
   />
 );
 

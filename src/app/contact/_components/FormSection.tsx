@@ -1,3 +1,5 @@
+"use client";
+
 import { useSearchParams } from "next/navigation";
 import { usePresenceSwitch } from "use-presence";
 import { ContactForm } from "./ContactForm";

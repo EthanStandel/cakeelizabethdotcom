@@ -1,9 +1,13 @@
+import { getPageMetadataGenerator } from "../../utils/content";
+import { LiveContentData } from "../../utils/LiveContentData";
+import { AboutWebsitePage } from "./_components/AboutWebsitePage";
 import { AboutWebsitePageClient } from "./_components/AboutWebsitePageClient";
-import { getContent, getPageMetadataGenerator } from "../../utils/content";
 
-const Page = async () => (
-  <AboutWebsitePageClient
-    content={await getContent("AboutThisWebsitePageCollection")}
+const Page = () => (
+  <LiveContentData
+    type="AboutThisWebsitePageCollection"
+    component={AboutWebsitePage}
+    clientWrapper={AboutWebsitePageClient}
   />
 );
 

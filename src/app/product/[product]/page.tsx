@@ -1,13 +1,18 @@
 import {
-  getContent,
   getContentData,
   getPageMetadataGenerator,
 } from "../../../utils/content";
+import { LiveContentData } from "../../../utils/LiveContentData";
+import { ProductPage } from "./_components/ProductPage";
 import { ProductPageClient } from "./_components/ProductPageClient";
 
-const Page = async ({ params }) => (
-  <ProductPageClient
-    content={await getContent("ProductPageCollection", params.product)}
+const Page = ({ params }) => (
+  <LiveContentData
+    component={ProductPage}
+    clientWrapper={ProductPageClient}
+    slug={params.product}
+    type="ProductPageCollection"
+    pathname={`/product/${params.product}`}
   />
 );
 

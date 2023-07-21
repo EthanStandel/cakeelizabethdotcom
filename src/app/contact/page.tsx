@@ -1,8 +1,14 @@
-import { getContent, getPageMetadataGenerator } from "../../utils/content";
+import { getPageMetadataGenerator } from "../../utils/content";
+import { LiveContentData } from "../../utils/LiveContentData";
+import { ContactUsPage } from "./_components/ContactUsPage";
 import { ContactUsPageClient } from "./_components/ContactUsPageClient";
 
-const Page = async () => (
-  <ContactUsPageClient content={await getContent("ContactUsPageCollection")} />
+const Page = () => (
+  <LiveContentData
+    component={ContactUsPage}
+    clientWrapper={ContactUsPageClient}
+    type="ContactUsPageCollection"
+  />
 );
 
 export default Page;
