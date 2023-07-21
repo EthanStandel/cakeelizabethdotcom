@@ -1,5 +1,5 @@
-import { draftMode } from "next/dist/client/components/headers";
-import { FC, ReactElement } from "react";
+import { draftMode } from "next/headers";
+import { FC } from "react";
 import { asyncComponent } from "../asyncComponent";
 import {
   ContentData,

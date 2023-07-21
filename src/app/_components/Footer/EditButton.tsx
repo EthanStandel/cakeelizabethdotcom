@@ -10,15 +10,12 @@ export const EditButton = ({ draftMode }: { draftMode: boolean }) => {
   const params = useSearchParams();
   const to = `${pathname}?${params.toString()}`;
   return (
-    <Link
+    <a
       className="absolute right-4 top-1/2 -translate-y-1/2"
       title={draftMode ? "Exit draft mode" : "Edit this page"}
-      href={{
-        pathname: draftMode ? "/draft/disable" : "/draft/enable",
-        query: { to },
-      }}
+      href={`${draftMode ? "/draft/disable" : "/draft/enable"}?to=${to}`}
     >
       {draftMode ? <FaEject /> : <FaEdit />}
-    </Link>
+    </a>
   );
 };
