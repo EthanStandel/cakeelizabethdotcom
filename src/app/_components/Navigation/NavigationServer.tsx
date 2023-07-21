@@ -1,5 +1,5 @@
 import { asyncComponent } from "../../../utils/asyncComponent";
-import { getContent } from "../../../utils/content";
+import { LiveContentData } from "../../../utils/LiveContentData";
 import { NavigationClient } from "./NavigationClient";
 
 export const NavigationServer = asyncComponent(async () => {
@@ -11,7 +11,7 @@ export const NavigationServer = asyncComponent(async () => {
           boxShadow: "5px 60px 20px 5px rgba(0,0,0, 0.5)",
         }}
       />
-      <NavigationClient content={await getContent("GlobalCollection")} />
+      <LiveContentData type="GlobalCollection" component={NavigationClient} />
     </>
   );
 });

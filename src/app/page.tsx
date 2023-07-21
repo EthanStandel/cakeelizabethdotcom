@@ -1,13 +1,15 @@
-import { getContent, getPageMetadataGenerator } from "../utils/content";
+import { getPageMetadataGenerator } from "../utils/content";
+import { LiveContentData } from "../utils/LiveContentData";
+import { HomePage } from "./_components/Home/HomePage";
 import { HomePageClient } from "./_components/Home/HomePageClient";
 
-const Page = async () => {
-  const [content, products] = await Promise.all([
-    getContent("HomePageCollection"),
-    getContent("ProductPageCollectionConnection"),
-  ]);
-  return <HomePageClient content={content} products={products} />;
-};
+const Page = () => (
+  <LiveContentData
+    component={HomePage}
+    clientWrapper={HomePageClient}
+    type={["HomePageCollection", "ProductPageCollectionConnection"] as const}
+  />
+);
 
 export default Page;
 

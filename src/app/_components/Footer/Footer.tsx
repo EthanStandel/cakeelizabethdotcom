@@ -1,17 +1,26 @@
-import { asyncComponent } from "../../../utils/asyncComponent";
-import { FooterClient as FooterContent } from "./FooterClient";
 import { e } from "easy-tailwind";
-import { getContent } from "../../../utils/content";
+import { Suspense } from "react";
+import { ContentData } from "../../../utils/content";
+import { EditButton } from "./EditButton";
 
-export const FooterServer = asyncComponent(async () => (
+export const Footer = ({
+  data,
+  draftMode,
+}: {
+  data: ContentData<"GlobalCollection">;
+  draftMode: boolean;
+}) => (
   <>
     <footer
       className={e(
-        "z-20 bg-primary flex justify-center items-center h-8 font-semibold text-text bottom-0 w-full mt-16",
+        "z-20 bg-primary flex justify-center items-center h-8 font-semibold text-text bottom-0 w-full mt-16 relative",
         { desktop: "sticky" }
       )}
     >
-      <FooterContent content={await getContent("GlobalCollection")} />
+      {data.footer.label}
+      <Suspense>
+        <EditButton draftMode={draftMode} />
+      </Suspense>
     </footer>
     <div
       className={e("absolute bottom-0 h-8 w-full -translate-y-8 hidden z-10", {
@@ -31,4 +40,4 @@ export const FooterServer = asyncComponent(async () => (
       style={{ boxShadow: "5px -1.5em 20px 5px rgb(0 0 0 / 50%)" }}
     />
   </>
-));
+);

@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { usePresence } from "../../../../utils/usePresence";

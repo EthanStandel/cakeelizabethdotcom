@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { useErgoState } from "use-ergo-state";
 import classes from "./QuoteCarousel.module.css";

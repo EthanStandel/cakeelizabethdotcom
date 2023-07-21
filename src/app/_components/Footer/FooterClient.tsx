@@ -1,13 +1,8 @@
 "use client";
 
-import { Content, useContentData } from "../../../utils/content";
+import { PropsOf } from "../../../utils/PropsOf";
+import { Footer } from "./Footer";
 
-export const FooterClient = ({
-  content,
-}: {
-  content: Content<"GlobalCollection">;
-}) => {
-  const data = useContentData(content);
-
-  return <>{data.footer.label}</>;
-};
+export const FooterClient = (props: PropsOf<typeof Footer>) => (
+  <Footer {...props} />
+);

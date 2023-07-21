@@ -13,7 +13,7 @@ import MobileMenuCloseIcon from "./GrClose.svg";
 import { usePathChange } from "../../../hooks/usePathChange";
 import { e } from "easy-tailwind";
 import cx from "classnames";
-import { Content, ContentData, useContentData } from "../../../utils/content";
+import { ContentData } from "../../../utils/content";
 
 const socialLinkIcons = {
   Facebook: FaFacebook,
@@ -21,11 +21,10 @@ const socialLinkIcons = {
 };
 
 export const NavigationClient = ({
-  content,
+  data,
 }: {
-  content: Content<"GlobalCollection">;
+  data: ContentData<"GlobalCollection">;
 }) => {
-  const data = useContentData(content);
   const { phoneNumber, navigation, logo, socialLinks } = data.header;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
