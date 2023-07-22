@@ -1,20 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { FaEdit } from "./FaEdit";
 import { FaEject } from "./FaEject";
 
 export const EditButton = ({ draftMode }: { draftMode: boolean }) => {
   const pathname = usePathname();
-  const params = useSearchParams();
-  const to = encodeURIComponent(`${pathname}?${params.toString()}`);
-  const href = `/draft/${draftMode ? "disable" : "enable"}/${to}`;
+  const href = `/draft/${draftMode ? "disable" : "enable"}/${pathname}`;
 
   useEffect(() => {
     const inIframe = window.location !== window.top.location;
     if ((draftMode && !inIframe) || (!draftMode && inIframe)) {
-      window.location.assign(href);
+      window.location.replace(href);
     }
   }, []);
 

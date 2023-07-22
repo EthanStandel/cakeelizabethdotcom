@@ -1,5 +1,4 @@
 import { e } from "easy-tailwind";
-import { Suspense } from "react";
 import { ContentData } from "../../../../utils/content";
 import { EditButton } from "./EditButton";
 
@@ -18,9 +17,7 @@ export const Footer = ({
       )}
     >
       {data.footer.label}
-      <Suspense>
-        <EditButton draftMode={draftMode} />
-      </Suspense>
+      <EditButton draftMode={draftMode} />
     </footer>
     <div
       className={e("absolute bottom-0 h-8 w-full -translate-y-8 hidden z-10", {
