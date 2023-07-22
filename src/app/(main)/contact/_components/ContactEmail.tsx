@@ -47,7 +47,14 @@ export const ContactEmail = ({
         </p>
       )}
       {!!subject && <h3>{subject}</h3>}
-      <p>{message}</p>
+      <p>
+        {message?.split("\n").map((p) => (
+          <>
+            {p}
+            <br />
+          </>
+        ))}
+      </p>
     </div>
   </div>
 );
