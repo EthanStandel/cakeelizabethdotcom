@@ -7,7 +7,7 @@ import { Footer } from "./_components/Footer/Footer";
 import { Metadata } from "next";
 import { LiveContentData } from "../utils/LiveContentData";
 import { FooterClient } from "./_components/Footer/FooterClient";
-import { draftMode } from "next/dist/client/components/headers";
+import { draftMode } from "next/headers";
 
 const montserrat = Montserrat({
   subsets: ["latin"],

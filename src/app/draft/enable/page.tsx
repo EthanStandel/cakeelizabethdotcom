@@ -1,4 +1,4 @@
-import { draftMode } from "next/dist/client/components/headers";
+import { draftMode } from "next/headers";
 import { Reroute } from "../_components/Reroute";
 
 const Page = ({ searchParams }) => {

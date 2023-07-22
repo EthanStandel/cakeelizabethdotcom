@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactElement } from "react";
+import { FC } from "react";
 import {
   Content,
   ContentData,
@@ -16,7 +16,7 @@ export const LiveContentDataClient = <
   content: contentInput,
   ...forwardProps
 }: {
-  component: (props: Props) => ReactElement;
+  component: FC<Props>;
   content: Content<Type>;
 } & Omit<Props, "data">) => {
   const isTuple = Array.isArray(contentInput);
