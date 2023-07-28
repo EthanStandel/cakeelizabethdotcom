@@ -19,4 +19,4 @@ metadata:
     large gatherings, a perfect portion for weddings or birthday parties.
 ---
 
-Cupcakes are versatile and informal. They are a great grab and go option for large gatherings, a perfect portion for weddings or birthday parties. No cake cutting or cutlery to worry about! Here at Cake Elizabeth, we can customize and decorate to your heart’s desire. We provide different sizes for different appetites and we offer a wealth of flavors! Check out our [flavors page](https://cakeelizabeth.com/cake-pricing-flavors).
+Cupcakes are versatile and informal. They are a great grab and go option for large gatherings, a perfect portion for weddings or birthday parties. No cake cutting or cutlery to worry about! Here at Cake Elizabeth, we can customize and decorate to your heart’s desire. We provide different sizes for different appetites and we offer a wealth of flavors! Check out our [flavors page](/flavors).
