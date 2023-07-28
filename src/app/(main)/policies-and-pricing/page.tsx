@@ -14,5 +14,6 @@ const Page = async () => (
 export default Page;
 
 export const generateMetadata = getPageMetadataGenerator(
-  "PoliciesAndPricingPageCollection"
+  "PoliciesAndPricingPageCollection",
+  "/policies-and-pricing"
 );

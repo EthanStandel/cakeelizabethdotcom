@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { useTina } from "tinacms/dist/react";
 import client from "../../tina/__generated__/client";
 
@@ -85,12 +86,19 @@ type ContentTypeWithMetadata = {
 }[keyof Queries];
 
 export const getPageMetadataGenerator =
-  <Type extends ContentTypeWithMetadata>(type: Type, slug?: string) =>
-  async () => {
+  <Type extends ContentTypeWithMetadata>(
+    type: Type,
+    path: string,
+    slug?: string
+  ) =>
+  async (): Promise<Metadata> => {
     const data = (await getContentData(type, slug as any)) as PageWithMetadata;
     const metadata = "metadata" in data ? data.metadata : {};
     return {
       ...metadata,
       title: (metadata.title ? `${metadata.title} | ` : "") + "Cake Elizabeth",
+      alternates: {
+        canonical: `${path}${slug ? `/${slug}` : ""}`,
+      },
     };
   };

@@ -14,5 +14,6 @@ const Page = () => (
 export default Page;
 
 export const generateMetadata = getPageMetadataGenerator(
-  "AboutThisWebsitePageCollection"
+  "AboutThisWebsitePageCollection",
+  "/about-website"
 );

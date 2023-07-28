@@ -19,7 +19,11 @@ const Page = ({ params }) => (
 export default Page;
 
 export const generateMetadata = ({ params }) =>
-  getPageMetadataGenerator("ProductPageCollection", params.product)();
+  getPageMetadataGenerator(
+    "ProductPageCollection",
+    "/product",
+    params.product
+  )();
 
 export const generateStaticParams = async () => {
   const data = await getContentData("ProductPageCollectionConnection");
