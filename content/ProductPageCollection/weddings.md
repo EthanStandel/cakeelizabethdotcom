@@ -40,4 +40,4 @@ We encourage you to bring your ideas! The more you can show us, the easier it wi
 
 First you must schedule a tasting to help select your perfect cake. This tasting includes 3 flavors of each: cake, filling and frosting of your choice. We will have those combinations here for you both to taste and a glass of chilled white wine to cleanse your palate. The $45 dollar charge for the tasting will be applied towards your total balance when your cake is booked with us, provided the total amount of the order is above $200. Plan to spend at least an hour but possibly more, so we can calmly discuss your ideas and come up with the perfect cake for your event! So, browse our Flavors page, click on the Schedule Your Tasting tab, fill out the form, press submit, and we will contact you ASAP! Please note that tastings must be prepaid, so send us a check or call us with your credit card information.
 
-##### [PRICES AND ADDITIONAL CHARGES](https://cakeelizabeth.com/cake-pricing)
+##### [PRICES AND ADDITIONAL CHARGES](/policies-and-pricing)
