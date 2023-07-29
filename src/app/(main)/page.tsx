@@ -13,4 +13,7 @@ const Page = () => (
 
 export default Page;
 
-export const generateMetadata = getPageMetadataGenerator("HomePageCollection");
+export const generateMetadata = getPageMetadataGenerator(
+  "HomePageCollection",
+  "/"
+);

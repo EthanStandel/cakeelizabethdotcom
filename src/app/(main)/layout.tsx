@@ -30,10 +30,14 @@ const Layout = ({ children }: { children: ReactNode }) => (
 );
 
 export const generateMetadata = async (): Promise<Metadata> => ({
+  metadataBase: new URL("https://cakeelizabeth.com"),
   title: "Cake Elizabeth",
   viewport: "width=device-width,initial-scale=1.0",
   icons: {
     icon: "/favicon.png",
+  },
+  alternates: {
+    canonical: "/",
   },
 });
 
