@@ -39,6 +39,10 @@ export const generateMetadata = async (): Promise<Metadata> => ({
   alternates: {
     canonical: "/",
   },
+  themeColor: "#65ffce",
+  openGraph: {
+    locale: "en_US",
+  },
 });
 
 export default Layout;
