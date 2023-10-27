@@ -33,4 +33,4 @@ quotes:
     name: Jessica Joyce
 ---
 
-## CHOOSE OCCASION
+## CHOOSE YOUR OCCASION
