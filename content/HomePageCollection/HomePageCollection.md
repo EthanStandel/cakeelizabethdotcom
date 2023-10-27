@@ -1,4 +1,11 @@
 ---
+metadata:
+  title: Local Maine Cakes
+  description: >-
+    See why our custom cakes cause a stir in Southern Maine for events of all
+    kinds like wedding cakes, birthday cakes, baby shower cakes, and many other
+    special event cakes. Baked fresh daily, our cakes offer many heavenly
+    flavors to delight at your event.
 heroImage: /uploads/homehero.jpg
 cta: Learn more
 quotes:
@@ -24,14 +31,6 @@ quotes:
       delicious! It was definitely one of the best cakes I have tasted. Thank
       you!!
     name: Jessica Joyce
-metadataTitle: Local Maine cakes
-metadata:
-  title: Local Maine Cakes
-  description: >-
-    See why our custom cakes cause a stir in Southern Maine for events of all
-    kinds like wedding cakes, birthday cakes, baby shower cakes, and many other
-    special event cakes. Baked fresh daily, our cakes offer many heavenly
-    flavors to delight at your event.
 ---
 
-## CHOOSE YOUR OCCASION
+## CHOOSE OCCASION
