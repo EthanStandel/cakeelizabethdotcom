@@ -4,7 +4,7 @@ import { Navigation } from "./_components/Navigation";
 import { Montserrat } from "next/font/google";
 import cx from "classnames";
 import { Footer } from "./_components/Footer/Footer";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import { LiveContentData } from "../../utils/LiveContentData";
 import { FooterClient } from "./_components/Footer/FooterClient";
 import { draftMode } from "next/headers";
@@ -14,7 +14,7 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 });
 
-const Layout = ({ children }: { children: ReactNode }) => (
+const Layout = async ({ children }: { children: ReactNode }) => (
   <html lang="en" className={cx(montserrat.variable, "font-sans")}>
     <body className="flex flex-col relative min-h-screen overflow-y-scroll">
       <Navigation />
@@ -23,7 +23,7 @@ const Layout = ({ children }: { children: ReactNode }) => (
         component={Footer}
         clientWrapper={FooterClient}
         type="GlobalCollection"
-        draftMode={draftMode().isEnabled}
+        draftMode={(await draftMode()).isEnabled}
       />
     </body>
   </html>
@@ -32,17 +32,21 @@ const Layout = ({ children }: { children: ReactNode }) => (
 export const generateMetadata = async (): Promise<Metadata> => ({
   metadataBase: new URL("https://cakeelizabeth.com"),
   title: "Cake Elizabeth",
-  viewport: "width=device-width,initial-scale=1.0",
   icons: {
     icon: "/favicon.png",
   },
   alternates: {
     canonical: "/",
   },
-  themeColor: "#65ffce",
   openGraph: {
     locale: "en_US",
   },
 });
+
+export const viewport: Viewport = {
+  themeColor: "#65ffce",
+  width: "device-width",
+  initialScale: 1.0,
+};
 
 export default Layout;

@@ -4,7 +4,6 @@ export const MetadataField: TinaField = {
   name: "metadata",
   label: "Metadata",
   type: "object",
-  // @ts-ignore
   fields: [
     {
       type: "string",
@@ -13,7 +12,6 @@ export const MetadataField: TinaField = {
     },
     {
       type: "string",
-      component: "textarea",
       label: "Description",
       name: "description",
     },
