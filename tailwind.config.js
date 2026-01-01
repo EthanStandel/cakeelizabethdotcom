@@ -1,4 +1,3 @@
-const colors = require("tailwindcss/colors");
 const defaultTheme = require("tailwindcss/defaultTheme");
 const { content } = require("easy-tailwind/transform");
 
@@ -12,14 +11,6 @@ module.exports = {
     transitionDuration: {
       DEFAULT: "250ms",
       quick: "150ms",
-    },
-    colors: {
-      ...colors,
-      transparent: "transparent",
-      current: "currentColor",
-      primary: "#65ffce",
-      text: "#555555",
-      link: "#0062ff",
     },
     screens: {
       desktop: "1024px",
@@ -52,6 +43,13 @@ module.exports = {
       backgroundImage: {
         labelGradient:
           "linear-gradient(90deg, transparent 0%, white 8px, white calc(100% - 8px), transparent 100%)",
+      },
+      colors: {
+        transparent: "transparent",
+        current: "currentColor",
+        primary: "#65ffce",
+        text: "#555555",
+        link: "#0062ff",
       },
       typography: (theme) => ({
         DEFAULT: {

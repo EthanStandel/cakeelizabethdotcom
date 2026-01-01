@@ -51,6 +51,7 @@ export const getContent = async <Types extends OptionalContentMultiType>(
     }))
   );
 
+  //@ts-expect-error Ignore this, allow blackbox
   return isTuple ? result : result[0];
 };
 
@@ -68,6 +69,8 @@ export const getContentData = async <Types extends OptionalContentMultiType>(
     if (!(types[index] in data)) throw new Error("Unexpected content model");
     return (data as any)[types[index]];
   });
+
+  //@ts-expect-error Ignore this, allow blackbox
   return isTuple ? result : result[0];
 };
 

@@ -26,7 +26,7 @@ export const LiveContentDataServer = asyncComponent(
     type: Type;
     slug?: Type extends ContentTypes ? ReadonlyArray<string> : string;
   } & Omit<Props, "data">) =>
-    draftMode().isEnabled ? (
+    (await draftMode()).isEnabled ? (
       <LiveContentDataClient
         content={await getContent(type, slug)}
         component={clientWrapper}

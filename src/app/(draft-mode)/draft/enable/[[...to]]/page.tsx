@@ -1,8 +1,8 @@
 import { draftMode } from "next/headers";
 import { Reroute } from "../../_components/Reroute";
 
-const Page = ({ params }) => {
-  draftMode().enable();
+const Page = async ({ params }) => {
+  (await draftMode()).enable();
   const to = params.to ? params.to.join("/") : "";
 
   // The reason this isn't a 3xx response on a route.ts is because

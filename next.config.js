@@ -1,19 +1,15 @@
 // eslint-disable-next-line no-undef
 module.exports = {
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
-      use: ["@svgr/webpack"],
-    });
-
-    return config;
-  },
-  experimental: {
-    serverActions: true,
+  turbopack: {
+    rules: {
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
+      },
+    },
   },
   images: {
-    domains: ["assets.tina.io"],
+    remotePatterns: [{ hostname: "assets.tina.io" }],
   },
   rewrites: () => [
     {
