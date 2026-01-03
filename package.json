@@ -16,7 +16,7 @@
   "devDependencies": {
     "@emotion/css": "^11.10.6",
     "@svgr/webpack": "^6.3.1",
-    "@tinacms/cli": "^1.12.6",
+    "@tinacms/cli": "^2.0.6",
     "@types/js-cookie": "^3.0.0",
     "@types/lodash": "^4.14.195",
     "@types/node": "^16.11.7",
@@ -37,7 +37,7 @@
   "dependencies": {
     "@headlessui/react": "1.7.5",
     "@react-hookz/web": "^23.1.0",
-    "@sendgrid/mail": "^7.7.0",
+    "@sendgrid/mail": "^8.1.6",
     "@tailwindcss/typography": "^0.5.8",
     "classnames": "^2.3.2",
     "date-fns": "^2.23.0",
@@ -56,7 +56,8 @@
     "use-presence": "^1.2.0"
   },
   "resolutions": {
-    "final-form": "4.20.1"
+    "final-form": "4.20.1",
+    "qs": "6.14.1"
   },
   "engines": {
     "node": "24.x",
