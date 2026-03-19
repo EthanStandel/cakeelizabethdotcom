@@ -1,4 +1,7 @@
 ---
+metadata:
+  title: Flavor options
+  description: 'We offer a multitude of flavor options and combinations of cake, filling, and icing.'
 title: Flavor options
 heroImage: /uploads/weddings-12.jpg
 flavorGroups:
@@ -70,11 +73,6 @@ flavorGroups:
       - Coconut Buttercream
       - Lemon Buttercream
       - Salted Caramel Buttercream
-metadata:
-  title: Flavor options
-  description: >-
-    We offer a multitude of flavor options and combinations of cake, filling,
-    and icing.
 ---
 
-Serving the Cape Elizabeth, Maine area we provide beautiful custom cakes prepared fresh with the highest quality of ingredients. Consider a beautiful custom baking cake for a special holiday treat.
+Serving the Cape Elizabeth, Maine area we provide beautiful custom cakes prepared fresh with the highest quality of ingredients. Consider a beautiful custom baked cake for a special holiday treat.
