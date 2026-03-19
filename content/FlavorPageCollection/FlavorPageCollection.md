@@ -13,6 +13,7 @@ flavorGroups:
       - Lemon
       - Strawberry
       - Red Velvet
+      - Confetti
       - Champagne
       - White Amaretto Almond
       - Bailey’s Irish Crème
@@ -32,29 +33,19 @@ flavorGroups:
       - Dulce de Leche
       - Nutella (hazelnut)
       - Caramel
-  - label: Cake icing
+  - label: Buttercreams
     flavors:
+      - Plain/Standard (can be colored)
+      - Vanilla Bean (can be colored)
       - Cream Cheese
-      - Peanut Butter-cream
-      - Godiva White Chocolate
-      - Grand Marnier
-      - Mocha Buttercream
-      - Strawberry Buttercream
-      - Raspberry Buttercream
-      - Blueberry Buttercream
-      - Honey Mascarpone Buttercream
-      - Banana Buttercream
-      - Honey Mascarpone
-      - Buttercream
-      - Chocolate Buttercream
-      - Vanilla Bean Buttercream
-      - Italian Meringue
+      - Chocolate
+      - White Chocolate
       - Amaretto Almond
-      - Orange Grand Marnier
-      - Bailey’s Irish Crème
-      - Coconut Buttercream
-      - Lemon Buttercream
-      - Salted Caramel Buttercream
+      - Lemon
+      - 'Berry (strawberry, raspberry, blueberry, mixed)'
+      - Caramel
+      - Mocha Buttercream
+      - Italian
 ---
 
 Serving the Cape Elizabeth, Maine area we provide beautiful custom cakes prepared fresh with the highest quality of ingredients. Consider a beautiful custom baked cake for a special holiday treat.
