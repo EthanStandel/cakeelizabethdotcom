@@ -13,7 +13,7 @@ flavorGroups:
       - Lemon
       - Strawberry
       - Red Velvet
-      - Confetti
+      - Funfetti
       - Champagne
       - White Amaretto Almond
       - Bailey’s Irish Crème
