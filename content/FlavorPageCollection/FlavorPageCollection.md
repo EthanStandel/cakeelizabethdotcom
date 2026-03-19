@@ -22,21 +22,16 @@ flavorGroups:
   - label: Cake filling
     flavors:
       - Chocolate Ganache
-      - Pastry Cream
-      - Strawberry (fresh or jam)
-      - Coconut
-      - Dulce de Leche
-      - Mocha
-      - Kahlua Crème
-      - Raspberry (fresh or jam)
-      - Lemon Curd
-      - Amaretto
-      - Bailey’s Irish Crème
-      - Nutella (hazelnut)
-      - Peach
-      - Caramel
-      - Apple
+      - Pastry Cream (can add flavoring)
+      - Strawberry (fresh puree or jam)
+      - Raspberry (fresh puree or jam)
       - Blueberry
+      - Apple
+      - Peach
+      - Lemon Curd
+      - Dulce de Leche
+      - Nutella (hazelnut)
+      - Caramel
   - label: Cake icing
     flavors:
       - Cream Cheese
