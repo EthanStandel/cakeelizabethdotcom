@@ -15,9 +15,10 @@ flavorGroups:
       - Red Velvet
       - Champagne
       - White Amaretto Almond
-      - Carrot Cake
-      - Apple Spice
       - Bailey’s Irish Crème
+      - Carrot Cake (no filling allowed)
+      - Apple Spice (no filling allowed)
+      - Pumpkin (no filling allowed)
   - label: Cake filling
     flavors:
       - Chocolate Ganache
