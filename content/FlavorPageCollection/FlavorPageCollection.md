@@ -48,4 +48,4 @@ flavorGroups:
       - Italian
 ---
 
-Serving the Cape Elizabeth, Maine area we provide beautiful custom cakes prepared fresh with the highest quality of ingredients. Consider a beautiful custom baked cake for a special holiday treat.
+Serving the Southern Maine area, we provide beautiful custom cakes prepared fresh with the highest quality of ingredients. Consider a beautiful custom baked cake for a special holiday treat.
