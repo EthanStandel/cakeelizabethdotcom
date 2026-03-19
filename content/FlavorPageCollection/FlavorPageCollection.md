@@ -8,24 +8,16 @@ flavorGroups:
   - label: Cake flavors
     flavors:
       - French Vanilla
-      - White (Egg whites only)
-      - Death by chocolate
-      - Red Velvet
-      - Strawberry
-      - Carrot Cake
-      - Dark fruit cake
-      - Grand Marnier
-      - Kahlua Crème
-      - Yellow (with egg yolks)
+      - Yellow Butter Rum
       - Chocolate
-      - German chocolate
-      - Champagne
       - Lemon
+      - Strawberry
+      - Red Velvet
+      - Champagne
+      - White Amaretto Almond
+      - Carrot Cake
       - Apple Spice
       - Bailey’s Irish Crème
-      - Amaretto
-      - Butter Rum
-      - Lemon Poppyseed
   - label: Cake filling
     flavors:
       - Chocolate Ganache
