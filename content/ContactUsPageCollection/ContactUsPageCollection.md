@@ -4,7 +4,7 @@ metadata:
   description: Reach out to us here or with an email to info@cakeelizabeth.com
 ---
 
-## CAKE ELIZABETH
+## CAKE ELIZABETH!
 
 851 Sawyer St\
 South Portland ME\
