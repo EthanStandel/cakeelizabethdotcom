@@ -1,0 +1,20 @@
+local_backend: true
+backend:
+  name: test-repo
+
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: pages
+    label: Pages
+    folder: public/content
+    create: true
+    identifier_field: title
+    fields:
+      - label: Title
+        name: title
+        widget: string
+      - label: Content
+        name: content
+        widget: markdown

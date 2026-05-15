@@ -23,6 +23,12 @@ app.config.timestamp_*.js
 # Temp
 gitignore
 
+# Admin build output (keep config.yml)
+public/admin/*
+public/assets/admin-*
+!public/admin/config.yml
+
 # System Files
 .DS_Store
 Thumbs.db
+.nitro
