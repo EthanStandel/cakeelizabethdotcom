@@ -1,4 +1,5 @@
 import { defineConfig, type Plugin } from "vite";
+import { resolve } from "path";
 
 const fixMissingDefaultExports: Plugin = {
   name: "fix-missing-default-exports",
@@ -18,6 +19,9 @@ const fixMissingDefaultExports: Plugin = {
 
 export default defineConfig({
   plugins: [fixMissingDefaultExports],
+  resolve: {
+    alias: { "~": resolve(__dirname, "src") },
+  },
   build: {
     outDir: "public",
     emptyOutDir: false,
