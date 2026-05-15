@@ -28,6 +28,9 @@ public/admin/*
 public/assets/admin-*
 !public/admin/config.yml
 
+# Generated at predev/prebuild — not committed
+public/cms-manifest.json
+
 # System Files
 .DS_Store
 Thumbs.db

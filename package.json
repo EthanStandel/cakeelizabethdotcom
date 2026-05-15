@@ -2,9 +2,11 @@
   "name": "example-basic",
   "type": "module",
   "scripts": {
-    "predev": "npm run build:admin",
+    "generate:cms": "tsx scripts/generate-cms-config.ts",
+    "validate:content": "tsx scripts/validate-content.ts",
+    "predev": "npm run generate:cms && npm run build:admin",
     "dev": "concurrently \"vite dev\" \"decap-server\"",
-    "prebuild": "npm run build:admin",
+    "prebuild": "npm run generate:cms && npm run build:admin && npm run validate:content",
     "build": "vite build && vite build --config vite.config.admin.ts",
     "build:admin": "vite build --config vite.config.admin.ts",
     "start": "vite start",
@@ -16,6 +18,8 @@
     "@solidjs/start": "2.0.0-alpha.2",
     "@solidjs/vite-plugin-nitro-2": "^0.1.0",
     "decap-cms-app": "^3.12.2",
+    "gray-matter": "^4.0.3",
+    "marked": "^18.0.3",
     "solid-js": "^1.9.5",
     "vite": "^7.0.0",
     "zod": "^4.4.3"
@@ -24,8 +28,11 @@
     "node": ">=22"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.8.0",
     "concurrently": "^9.2.1",
-    "decap-server": "^3.7.0"
+    "decap-server": "^3.7.0",
+    "js-yaml": "^4.1.1",
+    "tsx": "^4.22.0"
   }
 }
