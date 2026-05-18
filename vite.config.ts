@@ -1,6 +1,6 @@
 import { defineConfig, type Plugin } from "vite";
 import { nitroV2Plugin as nitro } from "@solidjs/vite-plugin-nitro-2";
-
+import tailwindcss from "@tailwindcss/vite";
 import { solidStart } from "@solidjs/start/config";
 
 const adminTrailingSlash = (): Plugin => ({
@@ -28,6 +28,7 @@ export default defineConfig(({ command }) => ({
     },
   },
   plugins: [
+    tailwindcss(),
     adminTrailingSlash(),
     solidStart(),
     nitro({
