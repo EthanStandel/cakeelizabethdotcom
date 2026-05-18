@@ -37,3 +37,15 @@ p {
     max-width: none;
   }
 }
+
+body.cms-preview [data-cms-field] {
+  outline: 2px dashed transparent;
+  outline-offset: 4px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: outline-color 0.15s ease;
+}
+
+body.cms-preview [data-cms-field]:hover {
+  outline-color: #1e88e5;
+}

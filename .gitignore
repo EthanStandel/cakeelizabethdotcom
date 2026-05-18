@@ -8,7 +8,6 @@ app.config.timestamp_*.js
 
 # Environment
 .env
-.env*.local
 
 # dependencies
 /node_modules
@@ -23,15 +22,17 @@ app.config.timestamp_*.js
 # Temp
 gitignore
 
-# Admin build output (keep config.yml)
+# Admin build output (config.yml is generated per environment)
 public/admin/*
 public/assets/admin-*
-!public/admin/config.yml
 
 # Generated at predev/prebuild — not committed
 public/cms-manifest.json
+public/content/**/*.json
 
 # System Files
 .DS_Store
 Thumbs.db
 .nitro
+notes.md
+.claude

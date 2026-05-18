@@ -1,43 +1,54 @@
-import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
+import { writeFileSync, readFileSync, readdirSync, existsSync } from "node:fs";
 import { resolve, join, basename } from "node:path";
 import jsYaml from "js-yaml";
 import matter from "gray-matter";
 import { collectionRegistry } from "../src/models/index";
 
+const isDev = process.argv.includes("--dev");
+
 // --- config.yml ---
 
+const config = {
+  ...(isDev && { local_backend: true }),
+  backend: isDev
+    ? { name: "test-repo" }
+    : {
+        name: "github",
+        repo: process.env.CMS_GITHUB_REPO,
+        branch: process.env.CMS_GITHUB_BRANCH ?? "main",
+      },
+  media_folder: "public/images",
+  public_folder: "/images",
+  collections: collectionRegistry.map((c) => c.collectionConfig),
+};
+
 const configPath = resolve(process.cwd(), "public/admin/config.yml");
-const raw = readFileSync(configPath, "utf8");
-const config = jsYaml.load(raw) as Record<string, unknown>;
-
-config["collections"] = collectionRegistry.map((c) => c.collectionConfig);
-
 writeFileSync(configPath, jsYaml.dump(config, { lineWidth: -1 }), "utf8");
 
 console.log(
-  `Generated ${collectionRegistry.length} collection(s) → public/admin/config.yml`
+  `Generated ${collectionRegistry.length} collection(s) → public/admin/config.yml (${isDev ? "dev" : "build"})`
 );
 
-// --- cms-manifest.json ---
+// --- cms-manifest.json + per-entry JSON files ---
 
 const manifest = {
   collections: collectionRegistry.map((collection) => {
-    const folder = resolve(process.cwd(), collection.collectionConfig.folder);
-    const entries: Array<Record<string, unknown> & { _slug: string }> = [];
+    const folderPath = resolve(process.cwd(), collection.collectionConfig.folder);
+    const slugs: string[] = [];
 
-    if (existsSync(folder)) {
-      for (const file of readdirSync(folder).filter((f) => f.endsWith(".md"))) {
-        const { data } = matter(readFileSync(join(folder, file), "utf8"));
-        entries.push({ ...data, _slug: basename(file, ".md") });
+    if (existsSync(folderPath)) {
+      for (const file of readdirSync(folderPath).filter((f) => f.endsWith(".md"))) {
+        const slug = basename(file, ".md");
+        const { data } = matter(readFileSync(join(folderPath, file), "utf8"));
+        writeFileSync(join(folderPath, `${slug}.json`), JSON.stringify(data, null, 2), "utf8");
+        slugs.push(slug);
       }
     }
 
     return {
       name: collection.collectionConfig.name,
-      label: collection.collectionConfig.label,
       folder: collection.collectionConfig.folder,
-      fields: collection.collectionConfig.fields,
-      entries,
+      slugs,
     };
   }),
 };
@@ -48,4 +59,4 @@ writeFileSync(
   "utf8"
 );
 
-console.log(`Generated public/cms-manifest.json`);
+console.log(`Generated public/cms-manifest.json + per-entry JSON files`);

@@ -5,16 +5,16 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "allowJs": true,
     "strict": true,
     "noEmit": true,
     "types": ["vite/client"],
     "isolatedModules": true,
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["../src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["."]
 }
