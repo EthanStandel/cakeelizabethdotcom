@@ -18,7 +18,11 @@ interface CmsPreviewMessage {
   data: Record<string, unknown>;
 }
 
-export const buildIframePreviewComponent = ({ previewPath }: { previewPath: (slug: string) => string }) => {
+export const buildIframePreviewComponent = ({
+  previewPath,
+}: {
+  previewPath: (slug: string) => string;
+}) => {
   const IframePreview = ({ entry }: PreviewProps) => {
     const slug = entry.get("slug");
     const base = import.meta.env.VITE_SERVER_URL ?? "";
@@ -53,14 +57,16 @@ export const buildIframePreviewComponent = ({ previewPath }: { previewPath: (slu
     }, [entry, slug]);
 
     if (!slug) return null;
-    return <div ref={wrapperRef} style={{ height: "100%" }}>
-      <style>{`body { margin: 0; }`}</style>
-      <iframe
-        ref={iframeRef}
-        src={`${base}${previewPath(slug)}`}
-        style={{ width: "100%", height, border: "none", display: "block" }}
-      />
-    </div>;
+    return (
+      <div ref={wrapperRef} style={{ height: "100%" }}>
+        <style>{`body { margin: 0; }`}</style>
+        <iframe
+          ref={iframeRef}
+          src={`${base}${previewPath(slug)}`}
+          style={{ width: "100%", height, border: "none", display: "block" }}
+        />
+      </div>
+    );
   };
   return IframePreview;
 };

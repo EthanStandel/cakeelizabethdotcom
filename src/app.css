@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import './assets/fonts/fonts.css';
+@import "tailwindcss";
+@import "./assets/fonts/fonts.css";
 
 @theme {
   --color-primary: #65ffce;
@@ -8,8 +8,8 @@
   --color-dark-primary-foreground: #ffffff;
   --color-dark-secondary-foreground: #cccccc;
 
-  --font-serif: 'Old Standard TT', serif;
-  --font-sans: 'Montserrat', sans-serif;
+  --font-serif: "Old Standard TT", serif;
+  --font-sans: "Montserrat", sans-serif;
 
   --container-dsk: 1024px;
   /* preferred "max" but that has a naming conflict within TW */
@@ -20,7 +20,7 @@
   --spacing-min-dsk-padding: 80px;
   --spacing-min-mbl-padding: 16px;
 
-  --shadow-base: 0 4px 20px var(--tw-shadow-color, rgb(0 0 0 / 0.1))
+  --shadow-base: 0 4px 20px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -41,13 +41,9 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-nuxt-studio {
-  @apply relative z-9999;
-}
-
-body{
+body {
   &.cms-preview [data-cms-field] {
-    @apply outline-2 outline-dashed outline-transparent outline-offset-4 cursor-pointer rounded-sm transition-colors duration-150;
+    @apply outline-2 outline-dashed outline-transparent outline-offset-8 cursor-pointer transition-colors duration-150;
 
     &:hover {
       @apply outline-primary;
@@ -85,7 +81,8 @@ p {
   @apply font-sans text-sm @dsk:text-base text-secondary-foreground dark:text-dark-secondary-foreground;
 }
 
-a, button {
+a,
+button {
   @apply outline-4 outline-transparent outline-offset-4;
 
   &:focus-visible {

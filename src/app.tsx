@@ -9,7 +9,7 @@ export default function App() {
   onMount(setupCmsPreview);
   return (
     <Router
-      root={props => (
+      root={(props) => (
         <MetaProvider>
           <Title>SolidStart - Basic</Title>
           <a href="/">Index</a>

@@ -7,6 +7,16 @@ import type {
   DecapFieldConfig,
 } from "./types";
 
+type ExtractShape<Z extends z.ZodTypeAny> = Z extends z.ZodObject<infer S>
+  ? S
+  : never;
+
+type TypedListItem<T extends Record<string, CmsField>> = {
+  [K in keyof T & string]: z.ZodObject<
+    ExtractShape<T[K]["_zodSchema"]> & { type: z.ZodLiteral<K> }
+  >;
+}[keyof T & string];
+
 function makeField<Z extends z.ZodTypeAny>(
   schema: Z,
   config: Omit<DecapFieldConfig, "name">
@@ -14,33 +24,117 @@ function makeField<Z extends z.ZodTypeAny>(
   return { _zodSchema: schema, _decapConfig: config };
 }
 
-function applyRequired<Z extends z.ZodTypeAny>(
+function applyRequired<Z extends z.ZodTypeAny, R extends boolean | undefined>(
   schema: Z,
-  required: boolean | undefined
-): z.ZodTypeAny {
-  return required === false ? schema.optional() : schema;
+  required: R
+): R extends false ? z.ZodOptional<Z> : Z {
+  return (required === false ? schema.optional() : schema) as never;
+}
+
+function listField<T extends Record<string, CmsField>>(opts: {
+  label: string;
+  required?: boolean;
+  types: T;
+}): CmsField<z.ZodArray<TypedListItem<T>>>;
+function listField(opts: {
+  label: string;
+  required?: boolean;
+  field?: CmsField;
+  fields?: CmsFieldsMap;
+}): CmsField<z.ZodArray<z.ZodTypeAny>>;
+function listField(opts: {
+  label: string;
+  required?: boolean;
+  field?: CmsField;
+  fields?: CmsFieldsMap;
+  types?: Record<string, CmsField>;
+}): CmsField<z.ZodTypeAny> {
+  if (opts.types) {
+    const entries = Object.entries(opts.types);
+    const extended = entries.map(([name, f]) =>
+      (f._zodSchema as z.ZodObject<z.ZodRawShape>).extend({
+        type: z.literal(name),
+      })
+    );
+    const itemSchema: z.ZodTypeAny =
+      extended.length === 0
+        ? z.never()
+        : extended.length === 1
+        ? extended[0]
+        : z.union([extended[0], extended[1], ...extended.slice(2)] as [
+            z.ZodTypeAny,
+            z.ZodTypeAny,
+            ...z.ZodTypeAny[]
+          ]);
+    const decapTypes = entries.map(([name, f]) => ({
+      name,
+      label: `${f._decapConfig.label} [${name}]`,
+      widget: "object" as const,
+      fields: f._decapConfig.fields ?? [],
+    }));
+    return makeField(applyRequired(z.array(itemSchema), opts.required), {
+      widget: "list",
+      label: opts.label,
+      required: opts.required ?? true,
+      collapsed: false,
+      types: decapTypes,
+    });
+  }
+
+  let itemSchema: z.ZodTypeAny;
+  let decapField: Pick<DecapFieldConfig, "field" | "fields"> = {};
+
+  if (opts.fields) {
+    const shape = Object.fromEntries(
+      Object.entries(opts.fields).map(([k, v]) => [k, v._zodSchema])
+    );
+    itemSchema = z.object(shape as Record<string, z.ZodTypeAny>);
+    decapField.fields = Object.entries(opts.fields).map(([name, f]) => ({
+      name,
+      ...f._decapConfig,
+      label: `${f._decapConfig.label} [${name}]`,
+    }));
+  } else if (opts.field) {
+    itemSchema = opts.field._zodSchema;
+    decapField.field = { name: "item", ...opts.field._decapConfig };
+  } else {
+    itemSchema = z.string();
+  }
+
+  return makeField(applyRequired(z.array(itemSchema), opts.required), {
+    widget: "list",
+    label: opts.label,
+    required: opts.required ?? true,
+    collapsed: false,
+    ...(decapField as Pick<DecapFieldConfig, "field" | "fields" | "types">),
+  });
 }
 
 export const fields = {
   string(opts: { label: string; required?: boolean; default?: string }) {
-    return makeField(
-      applyRequired(z.string(), opts.required) as z.ZodString | z.ZodOptional<z.ZodString>,
-      { widget: "string", label: opts.label, required: opts.required ?? true, default: opts.default }
-    );
+    return makeField(applyRequired(z.string(), opts.required), {
+      widget: "string",
+      label: opts.label,
+      required: opts.required ?? true,
+      default: opts.default,
+    });
   },
 
   text(opts: { label: string; required?: boolean; default?: string }) {
-    return makeField(
-      applyRequired(z.string(), opts.required) as z.ZodString | z.ZodOptional<z.ZodString>,
-      { widget: "text", label: opts.label, required: opts.required ?? true, default: opts.default }
-    );
+    return makeField(applyRequired(z.string(), opts.required), {
+      widget: "text",
+      label: opts.label,
+      required: opts.required ?? true,
+      default: opts.default,
+    });
   },
 
   markdown(opts: { label: string; required?: boolean }) {
-    return makeField(
-      applyRequired(z.string(), opts.required) as z.ZodString | z.ZodOptional<z.ZodString>,
-      { widget: "markdown", label: opts.label, required: opts.required ?? true }
-    );
+    return makeField(applyRequired(z.string(), opts.required), {
+      widget: "markdown",
+      label: opts.label,
+      required: opts.required ?? true,
+    });
   },
 
   number(opts: {
@@ -55,113 +149,95 @@ export const fields = {
     let schema = z.number();
     if (opts.min !== undefined) schema = schema.min(opts.min);
     if (opts.max !== undefined) schema = schema.max(opts.max);
-    return makeField(
-      applyRequired(schema, opts.required) as z.ZodNumber | z.ZodOptional<z.ZodNumber>,
-      {
-        widget: "number",
-        label: opts.label,
-        required: opts.required ?? true,
-        default: opts.default,
-        value_type: opts.valueType,
-        min: opts.min,
-        max: opts.max,
-        step: opts.step,
-      }
-    );
+    return makeField(applyRequired(schema, opts.required), {
+      widget: "number",
+      label: opts.label,
+      required: opts.required ?? true,
+      default: opts.default,
+      value_type: opts.valueType,
+      min: opts.min,
+      max: opts.max,
+      step: opts.step,
+    });
   },
 
   boolean(opts: { label: string; required?: boolean; default?: boolean }) {
-    return makeField(
-      applyRequired(z.boolean(), opts.required) as z.ZodBoolean | z.ZodOptional<z.ZodBoolean>,
-      { widget: "boolean", label: opts.label, required: opts.required ?? true, default: opts.default }
-    );
+    return makeField(applyRequired(z.boolean(), opts.required), {
+      widget: "boolean",
+      label: opts.label,
+      required: opts.required ?? true,
+      default: opts.default,
+    });
   },
 
   datetime(opts: { label: string; required?: boolean; default?: string }) {
-    return makeField(
-      applyRequired(z.string(), opts.required) as z.ZodString | z.ZodOptional<z.ZodString>,
-      { widget: "datetime", label: opts.label, required: opts.required ?? true, default: opts.default }
-    );
+    return makeField(applyRequired(z.string(), opts.required), {
+      widget: "datetime",
+      label: opts.label,
+      required: opts.required ?? true,
+      default: opts.default,
+    });
   },
 
   image(opts: { label: string; required?: boolean }) {
-    return makeField(
-      applyRequired(z.string(), opts.required) as z.ZodString | z.ZodOptional<z.ZodString>,
-      { widget: "image", label: opts.label, required: opts.required ?? true }
-    );
+    return makeField(applyRequired(z.string(), opts.required), {
+      widget: "image",
+      label: opts.label,
+      required: opts.required ?? true,
+    });
   },
 
   file(opts: { label: string; required?: boolean }) {
-    return makeField(
-      applyRequired(z.string(), opts.required) as z.ZodString | z.ZodOptional<z.ZodString>,
-      { widget: "file", label: opts.label, required: opts.required ?? true }
-    );
+    return makeField(applyRequired(z.string(), opts.required), {
+      widget: "file",
+      label: opts.label,
+      required: opts.required ?? true,
+    });
   },
 
   select<const T extends readonly [string, ...string[]]>(opts: {
     label: string;
     options: T;
     required?: boolean;
-    multiple?: boolean;
     default?: T[number];
   }) {
-    const baseSchema = opts.multiple ? z.array(z.enum(opts.options)) : z.enum(opts.options);
-    return makeField(
-      applyRequired(baseSchema, opts.required),
-      {
-        widget: "select",
-        label: opts.label,
-        required: opts.required ?? true,
-        options: [...opts.options],
-        multiple: opts.multiple,
-        default: opts.default,
-      }
-    );
+    return makeField(applyRequired(z.enum(opts.options), opts.required), {
+      widget: "select",
+      label: opts.label,
+      required: opts.required ?? true,
+      options: [...opts.options],
+      multiple: false,
+      default: opts.default,
+    });
   },
 
-  list(opts: {
+  list: listField,
+
+  object<F extends CmsFieldsMap>(opts: {
     label: string;
     required?: boolean;
-    field?: CmsField;
-    fields?: CmsFieldsMap;
+    fields: F;
   }) {
-    let itemSchema: z.ZodTypeAny;
-    let decapField: Pick<DecapFieldConfig, "field" | "fields"> = {};
-
-    if (opts.fields) {
-      const shape = Object.fromEntries(
-        Object.entries(opts.fields).map(([k, v]) => [k, v._zodSchema])
-      );
-      itemSchema = z.object(shape as Record<string, z.ZodTypeAny>);
-      decapField.fields = Object.entries(opts.fields).map(([name, f]) => ({
-        name,
-        ...f._decapConfig,
-      }));
-    } else if (opts.field) {
-      itemSchema = opts.field._zodSchema;
-      decapField.field = { name: "item", ...opts.field._decapConfig };
-    } else {
-      itemSchema = z.string();
-    }
-
-    return makeField(
-      applyRequired(z.array(itemSchema), opts.required),
-      { widget: "list", label: opts.label, required: opts.required ?? true, ...decapField }
-    );
-  },
-
-  object<F extends CmsFieldsMap>(opts: { label: string; required?: boolean; fields: F }) {
+    type ObjSchema = z.ZodObject<{ [K in keyof F]: F[K]["_zodSchema"] }>;
     const shape = Object.fromEntries(
       Object.entries(opts.fields).map(([k, v]) => [k, v._zodSchema])
     ) as { [K in keyof F]: F[K]["_zodSchema"] };
-    const objSchema = z.object(shape);
-    const decapFields: DecapFieldConfig[] = Object.entries(opts.fields).map(([name, f]) => ({
-      name,
-      ...f._decapConfig,
-    }));
+    const decapFields: DecapFieldConfig[] = Object.entries(opts.fields).map(
+      ([name, f]) => ({
+        name,
+        ...f._decapConfig,
+        label: `${f._decapConfig.label} [${name}]`,
+      })
+    );
     return makeField(
-      applyRequired(objSchema, opts.required),
-      { widget: "object", label: opts.label, required: opts.required ?? true, fields: decapFields }
+      applyRequired(z.object(shape) as ObjSchema, opts.required),
+      {
+        widget: "object",
+        label: opts.label,
+        required: opts.required ?? true,
+        collapsed: false,
+        fields: decapFields,
+      }
     );
   },
 };
@@ -178,13 +254,21 @@ export function defineCollection<F extends CmsFieldsMap>(opts: {
   fields: F;
 }): CollectionDefinition<F> {
   const zodShape = Object.fromEntries(
-    Object.entries(opts.fields).map(([k, v]) => [k, v._zodSchema.optional()])
+    Object.entries(opts.fields).map(([k, v]) => [
+      k,
+      v._decapConfig.widget === "list"
+        ? v._zodSchema.optional().default([])
+        : v._zodSchema.optional(),
+    ])
   ) as { [K in keyof F]: z.ZodOptional<F[K]["_zodSchema"]> };
 
-  const decapFields: DecapFieldConfig[] = Object.entries(opts.fields).map(([name, f]) => ({
-    name,
-    ...f._decapConfig,
-  }));
+  const decapFields: DecapFieldConfig[] = Object.entries(opts.fields).map(
+    ([name, f]) => ({
+      name,
+      ...f._decapConfig,
+      label: `${f._decapConfig.label} [${name}]`,
+    })
+  );
 
   const collectionConfig: DecapCollectionConfig = {
     name: opts.name,
