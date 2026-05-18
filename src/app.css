@@ -1,51 +1,94 @@
-body {
-  font-family: Gordita, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+@import 'tailwindcss';
+@import './assets/fonts/fonts.css';
+
+@theme {
+  --color-primary: #65ffce;
+  --color-primary-foreground: #181614;
+  --color-secondary-foreground: #444444;
+  --color-dark-primary-foreground: #ffffff;
+  --color-dark-secondary-foreground: #cccccc;
+
+  --font-serif: 'Old Standard TT', serif;
+  --font-sans: 'Montserrat', sans-serif;
+
+  --container-dsk: 1024px;
+  /* preferred "max" but that has a naming conflict within TW */
+  --container-widest: 1280px;
+
+  --spacing-max-content: var(--container-dsk);
+  --spacing-max-page: var(--container-widest);
+  --spacing-min-dsk-padding: 80px;
+  --spacing-min-mbl-padding: 16px;
+
+  --shadow-base: 0 4px 20px var(--tw-shadow-color, rgb(0 0 0 / 0.1))
 }
 
-a {
-  margin-right: 1rem;
+@custom-variant dark (&:where(.dark, .dark *));
+
+@utility page-container {
+  @apply max-w-max-page mx-auto;
 }
 
-main {
-  text-align: center;
-  padding: 1em;
-  margin: 0 auto;
+@utility content-container {
+  @apply max-w-max-content mx-auto px-min-mbl-padding @dsk:px-min-dsk-padding;
+}
+
+@utility block-padding {
+  @apply not-first:mt-5;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+nuxt-studio {
+  @apply relative z-9999;
+}
+
+body{
+  &.cms-preview [data-cms-field] {
+    @apply outline-2 outline-dashed outline-transparent outline-offset-4 cursor-pointer rounded-sm transition-colors duration-150;
+
+    &:hover {
+      @apply outline-primary;
+    }
+  }
+}
+
+/* Prose enabled by default at root */
+h1,
+h2,
+h3 {
+  @apply font-serif text-primary-foreground dark:text-dark-primary-foreground;
+}
+
+h1,
+h2,
+h3,
+p {
+  @apply block-padding text-balance;
 }
 
 h1 {
-  color: #335d92;
-  text-transform: uppercase;
-  font-size: 4rem;
-  font-weight: 100;
-  line-height: 1.1;
-  margin: 4rem auto;
-  max-width: 14rem;
+  @apply text-5xl @dsk:text-6xl;
+}
+
+h2 {
+  @apply text-4xl @dsk:text-5xl;
+}
+
+h3 {
+  @apply text-3xl @dsk:text-4xl;
 }
 
 p {
-  max-width: 14rem;
-  margin: 2rem auto;
-  line-height: 1.35;
+  @apply font-sans text-sm @dsk:text-base text-secondary-foreground dark:text-dark-secondary-foreground;
 }
 
-@media (min-width: 480px) {
-  h1 {
-    max-width: none;
+a, button {
+  @apply outline-4 outline-transparent outline-offset-4;
+
+  &:focus-visible {
+    @apply outline-primary;
   }
-
-  p {
-    max-width: none;
-  }
-}
-
-body.cms-preview [data-cms-field] {
-  outline: 2px dashed transparent;
-  outline-offset: 4px;
-  cursor: pointer;
-  border-radius: 2px;
-  transition: outline-color 0.15s ease;
-}
-
-body.cms-preview [data-cms-field]:hover {
-  outline-color: #1e88e5;
 }
