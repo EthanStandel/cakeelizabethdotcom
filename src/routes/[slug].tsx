@@ -1,23 +1,26 @@
-import { useParams, createAsync } from "@solidjs/router";
+import { useParams, createAsync, query } from "@solidjs/router";
 import { Title } from "@solidjs/meta";
 import { HttpStatusCode } from "@solidjs/start";
 import { Show, Suspense } from "solid-js";
-import { marked } from "marked";
 import { getCollectionItem } from "~/lib/content";
 import { pagesCollection } from "~/models";
 import { createCmsLiveContent } from "~/primitives/createCmsLiveContent";
+import { Content } from "~/components/Content";
+
+const getPage = query(
+  (slug: string) => getCollectionItem(pagesCollection, slug),
+  "page"
+);
 
 export const route = {
   preload({ params }: { params: Record<string, string> }) {
-    void getCollectionItem(pagesCollection, params["slug"]!);
+    void getPage(params["slug"]!);
   },
 };
 
 export default function Page() {
   const params = useParams<{ slug: string }>();
-  const page = createAsync(() =>
-    getCollectionItem(pagesCollection, params.slug)
-  );
+  const page = createAsync(() => getPage(params.slug));
   const liveContent = createCmsLiveContent(pagesCollection, () => params.slug);
 
   const content = () => liveContent() ?? page();
@@ -39,8 +42,10 @@ export default function Page() {
         {(p) => (
           <main>
             <Title>{p().title}</Title>
-            <h1>{p().title}</h1>
-            <div innerHTML={marked(p().content ?? "") as string} />
+            <Content content={p()} property="title" type="string">
+              {(span, field) => <h1 data-cms-field={field}>{span}</h1>}
+            </Content>
+            <Content content={p()} property="content" type="markdown" />
           </main>
         )}
       </Show>

@@ -1,12 +1,10 @@
-import CMS from "decap-cms-app";
 import { createElement, useState, useEffect, useRef } from "react";
-import { collectionRegistry } from "../src/models";
 
 interface ImmutableMap {
   toJS(): Record<string, unknown>;
 }
 
-interface PreviewProps {
+export interface PreviewProps {
   entry: {
     get(key: "slug"): string;
     get(key: "data"): ImmutableMap | undefined;
@@ -20,8 +18,8 @@ interface CmsPreviewMessage {
   data: Record<string, unknown>;
 }
 
-function makeIframePreview(previewPath: (slug: string) => string) {
-  return function IframePreview({ entry }: PreviewProps) {
+export const buildIframePreviewComponent = ({ previewPath }: { previewPath: (slug: string) => string }) => {
+  const IframePreview = ({ entry }: PreviewProps) => {
     const slug = entry.get("slug");
     const base = import.meta.env.VITE_SERVER_URL ?? "";
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -55,25 +53,14 @@ function makeIframePreview(previewPath: (slug: string) => string) {
     }, [entry, slug]);
 
     if (!slug) return null;
-    return createElement(
-      "div",
-      { ref: wrapperRef, style: { height: "100%" } },
-      [
-        createElement("style", {}, "body { margin: 0; }"),
-        createElement("iframe", {
-          ref: iframeRef,
-          src: `${base}${previewPath(slug)}`,
-          style: { width: "100%", height, border: "none", display: "block" },
-        }),
-      ]
-    );
+    return <div ref={wrapperRef} style={{ height: "100%" }}>
+      <style>{`body { margin: 0; }`}</style>
+      <iframe
+        ref={iframeRef}
+        src={`${base}${previewPath(slug)}`}
+        style={{ width: "100%", height, border: "none", display: "block" }}
+      />
+    </div>;
   };
-}
-
-CMS.init();
-collectionRegistry.forEach((collection) => {
-  CMS.registerPreviewTemplate(
-    collection.name,
-    makeIframePreview(collection.previewPath)
-  );
-});
+  return IframePreview;
+};

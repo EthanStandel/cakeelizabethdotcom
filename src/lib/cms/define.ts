@@ -178,8 +178,8 @@ export function defineCollection<F extends CmsFieldsMap>(opts: {
   fields: F;
 }): CollectionDefinition<F> {
   const zodShape = Object.fromEntries(
-    Object.entries(opts.fields).map(([k, v]) => [k, v._zodSchema])
-  ) as { [K in keyof F]: F[K]["_zodSchema"] };
+    Object.entries(opts.fields).map(([k, v]) => [k, v._zodSchema.optional()])
+  ) as { [K in keyof F]: z.ZodOptional<F[K]["_zodSchema"]> };
 
   const decapFields: DecapFieldConfig[] = Object.entries(opts.fields).map(([name, f]) => ({
     name,

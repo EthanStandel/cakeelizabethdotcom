@@ -42,7 +42,7 @@ export interface CmsField<Z extends z.ZodTypeAny = z.ZodTypeAny> {
 export type CmsFieldsMap = Record<string, CmsField>;
 
 export type InferFields<F extends CmsFieldsMap> = {
-  [K in keyof F]: z.infer<F[K]["_zodSchema"]>;
+  [K in keyof F]?: z.infer<F[K]["_zodSchema"]>;
 };
 
 export interface DecapCollectionConfig {
@@ -59,7 +59,12 @@ export interface DecapCollectionConfig {
 
 export interface CollectionDefinition<F extends CmsFieldsMap> {
   name: string;
-  schema: z.ZodObject<{ [K in keyof F]: F[K]["_zodSchema"] }>;
+  schema: z.ZodObject<{ [K in keyof F]: z.ZodOptional<F[K]["_zodSchema"]> }>;
   collectionConfig: DecapCollectionConfig;
   previewPath: (slug: string) => string;
+}
+
+export interface CmsFieldFocusMessage {
+  type: "cms-field-focus";
+  fieldName: string;
 }
