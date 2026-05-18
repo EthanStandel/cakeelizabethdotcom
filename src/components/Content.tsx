@@ -1,40 +1,61 @@
 import type { JSX } from "solid-js";
 import get from "lodash/get";
 import { marked } from "marked";
+import { useCmsPath } from "~/lib/cms/CmsPathContext";
 
-interface ContentProps<T extends object> {
-  content: T | undefined;
-  property: keyof T & string;
-  type: "string" | "markdown";
-  children?: (element: JSX.Element, cmsField: string) => JSX.Element;
+interface ContentProps<
+  Content extends object,
+  Type extends "string" | "markdown"
+> {
+  content: Content | undefined;
+  property: keyof Content & string;
+  type: Type;
+  children?: (
+    element: () => Type extends "markdown" ? JSX.Element : string,
+    cmsProp: () => { "data-cms-field": string }
+  ) => JSX.Element;
 }
 
-export function Content<T extends object>(props: ContentProps<T>) {
+export function Content<
+  Content extends object,
+  Type extends "string" | "markdown"
+>(props: ContentProps<Content, Type>) {
+  const cmsPath = useCmsPath();
+  const fieldPath = () =>
+    cmsPath ? `${cmsPath}.${props.property}` : props.property;
+
   const value = () =>
     props.content != null
       ? (get(props.content, props.property) as string | undefined)
       : undefined;
 
-  const inner = (): JSX.Element =>
-    props.type === "markdown" ? (
-      <div innerHTML={marked(value() ?? "") as string} />
-    ) : (
-      <span>{value() ?? ""}</span>
-    );
-
-  if (props.children) {
-    return <>{props.children(inner(), props.property)}</>;
-  }
-
   return (
     <>
-      {props.type === "markdown" ? (
-        <div
-          data-cms-field={props.property}
-          innerHTML={marked(value() ?? "") as string}
-        />
+      {!value() ? null : props.type === "markdown" ? (
+        props.children ? (
+          props.children(
+            () =>
+              (
+                <div
+                  class="not-first:mt-5"
+                  innerHTML={marked(value()!) as string}
+                />
+              ) as any,
+            () => ({ "data-cms-field": fieldPath() })
+          )
+        ) : (
+          <div
+            data-cms-field={fieldPath()}
+            class="not-first:mt-5"
+            innerHTML={marked(value()!) as string}
+          />
+        )
+      ) : props.children ? (
+        props.children(value! as any, () => ({
+          "data-cms-field": fieldPath(),
+        }))
       ) : (
-        <span data-cms-field={props.property}>{value() ?? ""}</span>
+        <span data-cms-field={fieldPath()}>{value()}</span>
       )}
     </>
   );

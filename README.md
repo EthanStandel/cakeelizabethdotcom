@@ -5,7 +5,7 @@ SolidStart site with an aggressively customized Decap CMS admin interface. Conte
 ## Architecture
 
 ```
-src/          SolidStart app (routes, components, lib, models)
+src/          SolidStart app (routes, components, lib, models, modules)
 admin/        Decap CMS bundle (separate Vite config, proxied through main server)
 public/
   content/    Markdown content files (source of truth for all CMS content)
@@ -35,11 +35,13 @@ The `Content` component (`src/components/Content.tsx`) renders content fields wi
 // Renders a <div data-cms-field="content"> with innerHTML-rendered markdown
 <Content content={page} property="content" type="markdown" />
 
-// Render prop — caller controls the outer element; Content provides the inner node and the field name
+// Render prop — caller controls the outer element; Content provides reactive accessors
 <Content content={page} property="title" type="string">
-  {(span, field) => <h1 data-cms-field={field}>{span}</h1>}
+  {(value, cmsProp) => <h1 {...cmsProp()}>{value()}</h1>}
 </Content>
 ```
+
+Renders nothing when the field value is falsy.
 
 Props:
 
@@ -48,23 +50,55 @@ Props:
 | `content` | `T \| undefined` | The full content object (generic) |
 | `property` | `keyof T & string` | Field name — type-checked against `T` |
 | `type` | `"string" \| "markdown"` | `"string"` renders `<span>`, `"markdown"` renders `<div innerHTML>` via `marked` |
-| `children` | `(element, cmsField) => JSX.Element` | Optional render prop. Receives the inner element (no `data-cms-field`) and the field name string so the caller can place `data-cms-field` wherever makes sense (e.g., on a wrapping `<button>` or `<h1>`). |
+| `children` | `(element: () => …, cmsProp: () => { "data-cms-field": string }) => JSX.Element` | Optional render prop. Receives the inner content as a reactive accessor and a `cmsProp` accessor that returns a spread-ready `data-cms-field` object. Spread `{...cmsProp()}` onto whichever element should be the click target. |
 
-`data-cms-field` attributes are inert outside the CMS. The click-to-edit behavior only activates inside the Decap preview iframe.
+`data-cms-field` values are dot-separated field paths (e.g., `modules.0.content`) built from `CmsPathContext` + `property`. The `CmsPathContextProvider` wrapper sets the base path for nested content — use it when rendering list items or object fields inside modules so click-to-edit paths resolve correctly. `data-cms-field` attributes are inert outside the CMS preview iframe.
+
+### ContentFor
+
+`ContentFor` (`src/components/ContentFor.tsx`) combines SolidJS `<For>` with `CmsPathContextProvider` so list items automatically get correct dot-path context without manual path tracking. `field` is type-checked to only accept keys of `each` whose value is an array.
+
+```tsx
+// each = parent object, field = array key — path context set to "ctaList.0", "ctaList.1", …
+<ContentFor each={props.shape} field="ctaList">
+  {(cta) => (
+    <Content content={cta} property="label" type="string">
+      {(label, cmsProp) => <span {...cmsProp()}>{label()}</span>}
+    </Content>
+  )}
+</ContentFor>
+```
+
+Props:
+
+| Prop | Type | Description |
+|---|---|---|
+| `each` | `TParent \| null \| undefined` | Parent object containing the array field |
+| `field` | `ArrayField<TParent>` | Key of `each` whose value is an array — type-checked at compile time |
+| `children` | `(item: T, index: Accessor<number>) => JSX.Element` | Render function, same signature as `<For>` children |
+| `fallback` | `JSX.Element` | Optional fallback rendered when the array is empty |
 
 ### Click-to-edit
 
 When rendered inside the Decap CMS preview iframe, `[data-cms-field]` elements become interactive: hovering shows a blue dashed outline and clicking sends a focus message to the Decap editor.
 
-`setupCmsPreview` (called from `App` via `onMount`) handles the client side:
+`setupCmsPreview` (`src/lib/utils/setupCmsPreview.ts`, called from `App` via `onMount`) handles the client side:
 
 1. Detects iframe context via `window !== window.top` (with a `SecurityError` fallback for cross-origin frames).
 2. Adds `body.cms-preview` — the CSS in `app.css` gates all hover/cursor styles behind this class so normal pages are unaffected.
-3. Attaches a single delegated click listener on `document`. On click, walks up via `.closest("[data-cms-field]")`, then posts `{ type: "cms-field-focus", fieldName }` to `window.top`.
+3. Attaches a single delegated click listener on `document`. On click, walks up via `.closest("[data-cms-field]")`, then posts `{ type: "cms-field-focus", fieldPath }` to `window.top`. `fieldPath` is the dot-separated path from `data-cms-field` (e.g., `modules.0.content`).
 
 `window.top` is required (not `window.parent`) because Decap wraps preview templates in its own `react-frame-component` iframe, creating three levels of nesting: admin window → Decap preview iframe → SolidStart iframe. `window.parent` would only reach the middle frame.
 
 The admin side handles the message and focuses the editor field. See [admin/README.md](admin/README.md) for that half of the system.
+
+### Modules
+
+`src/modules/` contains page-section components (e.g., `HeroModule`). Each module has a matching shape in `src/models/modules/` that uses `fields.object` to define its CMS fields.
+
+`ModuleRegistry` (`src/modules/ModuleRegistry.tsx`) maps module type keys to their components and renders them via SolidJS `<Dynamic>`. `ModuleRegistryShape` (`src/models/ModuleRegistry.shape.ts`) collects all module shapes for use in `fields.list({ types: ModuleRegistryShape })` — this generates a Decap `list` widget with typed variants so editors can add, reorder, and configure individual modules.
+
+Reusable sub-shapes (e.g., `LinkShape`) live in `src/models/components/` and are composed into module shapes via `fields.object`.
 
 ### Admin CMS
 

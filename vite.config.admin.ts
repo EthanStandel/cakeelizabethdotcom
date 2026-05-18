@@ -64,9 +64,6 @@ export default defineConfig(({ command }) => ({
   server: {
     port: 5174,
     hmr: { clientPort: 5173 },
-    watch: {
-      ignored: ["**/src/models/**"],
-    },
   },
   build: {
     outDir: resolve(__dirname, "public/admin"),

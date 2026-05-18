@@ -3,14 +3,14 @@ import { Title } from "@solidjs/meta";
 import { HttpStatusCode } from "@solidjs/start";
 import { Show, Suspense } from "solid-js";
 import { getCollectionItem } from "~/lib/content";
-import { pagesCollection } from "~/models";
+import { PageShape } from "~/models";
 import { createCmsLiveContent } from "~/primitives/createCmsLiveContent";
 import { Content } from "~/components/Content";
+import { ModuleRegistry } from "~/modules/ModuleRegistry";
+import { ContentFor } from "~/components/ContentFor";
 
-const getPage = query(
-  (slug: string) => getCollectionItem(pagesCollection, slug),
-  "page"
-);
+const fetchPage = (slug: string) => getCollectionItem(PageShape, slug);
+const getPage = import.meta.env.DEV ? fetchPage : query(fetchPage, "page");
 
 export const route = {
   preload({ params }: { params: Record<string, string> }) {
@@ -18,10 +18,10 @@ export const route = {
   },
 };
 
-export default function Page() {
+const Page = () => {
   const params = useParams<{ slug: string }>();
   const page = createAsync(() => getPage(params.slug));
-  const liveContent = createCmsLiveContent(pagesCollection, () => params.slug);
+  const liveContent = createCmsLiveContent(PageShape, () => params.slug);
 
   const content = () => liveContent() ?? page();
 
@@ -43,12 +43,19 @@ export default function Page() {
           <main>
             <Title>{p().title}</Title>
             <Content content={p()} property="title" type="string">
-              {(span, field) => <h1 data-cms-field={field}>{span}</h1>}
+              {(title, cmsProp) => <h1 {...cmsProp()}>{title()}</h1>}
             </Content>
             <Content content={p()} property="content" type="markdown" />
+            <ContentFor each={p()} field="modules">
+              {(module) => (
+                <ModuleRegistry module={module.type} shape={module} />
+              )}
+            </ContentFor>
           </main>
         )}
       </Show>
     </Suspense>
   );
-}
+};
+
+export default Page;

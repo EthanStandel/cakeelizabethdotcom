@@ -18,16 +18,34 @@ interface CmsManifest {
   collections: ManifestCollection[];
 }
 
+function nullToUndefined(value: unknown): unknown {
+  if (value === null) return undefined;
+  if (Array.isArray(value)) return value.map(nullToUndefined);
+  if (typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([k, v]) => [
+        k,
+        nullToUndefined(v),
+      ])
+    );
+  }
+  return value;
+}
+
+const isDev = import.meta.env.DEV;
+
 // Cached per server instance / browser session. Content is static after generate:cms runs.
 let manifestCache: CmsManifest | null = null;
 
 async function getManifest(): Promise<CmsManifest> {
-  if (manifestCache) return manifestCache;
+  if (!isDev && manifestCache) return manifestCache;
   const base = import.meta.env.VITE_SERVER_URL ?? "";
-  const res = await fetch(`${base}/cms-manifest.json`);
+  const fetchOptions: RequestInit = isDev ? { cache: "no-store" } : {};
+  const res = await fetch(`${base}/cms-manifest.json`, fetchOptions);
   if (!res.ok) throw new Error(`Failed to load CMS manifest: ${res.status}`);
-  manifestCache = (await res.json()) as CmsManifest;
-  return manifestCache;
+  const data = (await res.json()) as CmsManifest;
+  if (!isDev) manifestCache = data;
+  return data;
 }
 
 export async function getCollectionItem<F extends CmsFieldsMap>(
@@ -39,10 +57,11 @@ export async function getCollectionItem<F extends CmsFieldsMap>(
   if (!found?.slugs.includes(slug)) return undefined;
   const base = import.meta.env.VITE_SERVER_URL ?? "";
   const servePath = collection.collectionConfig.folder.replace(/^public/, "");
-  const res = await fetch(`${base}${servePath}/${slug}.json`);
+  const fetchOptions: RequestInit = isDev ? { cache: "no-store" } : {};
+  const res = await fetch(`${base}${servePath}/${slug}.json`, fetchOptions);
   if (!res.ok) return undefined;
   const data = await res.json();
-  const parsed = collection.schema.parse(data);
+  const parsed = collection.schema.parse(nullToUndefined(data));
   return { ...parsed, _slug: slug } as ContentItem<F>;
 }
 

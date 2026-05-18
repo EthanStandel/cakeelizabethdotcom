@@ -1,8 +1,8 @@
 import type { CollectionDefinition, CmsFieldsMap } from "~/lib/cms/types";
-import { pagesCollection } from "./pages";
+import { PageShape } from "./Page.shape";
 
 export const collectionRegistry: CollectionDefinition<CmsFieldsMap>[] = [
-  pagesCollection,
+  PageShape,
 ];
 
-export { pagesCollection };
+export { PageShape };

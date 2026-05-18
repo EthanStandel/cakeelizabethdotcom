@@ -24,6 +24,8 @@ export interface DecapFieldConfig {
   multiple?: boolean;
   field?: DecapFieldConfig;
   fields?: DecapFieldConfig[];
+  types?: DecapFieldConfig[];
+  collapsed?: boolean;
   value_type?: "int" | "float";
   min?: number;
   max?: number;
@@ -66,5 +68,5 @@ export interface CollectionDefinition<F extends CmsFieldsMap> {
 
 export interface CmsFieldFocusMessage {
   type: "cms-field-focus";
-  fieldName: string;
+  fieldPath: string;
 }

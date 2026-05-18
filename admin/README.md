@@ -6,18 +6,18 @@ Decap CMS instance for managing site content. Built as a separate Vite bundle th
 
 Two Vite servers run in parallel during development:
 
-| Server | Config | Port | Purpose |
-|---|---|---|---|
-| SolidStart | `vite.config.ts` | 5173 | Main app + proxy |
-| Admin | `vite.config.admin.ts` | 5174 | Decap CMS with HMR |
+| Server     | Config                 | Port | Purpose            |
+| ---------- | ---------------------- | ---- | ------------------ |
+| SolidStart | `vite.config.ts`       | 5173 | Main app + proxy   |
+| Admin      | `vite.config.admin.ts` | 5174 | Decap CMS with HMR |
 
 `npm run dev` starts all four processes via `concurrently`:
 
 ```
-vite dev                                        # SolidStart on :5173
-vite dev --config vite.config.admin.ts          # Admin on :5174
-decap-server                                    # Local Git backend, third party tool; output ignored
-tsx watch scripts/generate-cms-config.ts --dev  # Regenerates config.yml on model changes
+vite dev                                             # SolidStart on :5173
+vite dev --config vite.config.admin.ts               # Admin on :5174
+decap-server                                         # Local Git backend, third party tool; output ignored
+tsx scripts/generate-cms-config.ts --dev --watch     # Generates config.yml + watches content for .md changes
 ```
 
 The SolidStart server proxies all `/admin` requests to port 5174 (HTTP + WebSocket). HMR is configured with `clientPort: 5173` so the browser opens its WebSocket back through the proxy rather than directly to 5174. A `301` redirect in `vite.config.ts` handles bare `/admin` → `/admin/` to avoid Vite's "public base URL" message.
@@ -26,9 +26,9 @@ The SolidStart server proxies all `/admin` requests to port 5174 (HTTP + WebSock
 
 Two independent Vite configs exist side by side:
 
-| Config | Entry | Output |
-|---|---|---|
-| `vite.config.ts` | SolidStart app | `.output/` |
+| Config                 | Entry              | Output          |
+| ---------------------- | ------------------ | --------------- |
+| `vite.config.ts`       | SolidStart app     | `.output/`      |
 | `vite.config.admin.ts` | `admin/index.html` | `public/admin/` |
 
 The admin build resolves the `~` alias to `src/` so it can import shared model definitions directly from `src/models/`.
@@ -39,10 +39,10 @@ The admin build resolves the `~` alias to `src/` so it can import shared model d
 
 `public/admin/config.yml` is **gitignored** and generated at startup from the collection registry. It is never hand-edited.
 
-| Script | Backend | When |
-|---|---|---|
-| `generate:cms:dev` | `local_backend: true` + `test-repo` | `predev`, watched by `dev:cms` |
-| `generate:cms` | GitHub (`CMS_GITHUB_REPO` / `CMS_GITHUB_BRANCH`) | `prebuild` |
+| Script             | Backend                                          | When                           |
+| ------------------ | ------------------------------------------------ | ------------------------------ |
+| `generate:cms:dev` | `local_backend: true` + `test-repo`              | `predev`, watched by `dev:cms` |
+| `generate:cms`     | GitHub (`CMS_GITHUB_REPO` / `CMS_GITHUB_BRANCH`) | `prebuild`                     |
 
 Required env vars for production builds (set in `.env`):
 
@@ -51,7 +51,7 @@ CMS_GITHUB_REPO=owner/repo
 CMS_GITHUB_BRANCH=main
 ```
 
-`dev:cms` watches for TypeScript changes in `src/models/` via `tsx watch` and rewrites `config.yml`. The admin Vite server then detects the file write (via the `reloadOnConfigYml` plugin) and sends a full-reload. Model files are excluded from admin Vite's own watcher to prevent a race condition where the reload fires before the new `config.yml` is written.
+`dev:cms` generates `config.yml` at startup, then watches content folders for `.md` file changes (via Node's `fs.watch`) to regenerate the per-entry JSON files and `cms-manifest.json`. TypeScript model changes require restarting the process. The admin Vite server detects the `config.yml` write (via the `reloadOnConfigYml` plugin) and sends a full-reload. Model files are excluded from admin Vite's own watcher to prevent a race condition where the reload fires before the new `config.yml` is written.
 
 ## Collection Models as Single Source of Truth
 
@@ -131,25 +131,27 @@ admin window  (admin.tsx listener, Decap editor DOM)
 ### Message flow
 
 1. User clicks `[data-cms-field]` in the SolidStart iframe.
-2. `setupCmsPreview` (in `src/app.tsx`) calls `window.top.postMessage({ type: "cms-field-focus", fieldName }, "*")`.
-3. The `message` listener in `admin.tsx` receives it, looks up the matching `DecapFieldConfig` across all registered collections, and calls `focusDecapField(field.label)`.
+2. `setupCmsPreview` (`src/lib/utils/setupCmsPreview.ts`) calls `window.top.postMessage({ type: "cms-field-focus", fieldPath }, "*")`. `fieldPath` is a dot-separated path built from `CmsPathContext` + the clicked element's property name (e.g., `modules.0.content`).
+3. The `message` listener in `admin.tsx` receives it and calls `navigateToField(fieldPath)`.
 
-### `focusDecapField`
+### `navigateToField`
 
-Decap CMS has no public API for programmatic field focus. The function DOM-queries by label text:
+Decap CMS has no public API for programmatic field focus. `navigateToField` walks the dot-separated `fieldPath` segment by segment against the admin document DOM:
 
 ```
-labels = document.querySelectorAll("label")
-target = first label where textContent.trim() === field.label
-target.scrollIntoView()
-focusable = label[for] → getElementById
-          ?? label.querySelector("input, textarea, [contenteditable]")
-          ?? label.nextElementSibling.querySelector(...)
-          ?? label.parentElement.nextElementSibling.querySelector(...)
-focusable.focus()  (delayed 100 ms to let scrollIntoView settle)
+keys = fieldPath.split(".")
+searchSpace = document.documentElement
+
+for each key:
+  if numeric → find the nth list item container inside searchSpace, set searchSpace to it
+  if string  → find label whose textContent includes "[key]" inside searchSpace
+    if last segment → scrollIntoView + focus (4-step focusable search)
+    if not last     → set searchSpace to the field's container element and continue
 ```
 
-The four-step focusable search covers Decap's two common DOM structures: string/text widgets where the `<input>` is a direct sibling of the `<label>`, and markdown widgets where the label is wrapped in its own `<div>` and `[contenteditable]` lives in a sibling container.
+Labels are generated with a `[key]` suffix (e.g., `"Content [content]"`) by `defineCollection` and `fields.object`/`fields.list`, making them unambiguous when nested. Numeric segments handle list items by finding the nth child of the list container.
+
+The 4-step focusable search at the leaf: `label[for] → getElementById` → `label.querySelector("input, textarea, [contenteditable]")` → `label.nextElementSibling.querySelector(...)` → `label.parentElement.nextElementSibling.querySelector(...)`. Covers Decap's string/text widgets (input is sibling of label) and markdown widgets (contenteditable lives in a separate container). Focus is delayed 500 ms to let `scrollIntoView` settle.
 
 The listener lives in `admin.tsx` (not `IframePreview.tsx`) because `document.querySelectorAll` must run against the admin document — the Decap editor fields only exist there, not inside the preview iframes.
 
@@ -171,8 +173,8 @@ Two `window` methods are monkey-patched in `admin/browser-patches.ts`, imported 
 
 ### File structure
 
-| File | Purpose |
-|---|---|
-| `admin.tsx` | Entry point — `CMS.init()` and preview template registration |
-| `IframePreview.tsx` | Iframe preview component factory and its types |
-| `browser-patches.ts` | `window` monkey-patches applied before CMS init |
+| File                 | Purpose                                                      |
+| -------------------- | ------------------------------------------------------------ |
+| `admin.tsx`          | Entry point — `CMS.init()` and preview template registration |
+| `IframePreview.tsx`  | Iframe preview component factory and its types               |
+| `browser-patches.ts` | `window` monkey-patches applied before CMS init              |
