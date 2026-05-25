@@ -1,5 +1,7 @@
 # cakeelizabeth.com
 
+This document covers the application architecture. For information on the local development architecture and flow, see [`README.local.md`](./README.local.md).
+
 SolidStart site with an aggressively customized Decap CMS admin interface. Content is stored as Markdown files in `public/content/` and committed to the repo.
 
 ## Architecture
@@ -45,11 +47,11 @@ Renders nothing when the field value is falsy.
 
 Props:
 
-| Prop | Type | Description |
-|---|---|---|
-| `content` | `T \| undefined` | The full content object (generic) |
-| `property` | `keyof T & string` | Field name — type-checked against `T` |
-| `type` | `"string" \| "markdown"` | `"string"` renders `<span>`, `"markdown"` renders `<div innerHTML>` via `marked` |
+| Prop       | Type                                                                             | Description                                                                                                                                                                                                                      |
+| ---------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `content`  | `T \| undefined`                                                                 | The full content object (generic)                                                                                                                                                                                                |
+| `property` | `keyof T & string`                                                               | Field name — type-checked against `T`                                                                                                                                                                                            |
+| `type`     | `"string" \| "markdown"`                                                         | `"string"` renders `<span>`, `"markdown"` renders `<div innerHTML>` via `marked`                                                                                                                                                 |
 | `children` | `(element: () => …, cmsProp: () => { "data-cms-field": string }) => JSX.Element` | Optional render prop. Receives the inner content as a reactive accessor and a `cmsProp` accessor that returns a spread-ready `data-cms-field` object. Spread `{...cmsProp()}` onto whichever element should be the click target. |
 
 `data-cms-field` values are dot-separated field paths (e.g., `modules.0.content`) built from `CmsPathContext` + `property`. The `CmsPathContextProvider` wrapper sets the base path for nested content — use it when rendering list items or object fields inside modules so click-to-edit paths resolve correctly. `data-cms-field` attributes are inert outside the CMS preview iframe.
@@ -71,12 +73,12 @@ Props:
 
 Props:
 
-| Prop | Type | Description |
-|---|---|---|
-| `each` | `TParent \| null \| undefined` | Parent object containing the array field |
-| `field` | `ArrayField<TParent>` | Key of `each` whose value is an array — type-checked at compile time |
-| `children` | `(item: T, index: Accessor<number>) => JSX.Element` | Render function, same signature as `<For>` children |
-| `fallback` | `JSX.Element` | Optional fallback rendered when the array is empty |
+| Prop       | Type                                                | Description                                                          |
+| ---------- | --------------------------------------------------- | -------------------------------------------------------------------- |
+| `each`     | `TParent \| null \| undefined`                      | Parent object containing the array field                             |
+| `field`    | `ArrayField<TParent>`                               | Key of `each` whose value is an array — type-checked at compile time |
+| `children` | `(item: T, index: Accessor<number>) => JSX.Element` | Render function, same signature as `<For>` children                  |
+| `fallback` | `JSX.Element`                                       | Optional fallback rendered when the array is empty                   |
 
 ### Click-to-edit
 

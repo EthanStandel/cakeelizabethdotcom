@@ -2,12 +2,11 @@
   "name": "example-basic",
   "type": "module",
   "scripts": {
-    "pregenerate:cms": "touch ./public/admin/config.yml",
     "generate:cms": "tsx scripts/generate-cms-config.ts",
     "generate:cms:dev": "tsx scripts/generate-cms-config.ts --dev",
     "validate:content": "tsx scripts/validate-content.ts",
     "predev": "npm run generate:cms:dev",
-    "dev": "concurrently --names \"CLIENT,ADMIN,DECAP,CMS\" --hide \"DECAP\" --pad-prefix --prefix-colors \"cyan,magenta,yellow,green\" \"vite dev\" \"npm run dev:admin\" \"decap-server\" \"npm run dev:cms\"",
+    "dev": "concurrently --names \"CLIENT,ADMIN,DECAP,CMS\" --hide \"DECAP\" --pad-prefix --prefix-colors \"cyan,magenta,yellow,green\" \"NODE_OPTIONS=--inspect vite dev\" \"npm run dev:admin\" \"decap-server\" \"npm run dev:cms\"",
     "dev:admin": "vite dev --config vite.config.admin.ts",
     "dev:cms": "tsx scripts/generate-cms-config.ts --dev --watch",
     "prebuild": "npm run generate:cms && npm run build:admin && npm run validate:content",
