@@ -2,6 +2,7 @@
   "name": "example-basic",
   "type": "module",
   "scripts": {
+    "pregenerate:cms": "touch ./public/admin/config.yml",
     "generate:cms": "tsx scripts/generate-cms-config.ts",
     "generate:cms:dev": "tsx scripts/generate-cms-config.ts --dev",
     "validate:content": "tsx scripts/validate-content.ts",
