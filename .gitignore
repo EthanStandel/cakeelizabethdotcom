@@ -36,3 +36,7 @@ Thumbs.db
 .nitro
 notes.md
 .claude
+*.lima.yaml
+lima.REJECTED.yaml
+!base.lima.yaml
+.devenv

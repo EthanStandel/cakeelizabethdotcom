@@ -2,6 +2,7 @@ import {
   writeFileSync,
   readFileSync,
   readdirSync,
+  mkdirSync,
   existsSync,
   watch,
 } from "node:fs";
@@ -31,6 +32,7 @@ function generate() {
   };
 
   const configPath = resolve(process.cwd(), "public/admin/config.yml");
+  mkdirSync(resolve(process.cwd(), "public/admin"), { recursive: true });
   writeFileSync(configPath, jsYaml.dump(config, { lineWidth: -1 }), "utf8");
 
   console.log(
