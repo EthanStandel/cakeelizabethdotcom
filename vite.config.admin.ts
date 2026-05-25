@@ -65,6 +65,7 @@ export default defineConfig(({ command }) => ({
     port: 5174,
     hmr: { clientPort: 5173 },
   },
+  cacheDir: "node_modules/.vite-admin",
   build: {
     outDir: resolve(__dirname, "public/admin"),
     emptyOutDir: false,
