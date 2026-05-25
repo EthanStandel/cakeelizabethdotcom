@@ -1,0 +1,38 @@
+dist
+.wrangler
+.output
+.vercel
+.netlify
+.vinxi
+app.config.timestamp_*.js
+
+# Environment
+.env
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+*.launch
+.settings/
+
+# Temp
+gitignore
+
+# Admin build output (config.yml is generated per environment)
+public/admin/*
+public/assets/admin-*
+
+# Generated at predev/prebuild — not committed
+public/cms-manifest.json
+public/content/**/*.json
+
+# System Files
+.DS_Store
+Thumbs.db
+.nitro
+notes.md
+.claude

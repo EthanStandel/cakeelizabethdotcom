@@ -1,0 +1,9 @@
+:root {
+  --highlight-color: #3a69c7;
+}
+
+input:focus,
+[contenteditable]:focus {
+  outline: 2px dashed var(--highlight-color) !important;
+  outline-offset: -4px;
+}
