@@ -10,7 +10,6 @@ export const PageShape = defineCollection({
   identifierField: "title",
   fields: {
     title: fields.string({ label: "Title" }),
-    content: fields.markdown({ label: "Content" }),
     modules: fields.list({
       label: "Modules",
       types: ModuleRegistryShape,

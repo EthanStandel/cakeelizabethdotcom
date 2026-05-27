@@ -42,10 +42,6 @@ const Page = () => {
         {(p) => (
           <main>
             <Title>{p().title}</Title>
-            <Content content={p()} property="title" type="string">
-              {(title, cmsProp) => <h1 {...cmsProp()}>{title()}</h1>}
-            </Content>
-            <Content content={p()} property="content" type="markdown" />
             <ContentFor each={p()} field="modules">
               {(module) => (
                 <ModuleRegistry module={module.type} shape={module} />

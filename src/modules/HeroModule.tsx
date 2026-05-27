@@ -63,7 +63,6 @@ export const HeroModule: Component<{ shape: HeroModuleType }> = (props) => (
                       <LinkButton
                         href={cta.url}
                         variant={cta.variant}
-                        class="inline-block px-6 py-3 mt-5 text-sm font-semibold text-white bg-primary rounded"
                         {...cmsProp()}
                       >
                         {label()}

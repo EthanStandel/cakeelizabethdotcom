@@ -14,8 +14,9 @@ export const LinkButton: Component<
   <A
     {...props}
     class={cx(
-      "uppercase tracking-wide text-sm px-6 py-4 border transition-all duration-250 hover:brightness-90 hover:shadow-base active:shadow-none shadow-primary rounded-full @max-dsk:flex-[1_1_auto] text-center",
-      variants[props.variant ?? "primary"]
+      "uppercase inline-block tracking-wide text-sm px-6 py-4 border transition-all duration-250 hover:brightness-90 hover:shadow-base active:shadow-none shadow-primary rounded-full @max-dsk:flex-[1_1_auto] text-center",
+      variants[props.variant ?? "primary"],
+      props.class
     )}
   />
 );
