@@ -13,9 +13,29 @@ function navigateToField(fieldPath: string): void {
       const n = parseInt(key, 10);
       const firstLabel = searchSpace.querySelector<HTMLLabelElement>("label");
       if (!firstLabel) return;
-      const firstItem = firstLabel.parentElement;
-      if (!firstItem) return;
-      const listContainer = firstItem.parentElement;
+
+      // Ascend until we find a level where multiple siblings share the same
+      // first-label text — that's the true list-items container, not some
+      // intermediate field wrapper inside a single item.
+      const labelText = firstLabel.textContent?.trim();
+      let listContainer: Element | null = null;
+      let candidate: Element | null = firstLabel.parentElement;
+      while (candidate) {
+        const parent = candidate.parentElement;
+        if (!parent) break;
+        const itemsWithSameFirstLabel = Array.from(parent.children).filter(
+          (child) => child.querySelector("label")?.textContent?.trim() === labelText
+        );
+        if (itemsWithSameFirstLabel.length > 1) {
+          listContainer = parent;
+          break;
+        }
+        if (parent === searchSpace) break;
+        candidate = parent;
+      }
+      // Fallback to the original 2-level heuristic (handles single-item lists)
+      if (!listContainer) listContainer = firstLabel.parentElement?.parentElement ?? null;
+
       if (!listContainer) return;
       const nthItem = listContainer.children[n];
       if (!nthItem) return;
