@@ -5,7 +5,6 @@ import { Show, Suspense } from "solid-js";
 import { getCollectionItem } from "~/lib/content";
 import { PageShape } from "~/models";
 import { createCmsLiveContent } from "~/primitives/createCmsLiveContent";
-import { Content } from "~/components/Content";
 import { ModuleRegistry } from "~/modules/ModuleRegistry";
 import { ContentFor } from "~/components/ContentFor";
 
