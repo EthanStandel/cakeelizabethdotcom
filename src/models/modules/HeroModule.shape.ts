@@ -2,7 +2,7 @@ import z from "zod";
 import { fields } from "~/lib/cms/define";
 import { LinkShape } from "../components/Link.shape";
 
-export const HeroModuleShape = fields.object({
+export const HeroModuleShape = {
   label: "Hero",
   fields: {
     eyebrow: fields.string({ label: "Eyebrow" }),
@@ -17,6 +17,8 @@ export const HeroModuleShape = fields.object({
       required: false,
     }),
   },
-});
+};
 
-export type HeroModuleType = z.infer<typeof HeroModuleShape._zodSchema>;
+const HeroModuleShapeObject = fields.object(HeroModuleShape);
+
+export type HeroModuleType = z.infer<typeof HeroModuleShapeObject._zodSchema>;

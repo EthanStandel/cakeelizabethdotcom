@@ -70,3 +70,7 @@ export interface CmsFieldFocusMessage {
   type: "cms-field-focus";
   fieldPath: string;
 }
+
+export type GroupFields<T> = T extends { fields: infer F extends CmsFieldsMap }
+  ? F
+  : never;

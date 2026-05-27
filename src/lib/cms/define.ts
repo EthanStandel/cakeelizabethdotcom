@@ -17,6 +17,7 @@ type TypedListItem<T extends Record<string, CmsField>> = {
   >;
 }[keyof T & string];
 
+
 function makeField<Z extends z.ZodTypeAny>(
   schema: Z,
   config: Omit<DecapFieldConfig, "name">
@@ -35,19 +36,37 @@ function listField<T extends Record<string, CmsField>>(opts: {
   label: string;
   required?: boolean;
   types: T;
+  min?: number;
+  max?: number;
 }): CmsField<z.ZodArray<TypedListItem<T>>>;
+function listField<F extends CmsFieldsMap>(opts: {
+  label: string;
+  required?: boolean;
+  fields: F;
+  min?: number;
+  max?: number;
+}): CmsField<z.ZodArray<z.ZodObject<{ [K in keyof F]: F[K]["_zodSchema"] }>>>;
+function listField<F extends CmsField>(opts: {
+  label: string;
+  required?: boolean;
+  field: F;
+  min?: number;
+  max?: number;
+}): CmsField<z.ZodArray<F["_zodSchema"]>>;
 function listField(opts: {
   label: string;
   required?: boolean;
-  field?: CmsField;
-  fields?: CmsFieldsMap;
-}): CmsField<z.ZodArray<z.ZodTypeAny>>;
+  min?: number;
+  max?: number;
+}): CmsField<z.ZodArray<z.ZodString>>;
 function listField(opts: {
   label: string;
   required?: boolean;
   field?: CmsField;
   fields?: CmsFieldsMap;
   types?: Record<string, CmsField>;
+  min?: number;
+  max?: number;
 }): CmsField<z.ZodTypeAny> {
   if (opts.types) {
     const entries = Object.entries(opts.types);
@@ -72,12 +91,17 @@ function listField(opts: {
       widget: "object" as const,
       fields: f._decapConfig.fields ?? [],
     }));
-    return makeField(applyRequired(z.array(itemSchema), opts.required), {
+    let arraySchema = z.array(itemSchema);
+    if (opts.min !== undefined) arraySchema = arraySchema.min(opts.min);
+    if (opts.max !== undefined) arraySchema = arraySchema.max(opts.max);
+    return makeField(applyRequired(arraySchema, opts.required), {
       widget: "list",
       label: opts.label,
       required: opts.required ?? true,
       collapsed: false,
       types: decapTypes,
+      min: opts.min,
+      max: opts.max,
     });
   }
 
@@ -101,11 +125,16 @@ function listField(opts: {
     itemSchema = z.string();
   }
 
-  return makeField(applyRequired(z.array(itemSchema), opts.required), {
+  let arraySchema = z.array(itemSchema);
+  if (opts.min !== undefined) arraySchema = arraySchema.min(opts.min);
+  if (opts.max !== undefined) arraySchema = arraySchema.max(opts.max);
+  return makeField(applyRequired(arraySchema, opts.required), {
     widget: "list",
     label: opts.label,
     required: opts.required ?? true,
     collapsed: false,
+    min: opts.min,
+    max: opts.max,
     ...(decapField as Pick<DecapFieldConfig, "field" | "fields" | "types">),
   });
 }
@@ -212,6 +241,50 @@ export const fields = {
   },
 
   list: listField,
+
+  union<T extends Record<string, CmsField>>(opts: {
+    label: string;
+    required?: boolean;
+    types: T;
+  }) {
+    type Item = z.infer<TypedListItem<T>>;
+    const entries = Object.entries(opts.types);
+    const extended = entries.map(([name, f]) =>
+      (f._zodSchema as z.ZodObject<z.ZodRawShape>).extend({
+        type: z.literal(name),
+      })
+    );
+    const itemSchema: z.ZodTypeAny =
+      extended.length === 0
+        ? z.never()
+        : extended.length === 1
+        ? extended[0]
+        : z.union([extended[0], extended[1], ...extended.slice(2)] as [
+            z.ZodTypeAny,
+            z.ZodTypeAny,
+            ...z.ZodTypeAny[]
+          ]);
+
+    const arraySchema = z.array(itemSchema).min(1).max(1)
+      .transform((arr) => arr[0] as Item);
+
+    const decapTypes = entries.map(([name, f]) => ({
+      name,
+      label: `${f._decapConfig.label} [${name}]`,
+      widget: "object" as const,
+      fields: f._decapConfig.fields ?? [],
+    }));
+
+    return makeField(applyRequired(arraySchema, opts.required), {
+      widget: "list",
+      label: opts.label,
+      required: opts.required ?? true,
+      collapsed: false,
+      types: decapTypes,
+      min: 1,
+      max: 1,
+    }) as CmsField<typeof arraySchema>;
+  },
 
   object<F extends CmsFieldsMap>(opts: {
     label: string;

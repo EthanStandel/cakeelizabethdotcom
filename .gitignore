@@ -36,7 +36,8 @@ public/content/**/*.json
 Thumbs.db
 .nitro
 notes.md
-.claude
+.claude/settings.local.json
+.vscode
 *.lima.yaml
 lima.REJECTED.yaml
 !base.lima.yaml

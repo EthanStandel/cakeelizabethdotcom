@@ -1,10 +1,17 @@
-import { HeroModuleShape, HeroModuleType } from "./modules/HeroModule.shape";
+import { GridModuleShape, GridModuleType } from "./modules/GridModule.shape";
+import {
+  BaseModuleRegistryShape,
+  BaseModuleRegistryType,
+} from "./BaseModuleRegistry.shape";
+
+export { BaseModuleRegistryShape };
+export type { BaseModuleRegistryType };
 
 export const ModuleRegistryShape = {
-  hero: HeroModuleShape,
+  ...BaseModuleRegistryShape,
+  grid: GridModuleShape,
 };
 
-// TODO - tie this type down to the actual object above
-export type ModuleRegistryType = {
-  hero: HeroModuleType;
+export type ModuleRegistryType = BaseModuleRegistryType & {
+  grid: GridModuleType;
 };
