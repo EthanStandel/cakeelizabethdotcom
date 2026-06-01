@@ -1,21 +1,11 @@
-import { createElement, useState, useEffect, useRef } from "react";
-
-interface ImmutableMap {
-  toJS(): Record<string, unknown>;
-}
+import { createElement, useState, useCallback, useEffect, useRef } from "react";
+import { BrowserNavBar } from "./components/BrowserNavBar";
+import { PreviewFrame, PreviewFrameHandle } from "./components/PreviewFrame";
+import type { CmsEntry, ViewScale } from "./components/PreviewFrame";
+import { useLocalStorageState } from "./hooks/useLocalStorageState";
 
 export interface PreviewProps {
-  entry: {
-    get(key: "slug"): string;
-    get(key: "data"): ImmutableMap | undefined;
-    get(key: string): unknown;
-  };
-}
-
-interface CmsPreviewMessage {
-  type: "cms-preview-update";
-  slug: string;
-  data: Record<string, unknown>;
+  entry: CmsEntry;
 }
 
 export const buildIframePreviewComponent = ({
@@ -26,44 +16,47 @@ export const buildIframePreviewComponent = ({
   const IframePreview = ({ entry }: PreviewProps) => {
     const slug = entry.get("slug");
     const base = import.meta.env.VITE_SERVER_URL ?? "";
-    const wrapperRef = useRef<HTMLDivElement>(null);
-    const iframeRef = useRef<HTMLIFrameElement>(null);
-    const [height, setHeight] = useState("100vh");
+    const headerRef = useRef<HTMLDivElement>(null);
+    const previewRef = useRef<PreviewFrameHandle>(null);
+    const [urlInput, setUrlInput] = useState(slug ? previewPath(slug) : "");
+    const [viewScale, setViewScale] = useLocalStorageState<ViewScale>("cms-view-scale", "native");
+    const cycleViewScale = useCallback(
+      () => setViewScale((s) => s === "native" ? "desktop" : s === "desktop" ? "mobile" : "native"),
+      []
+    );
 
     useEffect(() => {
-      const parent = wrapperRef.current?.parentElement;
-      if (!parent) return;
-      const observer = new ResizeObserver(() =>
-        setHeight(`${parent.clientHeight}px`)
-      );
-      observer.observe(parent);
-      setHeight(`${parent.clientHeight}px`);
-      return () => observer.disconnect();
-    }, []);
-
-    useEffect(() => {
-      const iframe = iframeRef.current;
-      if (!iframe || !slug) return;
-      const data = entry.get("data")?.toJS() ?? {};
-      const message: CmsPreviewMessage = {
-        type: "cms-preview-update",
-        slug,
-        data,
-      };
-      const send = () => iframe.contentWindow?.postMessage(message, "*");
-      iframe.addEventListener("load", send);
-      send();
-      return () => iframe.removeEventListener("load", send);
-    }, [entry, slug]);
+      if (slug) setUrlInput(previewPath(slug));
+    }, [slug]);
 
     if (!slug) return null;
     return (
-      <div ref={wrapperRef} style={{ height: "100%" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateRows: "auto 1fr",
+          height: "100dvh",
+          overflow: "hidden",
+        }}
+      >
         <style>{`body { margin: 0; }`}</style>
-        <iframe
-          ref={iframeRef}
+        <BrowserNavBar
+          containerRef={headerRef}
+          url={urlInput}
+          onUrlChange={setUrlInput}
+          onSubmit={() => previewRef.current?.navigateTo(`${base}${urlInput}`)}
+          onReload={() => previewRef.current?.reload()}
+          onHome={() => previewRef.current?.navigateTo(`${base}${previewPath(slug)}`)}
+          viewScale={viewScale}
+          onCycleViewScale={cycleViewScale}
+        />
+        <PreviewFrame
+          ref={previewRef}
           src={`${base}${previewPath(slug)}`}
-          style={{ width: "100%", height, border: "none", display: "block" }}
+          entry={entry}
+          slug={slug}
+          onPathChange={setUrlInput}
+          viewScale={viewScale}
         />
       </div>
     );

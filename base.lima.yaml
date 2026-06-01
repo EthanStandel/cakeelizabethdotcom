@@ -14,6 +14,8 @@ portForwards:
   # App port
   - guestPort: 5173
     hostPort: 5173
+  - guestPort: 5174
+    hostPort: 5174
     # Debugging port for Vite
   - guestPort: 9229
     hostPort: 9229
