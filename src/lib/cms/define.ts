@@ -98,7 +98,7 @@ function listField(opts: {
       widget: "list",
       label: opts.label,
       required: opts.required ?? true,
-      collapsed: false,
+      collapsed: true,
       types: decapTypes,
       min: opts.min,
       max: opts.max,
@@ -132,7 +132,7 @@ function listField(opts: {
     widget: "list",
     label: opts.label,
     required: opts.required ?? true,
-    collapsed: false,
+    collapsed: true,
     min: opts.min,
     max: opts.max,
     ...(decapField as Pick<DecapFieldConfig, "field" | "fields" | "types">),
@@ -279,7 +279,7 @@ export const fields = {
       widget: "list",
       label: opts.label,
       required: opts.required ?? true,
-      collapsed: false,
+      collapsed: true,
       types: decapTypes,
       min: 1,
       max: 1,
@@ -308,7 +308,7 @@ export const fields = {
         widget: "object",
         label: opts.label,
         required: opts.required ?? true,
-        collapsed: false,
+        collapsed: true,
         fields: decapFields,
       }
     );
@@ -323,7 +323,7 @@ export function defineCollection<F extends CmsFieldsMap>(opts: {
   identifierField?: string;
   slug?: string;
   extension?: string;
-  previewPath?: (slug: string) => string;
+  previewPath: ((slug: string) => string) | null;
   fields: F;
 }): CollectionDefinition<F> {
   const zodShape = Object.fromEntries(
@@ -358,6 +358,6 @@ export function defineCollection<F extends CmsFieldsMap>(opts: {
     name: opts.name,
     schema: z.object(zodShape),
     collectionConfig,
-    previewPath: opts.previewPath ?? ((slug) => `/${slug}`),
+    previewPath: opts.previewPath,
   };
 }

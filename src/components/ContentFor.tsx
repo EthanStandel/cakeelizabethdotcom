@@ -1,5 +1,5 @@
 import { For, Accessor, JSX } from "solid-js";
-import { CmsPathContextProvider } from "~/lib/cms/CmsPathContext";
+import { CmsPathContextProvider, CmsSource, CmsSourceContextProvider } from "~/lib/cms/CmsPathContext";
 
 type ArrayField<T> = {
   [K in keyof T]-?: NonNullable<T[K]> extends readonly any[] ? K : never;
@@ -11,6 +11,7 @@ type ArrayItem<T, K extends keyof T> =
 type ContentForProps<TParent, TField extends ArrayField<TParent>> = {
   each: TParent | null | undefined;
   field: TField;
+  source?: CmsSource;
   fallback?: JSX.Element;
   children: (
     item: NonNullable<ArrayItem<TParent, TField>>,
@@ -26,11 +27,23 @@ export function ContentFor<TParent, TField extends ArrayField<TParent>>(
       each={(props.each?.[props.field] as readonly any[] | undefined) ?? []}
       fallback={props.fallback}
     >
-      {(item, index) => (
-        <CmsPathContextProvider value={`${String(props.field)}.${index()}`}>
-          {props.children(item, index)}
-        </CmsPathContextProvider>
-      )}
+      {(item, index) => {
+        const pathValue = `${String(props.field)}.${index()}`;
+        return props.source ? (
+          <CmsSourceContextProvider
+            collection={props.source.collection}
+            slug={props.source.slug}
+          >
+            <CmsPathContextProvider value={pathValue}>
+              {props.children(item, index)}
+            </CmsPathContextProvider>
+          </CmsSourceContextProvider>
+        ) : (
+          <CmsPathContextProvider value={pathValue}>
+            {props.children(item, index)}
+          </CmsPathContextProvider>
+        );
+      }}
     </For>
   );
 }

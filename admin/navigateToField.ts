@@ -1,6 +1,33 @@
-import type { CmsFieldFocusMessage } from "~/lib/cms/types";
+import { createMessageHandler } from "~/lib/cms/messages";
+import { localStorageKeys } from "./localStorageKeys";
 
-function navigateToField(fieldPath: string): void {
+function isItemCollapsed(item: Element): boolean {
+  // The NestedObjectLabel (a div) sits between StyledListItemTopBar and
+  // ObjectControl. Decap sets it display:block when collapsed, display:none
+  // when expanded — so its visibility is the authoritative collapse signal.
+  // Walk from the first button (the toggle) up to the TopBar (a direct child
+  // of `item`), then take the next sibling = NestedObjectLabel.
+  const toggleBtn = item.querySelector<HTMLButtonElement>("button");
+  if (!toggleBtn) return false;
+  let topBar: Element | null = toggleBtn.parentElement;
+  while (topBar && topBar.parentElement !== item) {
+    topBar = topBar.parentElement;
+  }
+  if (!topBar) return false;
+  const nestedLabel = topBar.nextElementSibling as HTMLElement | null;
+  if (!nestedLabel) return false;
+  return getComputedStyle(nestedLabel).display !== "none";
+}
+
+async function expandItem(item: Element): Promise<void> {
+  if (!isItemCollapsed(item)) return;
+  const toggleBtn = item.querySelector<HTMLButtonElement>("button");
+  if (!toggleBtn) return;
+  toggleBtn.click();
+  await new Promise<void>((resolve) => setTimeout(resolve, 300));
+}
+
+async function navigateToField(fieldPath: string): Promise<void> {
   const keys = fieldPath.split(".");
   let searchSpace: Element = document.documentElement;
 
@@ -39,6 +66,7 @@ function navigateToField(fieldPath: string): void {
       if (!listContainer) return;
       const nthItem = listContainer.children[n];
       if (!nthItem) return;
+      await expandItem(nthItem);
       searchSpace = nthItem;
     } else {
       const labels = Array.from(
@@ -72,8 +100,42 @@ function navigateToField(fieldPath: string): void {
   }
 }
 
-window.addEventListener("message", (event: MessageEvent) => {
-  if (event.data?.type !== "cms-field-focus") return;
-  const { fieldPath } = event.data as CmsFieldFocusMessage;
-  navigateToField(fieldPath);
-});
+// On startup: if a cross-collection transition was initiated, handle the
+// pending field navigation and clear the flag.
+{
+  let isTransition = false;
+  try {
+    isTransition = JSON.parse(localStorage.getItem(localStorageKeys.fieldDocumentTransition) ?? "false") === true;
+  } catch {}
+
+  if (isTransition) {
+    const cmsField = localStorage.getItem(localStorageKeys.cmsField);
+    if (cmsField) {
+      setTimeout(async () => {
+        await navigateToField(cmsField);
+        localStorage.setItem(localStorageKeys.fieldDocumentTransition, JSON.stringify(false));
+      }, 1000);
+    } else {
+      localStorage.setItem(localStorageKeys.fieldDocumentTransition, JSON.stringify(false));
+    }
+  }
+}
+
+window.addEventListener(
+  "message",
+  createMessageHandler({
+    "cms-field-focus": ({ fieldPath, collection, slug }) => {
+      if (collection && slug) {
+        const targetHash = `#/collections/${collection}/entries/${slug}`;
+        if (window.location.hash !== targetHash) {
+          localStorage.setItem(localStorageKeys.cmsField, fieldPath);
+          localStorage.setItem(localStorageKeys.fieldDocumentTransition, JSON.stringify(true));
+          window.location.hash = targetHash;
+          window.location.reload();
+          return;
+        }
+      }
+      navigateToField(fieldPath);
+    },
+  })
+);

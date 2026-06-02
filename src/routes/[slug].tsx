@@ -1,15 +1,16 @@
-import { useParams, createAsync, query } from "@solidjs/router";
+import { useParams } from "@solidjs/router";
 import { Title } from "@solidjs/meta";
 import { HttpStatusCode } from "@solidjs/start";
 import { Show, Suspense } from "solid-js";
 import { getCollectionItem } from "~/lib/content";
 import { PageShape } from "~/models";
-import { createCmsLiveContent } from "~/primitives/createCmsLiveContent";
+import { contentQuery, createCmsContent } from "~/primitives/createContentFetch";
 import { ModuleRegistry } from "~/modules/ModuleRegistry";
 import { ContentFor } from "~/components/ContentFor";
+import { CmsSourceContextProvider } from "~/lib/cms/CmsPathContext";
 
 const fetchPage = (slug: string) => getCollectionItem(PageShape, slug);
-const getPage = import.meta.env.DEV ? fetchPage : query(fetchPage, "page");
+const getPage = contentQuery("page", fetchPage);
 
 export const route = {
   preload({ params }: { params: Record<string, string> }) {
@@ -19,10 +20,7 @@ export const route = {
 
 const Page = () => {
   const params = useParams<{ slug: string }>();
-  const page = createAsync(() => getPage(params.slug));
-  const liveContent = createCmsLiveContent(PageShape, () => params.slug);
-
-  const content = () => liveContent() ?? page();
+  const content = createCmsContent(PageShape, fetchPage, () => params.slug);
 
   return (
     <Suspense>
@@ -41,11 +39,13 @@ const Page = () => {
         {(p) => (
           <main>
             <Title>{p().title}</Title>
-            <ContentFor each={p()} field="modules">
-              {(module) => (
-                <ModuleRegistry module={module.type} shape={module} />
-              )}
-            </ContentFor>
+            <CmsSourceContextProvider collection={PageShape.name} slug={params.slug}>
+              <ContentFor each={p()} field="modules">
+                {(module) => (
+                  <ModuleRegistry module={module.type} shape={module} />
+                )}
+              </ContentFor>
+            </CmsSourceContextProvider>
           </main>
         )}
       </Show>

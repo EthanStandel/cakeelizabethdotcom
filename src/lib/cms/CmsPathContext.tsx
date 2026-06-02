@@ -1,18 +1,39 @@
 import { createContext, useContext, ParentProps } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 
-const CmsPathContext = createContext("");
-export const useCmsPath = () => useContext(CmsPathContext);
-export const CmsPathProvider = CmsPathContext.Provider;
+export interface CmsSource {
+  collection: string;
+  slug: string;
+}
+
+interface CmsContextValue {
+  path: string;
+  source?: CmsSource;
+}
+
+const CmsContext = createContext<CmsContextValue>({ path: "" });
+
+export const useCmsPath = () => useContext(CmsContext).path;
+export const useCmsSource = () => useContext(CmsContext).source;
 
 export const CmsPathContextProvider = (
   props: ParentProps<{ value: string }>
 ): JSX.Element => {
-  const current = useCmsPath();
-  const resolved = current ? `${current}.${props.value}` : props.value;
+  const ctx = useContext(CmsContext);
+  const resolved = ctx.path ? `${ctx.path}.${props.value}` : props.value;
   return (
-    <CmsPathContext.Provider value={resolved}>
+    <CmsContext.Provider value={{ path: resolved, source: ctx.source }}>
       {props.children}
-    </CmsPathContext.Provider>
+    </CmsContext.Provider>
   );
 };
+
+export const CmsSourceContextProvider = (
+  props: ParentProps<{ collection: string; slug: string }>
+): JSX.Element => (
+  <CmsContext.Provider
+    value={{ path: "", source: { collection: props.collection, slug: props.slug } }}
+  >
+    {props.children}
+  </CmsContext.Provider>
+);

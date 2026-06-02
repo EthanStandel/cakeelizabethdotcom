@@ -8,6 +8,7 @@ export const PageShape = defineCollection({
   folder: "public/content",
   create: true,
   identifierField: "title",
+  previewPath: (slug) => `/${slug}`,
   fields: {
     title: fields.string({ label: "Title" }),
     modules: fields.list({
