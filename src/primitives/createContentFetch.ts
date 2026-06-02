@@ -8,7 +8,7 @@ export function contentQuery<TArgs extends readonly unknown[], T>(
   key: string,
   fn: (...args: TArgs) => Promise<T>
 ): (...args: TArgs) => Promise<T> {
-  return import.meta.env.DEV ? fn : query(fn, key);
+  return import.meta.env.DEV ? fn : (query(fn, key) as unknown as (...args: TArgs) => Promise<T>);
 }
 
 // Zero-arg overload (singleton fetches — no preload needed)

@@ -63,6 +63,38 @@ Collections are defined once in `src/models/` using `defineCollection` and `fiel
 
 All collection fields are wrapped in `.optional()` at the `defineCollection` level. This means partially-written entries and CMS preview data with missing fields will not blow up the client — callers are expected to handle `undefined` values.
 
+## Preview Browser Navbar
+
+The preview pane is no longer a bare iframe — it has a full browser-like nav-bar rendered by `IframePreview`, `BrowserNavBar`, and `PreviewFrame`.
+
+### `BrowserNavBar` (`admin/components/BrowserNavBar.tsx`)
+
+A React toolbar row rendered above the iframe. Controls:
+
+| Button    | Action                                                                                        |
+| --------- | --------------------------------------------------------------------------------------------- |
+| ◀ / ▶     | Back / Forward through preview navigation history                                             |
+| 🏠         | Navigate to the collection entry's default `previewPath`                                      |
+| 🔄         | Reload the iframe                                                                             |
+| URL input | Editable address bar; press Enter to navigate                                                 |
+| 🖥 / 📱 / 📐 | Cycle viewport scale: **desktop** (1920 px), **mobile** (375 px), **native** (fill container) |
+
+The current URL and viewport scale are persisted to `localStorage` so they survive Decap navigation (keyed via `localStorageKeys`).
+
+### `PreviewFrame` (`admin/components/PreviewFrame.tsx`)
+
+Wraps the `<iframe>` and adds canvas pixel rulers along the top and left edges. Exposed via `useImperativeHandle` as `PreviewFrameHandle` with methods `back()`, `forward()`, `reload()`, and `navigateTo(src)`.
+
+The rulers (`admin/components/Rulers.tsx`) are HiDPI canvas elements that draw tick marks and numeric labels scaled to the iframe's effective pixel dimensions. At native scale both rulers show physical CSS pixels; at desktop/mobile they show the simulated viewport width/height.
+
+### Navigation history (`admin/hooks/useNavigationHistory.ts`)
+
+`useNavigationHistory(initialPath)` maintains a client-side back/forward stack for the preview browser. The hook exposes `push`, `replace`, `reset`, `back(navigate)`, `forward(navigate)`, `canGoBack`, and `canGoForward`. It prevents duplicate pushes and avoids double-recording entries caused by the iframe's own `load` event firing after a programmatic navigation.
+
+### Route-change tracking
+
+`setupCmsPreview` (`src/lib/utils/setupCmsPreview.ts`) monkey-patches `history.pushState` and `history.replaceState` and listens to `popstate`. Each navigation in the SolidStart iframe sends a `cms-route-change` message (`{ path, source: "push" | "replace" | "pop" }`) to the admin window. `IframePreview` listens via `useMessageHandler` and updates the URL bar and navigation history stack accordingly — so the navbar always reflects where the user has navigated, even for in-app SolidJS router transitions.
+
 ## Preview Templates
 
 All collections get an iframe-based preview template registered automatically:
@@ -143,7 +175,8 @@ keys = fieldPath.split(".")
 searchSpace = document.documentElement
 
 for each key:
-  if numeric → find the nth list item container inside searchSpace, set searchSpace to it
+  if numeric → find the nth list item container inside searchSpace
+               auto-expand the item if collapsed, then set searchSpace to it
   if string  → find label whose textContent includes "[key]" inside searchSpace
     if last segment → scrollIntoView + focus (4-step focusable search)
     if not last     → set searchSpace to the field's container element and continue
@@ -151,9 +184,27 @@ for each key:
 
 Labels are generated with a `[key]` suffix (e.g., `"Content [content]"`) by `defineCollection` and `fields.object`/`fields.list`, making them unambiguous when nested. Numeric segments handle list items by finding the nth child of the list container.
 
+**Collapsed list item auto-expansion**: before descending into a numeric list item, `navigateToField` checks whether the item is collapsed (`isItemCollapsed`) and clicks its toggle button if so, then waits 300 ms for Decap's animation to settle. This is necessary because collapsed items don't render their child fields in the DOM.
+
+**List container resolution**: the numeric-segment heuristic ascends from the first visible label until it finds a parent where multiple siblings share the same first-label text — that is the true list-items container. A 2-level fallback handles single-item lists where the heuristic finds no siblings.
+
 The 4-step focusable search at the leaf: `label[for] → getElementById` → `label.querySelector("input, textarea, [contenteditable]")` → `label.nextElementSibling.querySelector(...)` → `label.parentElement.nextElementSibling.querySelector(...)`. Covers Decap's string/text widgets (input is sibling of label) and markdown widgets (contenteditable lives in a separate container). Focus is delayed 500 ms to let `scrollIntoView` settle.
 
 The listener lives in `admin.tsx` (not `IframePreview.tsx`) because `document.querySelectorAll` must run against the admin document — the Decap editor fields only exist there, not inside the preview iframes.
+
+### Cross-collection field focus (field-document-transition)
+
+When the user clicks a `[data-cms-field]` element that belongs to a **different collection** than the one currently open in Decap (e.g., clicking a flavor name in a `FlavorMenuModule` while editing a `pages` entry), a simple `navigateToField` call would fail — the target fields aren't in the DOM. The transition flow:
+
+1. The SolidStart iframe sends `cms-field-focus` with `{ fieldPath, collection, slug }`.
+2. `navigateToField.ts` detects that the current `window.location.hash` points to a different collection/entry than the message.
+3. It writes `fieldPath` to `localStorage[cmsField]` and sets `localStorage[fieldDocumentTransition] = true`.
+4. It navigates Decap's hash to `#/collections/{collection}/entries/{slug}` and reloads the page.
+5. On the next load, the startup block in `navigateToField.ts` reads `fieldDocumentTransition`, finds the pending `cmsField`, and calls `navigateToField` after a 1 s delay (to let Decap fully render the new entry), then clears the flag.
+
+`IframePreview` reads `fieldDocumentTransition` on mount and, when `true`, keeps the current preview URL rather than resetting it to the entry's default `previewPath` — this prevents the preview from jumping back to the new entry's page mid-transition.
+
+`ContentFor` accepts a `source` prop (`{ collection, slug }`) so modules that embed cross-collection content (like `FlavorMenuModule`) can propagate the correct collection context to every `[data-cms-field]` element inside them.
 
 ## Browser Dialog Patches
 
@@ -173,8 +224,16 @@ Two `window` methods are monkey-patched in `admin/browser-patches.ts`, imported 
 
 ### File structure
 
-| File                 | Purpose                                                      |
-| -------------------- | ------------------------------------------------------------ |
-| `admin.tsx`          | Entry point — `CMS.init()` and preview template registration |
-| `IframePreview.tsx`  | Iframe preview component factory and its types               |
-| `browser-patches.ts` | `window` monkey-patches applied before CMS init              |
+| File / Directory                | Purpose                                                                                      |
+| ------------------------------- | -------------------------------------------------------------------------------------------- |
+| `admin.tsx`                     | Entry point — `CMS.init()` and preview template registration                                 |
+| `IframePreview.tsx`             | Iframe preview component factory and its types                                               |
+| `browser-patches.ts`            | `window` monkey-patches applied before CMS init                                              |
+| `navigateToField.ts`            | DOM walker that focuses Decap editor fields; handles cross-collection transitions on startup |
+| `localStorageKeys.ts`           | Typed constant map for all `localStorage` keys used by the admin                             |
+| `components/BrowserNavBar.tsx`  | Preview toolbar: back/forward/home/reload, URL input, viewport scale toggle                  |
+| `components/PreviewFrame.tsx`   | Iframe + canvas rulers; exposes `PreviewFrameHandle` for imperative control                  |
+| `components/Rulers.tsx`         | HiDPI canvas horizontal and vertical pixel rulers (`HRuler`, `VRuler`)                       |
+| `hooks/useLocalStorageState.ts` | `useState` variant that persists to `localStorage`                                           |
+| `hooks/useMessageHandler.ts`    | Registers a typed `message` event listener via `createMessageHandler`                        |
+| `hooks/useNavigationHistory.ts` | Client-side back/forward stack for the preview browser                                       |
