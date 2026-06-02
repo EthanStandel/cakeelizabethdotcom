@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BrowserNavBar } from "./components/BrowserNavBar";
 import { PreviewFrame, PreviewFrameHandle } from "./components/PreviewFrame";
 import type { CmsEntry, ViewScale } from "./components/PreviewFrame";
@@ -43,17 +43,19 @@ export const buildIframePreviewComponent = ({
       slug && previewPath ? previewPath(slug) : "",
       { initializeToDefault: () => previewPath !== null && !isFieldDocumentTransition }
     );
+    const [iframeSrc, setIframeSrc] = useState(urlInput);
 
     const nav = useNavigationHistory(urlInput);
 
     const navigate = useCallback((path: string) => {
       setUrlInput(path);
-      previewRef.current?.navigateTo(`${base}${path}`);
-    }, [base]);
+      setIframeSrc(path);
+    }, []);
 
     useMessageHandler({
       "cms-route-change": ({ path, source }) => {
         setUrlInput(path);
+        setIframeSrc(path);
         if (source === "push") nav.push(path);
         else if (source === "replace") nav.replace(path);
         // "pop" = native browser history navigation; just update the display
@@ -62,6 +64,7 @@ export const buildIframePreviewComponent = ({
 
     const handlePathChange = (path: string) => {
       setUrlInput(path);
+      setIframeSrc(path);
       nav.push(path);
     };
 
@@ -76,6 +79,7 @@ export const buildIframePreviewComponent = ({
         const defaultPath = previewPath(slug);
         nav.reset(defaultPath);
         setUrlInput(defaultPath);
+        setIframeSrc(defaultPath);
       }
     }, [slug]);
 
@@ -94,11 +98,13 @@ export const buildIframePreviewComponent = ({
           containerRef={headerRef}
           url={urlInput}
           onUrlChange={setUrlInput}
-          onSubmit={() => previewRef.current?.navigateTo(`${base}${urlInput}`)}
+          onSubmit={() => setIframeSrc(urlInput)}
           onReload={() => previewRef.current?.reload()}
-          onHome={() =>
-            previewRef.current?.navigateTo(`${base}${previewPath ? previewPath(slug) : "/"}`)
-          }
+          onHome={() => {
+            const homePath = previewPath ? previewPath(slug) : "/";
+            setUrlInput(homePath);
+            setIframeSrc(homePath);
+          }}
           onBack={() => nav.back(navigate)}
           onForward={() => nav.forward(navigate)}
           canGoBack={nav.canGoBack}
@@ -108,7 +114,7 @@ export const buildIframePreviewComponent = ({
         />
         <PreviewFrame
           ref={previewRef}
-          src={`${base}${urlInput}`}
+          src={`${base}${iframeSrc}`}
           entry={entry}
           slug={slug}
           onPathChange={handlePathChange}
