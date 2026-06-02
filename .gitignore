@@ -42,3 +42,4 @@ notes.md
 lima.REJECTED.yaml
 !base.lima.yaml
 .devenv
+memory

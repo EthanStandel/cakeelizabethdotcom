@@ -39,4 +39,5 @@ limactl shell "${VM_NAME}" -- bash -lc "
   command -v devenv >/dev/null || nix-env -iA devenv -f https://github.com/NixOS/nixpkgs/tarball/nixpkgs-unstable
 "
 
-exec limactl shell "${VM_NAME}" -- bash -lc "devenv shell"
+trap 'echo "Stopping Lima VM..."; limactl stop "${VM_NAME}"' EXIT INT TERM
+limactl shell "${VM_NAME}" -- bash -lc "devenv shell"

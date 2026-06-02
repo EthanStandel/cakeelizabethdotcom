@@ -7,6 +7,7 @@ import {
   useImperativeHandle,
 } from "react";
 import { Ruler } from "./Rulers";
+import { dispatch } from "~/lib/cms/messages";
 
 interface ImmutableMap {
   toJS(): Record<string, unknown>;
@@ -16,12 +17,6 @@ export interface CmsEntry {
   get(key: "slug"): string;
   get(key: "data"): ImmutableMap | undefined;
   get(key: string): unknown;
-}
-
-interface CmsPreviewMessage {
-  type: "cms-preview-update";
-  slug: string;
-  data: Record<string, unknown>;
 }
 
 export interface PreviewFrameHandle {
@@ -104,12 +99,9 @@ export const PreviewFrame = forwardRef<PreviewFrameHandle, PreviewFrameProps>(
       const iframe = iframeRef.current;
       if (!iframe || !slug) return;
       const data = entry.get("data")?.toJS() ?? {};
-      const message: CmsPreviewMessage = {
-        type: "cms-preview-update",
-        slug,
-        data,
+      const send = () => {
+        if (iframe.contentWindow) dispatch(iframe.contentWindow, "cms-preview-update", { slug, data });
       };
-      const send = () => iframe.contentWindow?.postMessage(message, "*");
       iframe.addEventListener("load", send);
       send();
       return () => iframe.removeEventListener("load", send);

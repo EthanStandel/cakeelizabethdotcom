@@ -2,12 +2,7 @@ import { createSignal, onMount, onCleanup } from "solid-js";
 import type { Accessor } from "solid-js";
 import type { CollectionDefinition, CmsFieldsMap } from "~/lib/cms/types";
 import type { ContentItem } from "~/lib/content";
-
-interface CmsPreviewMessage {
-  type: "cms-preview-update";
-  slug: string;
-  data: Record<string, unknown>;
-}
+import { createMessageHandler } from "~/lib/cms/messages";
 
 export function createCmsLiveContent<F extends CmsFieldsMap>(
   collection: CollectionDefinition<F>,
@@ -18,14 +13,15 @@ export function createCmsLiveContent<F extends CmsFieldsMap>(
   >(undefined);
 
   onMount(() => {
-    const handler = (event: MessageEvent<CmsPreviewMessage>) => {
-      if (event.data?.type !== "cms-preview-update") return;
-      if (event.data.slug !== slug()) return;
-      const parsed = collection.schema.safeParse(event.data.data);
-      if (parsed.success) {
-        setLiveContent({ ...parsed.data, _slug: event.data.slug } as any);
-      }
-    };
+    const handler = createMessageHandler({
+      "cms-preview-update": ({ slug: msgSlug, data }) => {
+        if (msgSlug !== slug()) return;
+        const parsed = collection.schema.safeParse(data);
+        if (parsed.success) {
+          setLiveContent({ ...parsed.data, _slug: msgSlug } as any);
+        }
+      },
+    });
     window.addEventListener("message", handler);
     onCleanup(() => window.removeEventListener("message", handler));
   });

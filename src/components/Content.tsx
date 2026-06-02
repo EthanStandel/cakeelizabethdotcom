@@ -1,7 +1,7 @@
 import type { JSX } from "solid-js";
 import get from "lodash/get";
 import { marked } from "marked";
-import { useCmsPath } from "~/lib/cms/CmsPathContext";
+import { useCmsPath, useCmsSource } from "~/lib/cms/CmsPathContext";
 
 interface ContentProps<
   Content extends object,
@@ -12,7 +12,7 @@ interface ContentProps<
   type: Type;
   children?: (
     element: () => Type extends "markdown" ? JSX.Element : string,
-    cmsProp: () => { "data-cms-field": string }
+    cmsProp: () => { "data-cms-field": string; "data-cms-collection"?: string; "data-cms-slug"?: string }
   ) => JSX.Element;
 }
 
@@ -21,8 +21,16 @@ export function Content<
   Type extends "string" | "markdown"
 >(props: ContentProps<Content, Type>) {
   const cmsPath = useCmsPath();
+  const cmsSource = useCmsSource();
   const fieldPath = () =>
     cmsPath ? `${cmsPath}.${props.property}` : props.property;
+
+  const cmsProp = () => ({
+    "data-cms-field": fieldPath(),
+    ...(cmsSource
+      ? { "data-cms-collection": cmsSource.collection, "data-cms-slug": cmsSource.slug }
+      : {}),
+  });
 
   const value = () =>
     props.content != null
@@ -41,21 +49,19 @@ export function Content<
                   innerHTML={marked(value()!) as string}
                 />
               ) as any,
-            () => ({ "data-cms-field": fieldPath() })
+            cmsProp
           )
         ) : (
           <div
-            data-cms-field={fieldPath()}
+            {...cmsProp()}
             class="not-first:mt-5"
             innerHTML={marked(value()!) as string}
           />
         )
       ) : props.children ? (
-        props.children(value! as any, () => ({
-          "data-cms-field": fieldPath(),
-        }))
+        props.children(value! as any, cmsProp)
       ) : (
-        <span data-cms-field={fieldPath()}>{value()}</span>
+        <span {...cmsProp()}>{value()}</span>
       )}
     </>
   );

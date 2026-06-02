@@ -63,13 +63,9 @@ export interface CollectionDefinition<F extends CmsFieldsMap> {
   name: string;
   schema: z.ZodObject<{ [K in keyof F]: z.ZodOptional<F[K]["_zodSchema"]> }>;
   collectionConfig: DecapCollectionConfig;
-  previewPath: (slug: string) => string;
+  previewPath: ((slug: string) => string) | null;
 }
 
-export interface CmsFieldFocusMessage {
-  type: "cms-field-focus";
-  fieldPath: string;
-}
 
 export type GroupFields<T> = T extends { fields: infer F extends CmsFieldsMap }
   ? F

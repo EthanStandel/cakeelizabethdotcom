@@ -12,7 +12,7 @@ export const GeneralModule: Component<{ shape: GeneralModuleType }> = (
     <ContentFor each={props.shape} field="submodules">
       {(item) => (
         <div class="not-first:pt-10 @dsk:not-first:pt-12 group/submodule">
-          <hr class="group-first/submodule:hidden h-0.5 w-full bg-primary text-primary mb-10 @dsk:mb-12" />
+          <hr class="group-first/submodule:@dsk:hidden h-0.5 w-full bg-primary text-primary mb-10 @dsk:mb-12" />
           <Content content={item} property="title" type="string">
             {(title, cmsProp) => <h2 {...cmsProp()}>{title()}</h2>}
           </Content>

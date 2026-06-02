@@ -1,4 +1,4 @@
-import { createElement, FormEvent, RefObject } from "react";
+import { RefObject } from "react";
 import type { ViewScale } from "./PreviewFrame";
 
 interface BrowserNavBarProps {
@@ -8,6 +8,10 @@ interface BrowserNavBarProps {
   onSubmit: () => void;
   onReload: () => void;
   onHome: () => void;
+  onBack: () => void;
+  onForward: () => void;
+  canGoBack: boolean;
+  canGoForward: boolean;
   viewScale: ViewScale;
   onCycleViewScale: () => void;
 }
@@ -41,10 +45,14 @@ export const BrowserNavBar = ({
   onSubmit,
   onReload,
   onHome,
+  onBack,
+  onForward,
+  canGoBack,
+  canGoForward,
   viewScale,
   onCycleViewScale,
 }: BrowserNavBarProps) => {
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit();
   };
@@ -62,6 +70,14 @@ export const BrowserNavBar = ({
         flexShrink: 0,
       }}
     >
+      <button onClick={onBack} title="Back" disabled={!canGoBack}
+        style={{ ...buttonStyle, opacity: canGoBack ? 1 : 0.35, cursor: canGoBack ? "pointer" : "default" }}>
+        <span style={{ fontSize: "100cqmin" }}>◀</span>
+      </button>
+      <button onClick={onForward} title="Forward" disabled={!canGoForward}
+        style={{ ...buttonStyle, opacity: canGoForward ? 1 : 0.35, cursor: canGoForward ? "pointer" : "default" }}>
+        <span style={{ fontSize: "100cqmin" }}>▶</span>
+      </button>
       <button onClick={onHome} title="Home" style={buttonStyle}>
         <span style={{ fontSize: "100cqmin" }}>🏠</span>
       </button>
