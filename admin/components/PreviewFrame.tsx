@@ -86,7 +86,8 @@ export const PreviewFrame = forwardRef<PreviewFrameHandle, PreviewFrameProps>(
       if (!iframe) return;
       const onLoad = () => {
         try {
-          onPathChange(iframe.contentWindow?.location.pathname ?? "");
+          const loc = iframe.contentWindow?.location;
+          onPathChange(loc ? loc.pathname + loc.search + loc.hash : "");
         } catch {
           // cross-origin guard
         }

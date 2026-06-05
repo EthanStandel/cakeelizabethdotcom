@@ -55,7 +55,6 @@ export const buildIframePreviewComponent = ({
     useMessageHandler({
       "cms-route-change": ({ path, source }) => {
         setUrlInput(path);
-        setIframeSrc(path);
         if (source === "push") nav.push(path);
         else if (source === "replace") nav.replace(path);
         // "pop" = native browser history navigation; just update the display
@@ -64,7 +63,6 @@ export const buildIframePreviewComponent = ({
 
     const handlePathChange = (path: string) => {
       setUrlInput(path);
-      setIframeSrc(path);
       nav.push(path);
     };
 

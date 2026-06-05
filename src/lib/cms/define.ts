@@ -240,6 +240,44 @@ export const fields = {
     });
   },
 
+  multiSelect(opts: {
+    label: string;
+    required?: boolean;
+    refOptions: { collection: string; field: string };
+  }) {
+    return makeField(applyRequired(z.array(z.string()), opts.required), {
+      widget: "select",
+      label: opts.label,
+      required: opts.required ?? true,
+      multiple: true,
+      ref_options: opts.refOptions,
+    });
+  },
+
+  relation<M extends boolean = false>(opts: {
+    label: string;
+    collection: string;
+    searchFields: string[];
+    valueField: string;
+    displayFields?: string[];
+    multiple?: M;
+    required?: boolean;
+  }) {
+    const schema = opts.multiple
+      ? applyRequired(z.array(z.string()), opts.required)
+      : applyRequired(z.string(), opts.required);
+    return makeField(schema, {
+      widget: "relation",
+      label: opts.label,
+      required: opts.required ?? true,
+      collection: opts.collection,
+      search_fields: opts.searchFields,
+      value_field: opts.valueField,
+      display_fields: opts.displayFields ?? [opts.valueField],
+      multiple: opts.multiple,
+    }) as CmsField<M extends true ? z.ZodArray<z.ZodString> : z.ZodString>;
+  },
+
   list: listField,
 
   union<T extends Record<string, CmsField>>(opts: {

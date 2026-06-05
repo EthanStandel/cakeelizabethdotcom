@@ -3,12 +3,14 @@ import { fields } from "~/lib/cms/define";
 import { HeroModuleShape } from "./modules/HeroModule.shape";
 import { FlavorMenuModuleShape } from "./modules/FlavorMenuModule.shape";
 import { GeneralModuleShape } from "./modules/GeneralModule.shape";
+import { GalleryModuleShape } from "./modules/GalleryModule.shape";
 import type { GroupFields } from "~/lib/cms/types";
 
 export const baseModuleFieldGroups = {
   hero: HeroModuleShape,
   flavorMenu: FlavorMenuModuleShape,
   general: GeneralModuleShape,
+  gallery: GalleryModuleShape,
 };
 
 type Groups = typeof baseModuleFieldGroups;

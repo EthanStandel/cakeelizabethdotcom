@@ -1,12 +1,20 @@
 import { For, Accessor, JSX } from "solid-js";
-import { CmsPathContextProvider, CmsSource, CmsSourceContextProvider } from "~/lib/cms/CmsPathContext";
+import {
+  CmsPathContextProvider,
+  CmsProp,
+  CmsSource,
+  CmsSourceContextProvider,
+} from "~/lib/cms/CmsPathContext";
 
 type ArrayField<T> = {
   [K in keyof T]-?: NonNullable<T[K]> extends readonly any[] ? K : never;
 }[keyof T];
 
-type ArrayItem<T, K extends keyof T> =
-  NonNullable<T[K]> extends readonly (infer U)[] ? U : never;
+type ArrayItem<T, K extends keyof T> = NonNullable<
+  T[K]
+> extends readonly (infer U)[]
+  ? U
+  : never;
 
 type ContentForProps<TParent, TField extends ArrayField<TParent>> = {
   each: TParent | null | undefined;
@@ -15,7 +23,8 @@ type ContentForProps<TParent, TField extends ArrayField<TParent>> = {
   fallback?: JSX.Element;
   children: (
     item: NonNullable<ArrayItem<TParent, TField>>,
-    index: Accessor<number>
+    index: Accessor<number>,
+    cmsProp: CmsProp
   ) => JSX.Element;
 };
 
@@ -29,18 +38,27 @@ export function ContentFor<TParent, TField extends ArrayField<TParent>>(
     >
       {(item, index) => {
         const pathValue = `${String(props.field)}.${index()}`;
+        const cmsProp: CmsProp = () => ({
+          "data-cms-field": `${String(props.field)}.${index()}`,
+          ...(props.source
+            ? {
+                "data-cms-collection": props.source!.collection,
+                "data-cms-slug": props.source!.slug,
+              }
+            : {}),
+        });
         return props.source ? (
           <CmsSourceContextProvider
             collection={props.source.collection}
             slug={props.source.slug}
           >
             <CmsPathContextProvider value={pathValue}>
-              {props.children(item, index)}
+              {props.children(item, index, cmsProp)}
             </CmsPathContextProvider>
           </CmsSourceContextProvider>
         ) : (
           <CmsPathContextProvider value={pathValue}>
-            {props.children(item, index)}
+            {props.children(item, index, cmsProp)}
           </CmsPathContextProvider>
         );
       }}

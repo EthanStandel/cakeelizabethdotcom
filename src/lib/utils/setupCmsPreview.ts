@@ -11,6 +11,21 @@ const dispatchToParent = <T extends keyof CmsMessageMap>(
   }
 };
 
+const cmsScrollMaintenanceKey = () =>
+  `cms-scroll:${location.pathname}${location.search}${location.hash}`;
+
+const restoreCmsScroll = () => {
+  const saved = localStorage.getItem(cmsScrollMaintenanceKey());
+  if (saved != null) {
+    // setTimeout(0) queues after the router's own setTimeout(0) scroll-reset,
+    // then rAF fires after that task so our restore always wins.
+    setTimeout(
+      () => requestAnimationFrame(() => window.scrollTo(0, Number(saved))),
+      500
+    );
+  }
+};
+
 export const setupCmsPreview = () => {
   let inCms = false;
   try {
@@ -22,6 +37,17 @@ export const setupCmsPreview = () => {
 
   document.body.classList.add("cms-preview");
 
+  restoreCmsScroll();
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (window.scrollY === 0) return;
+      localStorage.setItem(cmsScrollMaintenanceKey(), String(window.scrollY));
+    },
+    { passive: true }
+  );
+
   const sendRouteChange = (source: "push" | "replace" | "pop") => {
     dispatchToParent("cms-route-change", {
       path: location.pathname + location.search + location.hash,
@@ -29,7 +55,9 @@ export const setupCmsPreview = () => {
     });
   };
 
-  window.addEventListener("popstate", () => sendRouteChange("pop"));
+  window.addEventListener("popstate", () => {
+    sendRouteChange("pop");
+  });
 
   const origPushState = history.pushState.bind(history);
   history.pushState = (...args) => {
