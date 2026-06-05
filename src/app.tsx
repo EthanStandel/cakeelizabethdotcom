@@ -4,6 +4,7 @@ import { FileRoutes } from "@solidjs/start/router";
 import { Suspense, onMount } from "solid-js";
 import "./app.css";
 import { setupCmsPreview } from "./lib/utils/setupCmsPreview";
+import { ModalRenderer } from "./components/modals/ModalRenderer";
 
 export default function App() {
   onMount(setupCmsPreview);
@@ -15,6 +16,7 @@ export default function App() {
           <a href="/">Index</a>
           <a href="/about">About</a>
           <Suspense>{props.children}</Suspense>
+          <ModalRenderer />
         </MetaProvider>
       )}
     >

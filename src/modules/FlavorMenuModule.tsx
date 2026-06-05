@@ -9,7 +9,7 @@ import { ContentFor } from "~/components/ContentFor";
 export const FlavorMenuModule: Component<{ shape: FlavorMenuModuleType }> = (
   props
 ) => {
-  const flavorData = createContentFetch("flavor-categories", () =>
+  const flavorData = createContentFetch(FlavorCategoriesShape.name, () =>
     getCollectionItem(FlavorCategoriesShape, "main")
   );
 
@@ -22,7 +22,7 @@ export const FlavorMenuModule: Component<{ shape: FlavorMenuModuleType }> = (
         <Show when={flavorData()}>
           {(data) => (
             <ul class="flex flex-col">
-              <ContentFor each={data()} field="categories" source={{ collection: "flavor-categories", slug: "main" }}>
+              <ContentFor each={data()} field="categories" source={{ collection: FlavorCategoriesShape.name, slug: "main" }}>
                 {(category) => (
                   <li class="pt-5">
                     <Content content={category} property="name" type="string">

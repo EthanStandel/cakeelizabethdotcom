@@ -8,7 +8,7 @@ modules:
   - type: hero
     eyebrow: Custom Cakes · Maine
     content: |-
-      # Cakes that *give a fuck*
+      # Cakes that *tell your story*
 
       Just reach out and we'll bring your vision to life!
     ctaList:
@@ -48,6 +48,8 @@ modules:
             body: Maine's local custom cake studio. We craft beautiful, handmade cakes for
               weddings, birthdays, and every occasion that deserves something
               truly special.
+  - type: gallery
+    heading: Gallery
   - type: hero
     eyebrow: Custom Cakes · Maine
     content: |-

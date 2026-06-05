@@ -47,6 +47,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   &.cms-preview [data-cms-field] {
     @apply outline-2 outline-dashed outline-transparent outline-offset-8 cursor-pointer transition-colors duration-150;

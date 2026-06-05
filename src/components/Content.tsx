@@ -1,7 +1,7 @@
 import type { JSX } from "solid-js";
 import get from "lodash/get";
 import { marked } from "marked";
-import { useCmsPath, useCmsSource } from "~/lib/cms/CmsPathContext";
+import { CmsProp, useCmsPath, useCmsSource } from "~/lib/cms/CmsPathContext";
 
 interface ContentProps<
   Content extends object,
@@ -12,7 +12,7 @@ interface ContentProps<
   type: Type;
   children?: (
     element: () => Type extends "markdown" ? JSX.Element : string,
-    cmsProp: () => { "data-cms-field": string; "data-cms-collection"?: string; "data-cms-slug"?: string }
+    cmsProp: CmsProp
   ) => JSX.Element;
 }
 
@@ -20,10 +20,11 @@ export function Content<
   Content extends object,
   Type extends "string" | "markdown"
 >(props: ContentProps<Content, Type>) {
-  const cmsPath = useCmsPath();
   const cmsSource = useCmsSource();
-  const fieldPath = () =>
-    cmsPath ? `${cmsPath}.${props.property}` : props.property;
+  const fieldPath = () => {
+    const cmsPath = useCmsPath();
+    return cmsPath ? `${cmsPath}.${props.property}` : props.property;
+  };
 
   const cmsProp = () => ({
     "data-cms-field": fieldPath(),

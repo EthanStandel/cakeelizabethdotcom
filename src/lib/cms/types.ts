@@ -34,6 +34,8 @@ export interface DecapFieldConfig {
   search_fields?: string[];
   value_field?: string;
   display_fields?: string[];
+  // Resolved at generation time into `options` — not written to config.yml
+  ref_options?: { collection: string; field: string };
 }
 
 export interface CmsField<Z extends z.ZodTypeAny = z.ZodTypeAny> {

@@ -10,11 +10,60 @@ import { resolve, join, basename } from "node:path";
 import jsYaml from "js-yaml";
 import matter from "gray-matter";
 import { collectionRegistry } from "../src/models/index";
+import type { DecapFieldConfig } from "../src/lib/cms/types";
 
 const isDev = process.argv.includes("--dev");
 const isWatch = process.argv.includes("--watch");
 
+type ContentMap = Record<string, Array<{ slug: string; data: Record<string, unknown> }>>;
+
+function buildContentMap(): ContentMap {
+  const map: ContentMap = {};
+  for (const collection of collectionRegistry) {
+    const folderPath = resolve(process.cwd(), collection.collectionConfig.folder);
+    const entries: Array<{ slug: string; data: Record<string, unknown> }> = [];
+    if (existsSync(folderPath)) {
+      for (const file of readdirSync(folderPath).filter((f) => f.endsWith(".md"))) {
+        const slug = basename(file, ".md");
+        const { data } = matter(readFileSync(join(folderPath, file), "utf8"));
+        entries.push({ slug, data });
+      }
+    }
+    map[collection.collectionConfig.name] = entries;
+  }
+  return map;
+}
+
+function resolveField(field: DecapFieldConfig, contentMap: ContentMap): DecapFieldConfig {
+  let result = { ...field };
+
+  if (result.ref_options) {
+    const entries = contentMap[result.ref_options.collection] ?? [];
+    const options = [
+      ...new Set(
+        entries.flatMap(({ data }) => {
+          const val = data[result.ref_options!.field];
+          if (Array.isArray(val)) return val.filter((v): v is string => typeof v === "string");
+          if (typeof val === "string") return [val];
+          return [];
+        })
+      ),
+    ].sort();
+    delete result.ref_options;
+    result.options = options;
+  }
+
+  if (result.fields) result.fields = result.fields.map((f) => resolveField(f, contentMap));
+  if (result.types) result.types = result.types.map((f) => resolveField(f, contentMap));
+  if (result.field) result.field = resolveField(result.field, contentMap);
+
+  return result;
+}
+
 function generate() {
+  // Read all content up front so ref_options can be resolved during config generation
+  const contentMap = buildContentMap();
+
   // --- config.yml ---
 
   const config = {
@@ -28,7 +77,10 @@ function generate() {
         },
     media_folder: "public/images",
     public_folder: "/images",
-    collections: collectionRegistry.map((c) => c.collectionConfig),
+    collections: collectionRegistry.map((c) => ({
+      ...c.collectionConfig,
+      fields: c.collectionConfig.fields.map((f) => resolveField(f, contentMap)),
+    })),
   };
 
   const configPath = resolve(process.cwd(), "public/admin/config.yml");
@@ -43,31 +95,21 @@ function generate() {
 
   const manifest = {
     collections: collectionRegistry.map((collection) => {
-      const folderPath = resolve(
-        process.cwd(),
-        collection.collectionConfig.folder
-      );
-      const slugs: string[] = [];
+      const folderPath = resolve(process.cwd(), collection.collectionConfig.folder);
+      const entries = contentMap[collection.collectionConfig.name] ?? [];
 
-      if (existsSync(folderPath)) {
-        for (const file of readdirSync(folderPath).filter((f) =>
-          f.endsWith(".md")
-        )) {
-          const slug = basename(file, ".md");
-          const { data } = matter(readFileSync(join(folderPath, file), "utf8"));
-          writeFileSync(
-            join(folderPath, `${slug}.json`),
-            JSON.stringify(data, null, 2),
-            "utf8"
-          );
-          slugs.push(slug);
-        }
+      for (const { slug, data } of entries) {
+        writeFileSync(
+          join(folderPath, `${slug}.json`),
+          JSON.stringify(data, null, 2),
+          "utf8"
+        );
       }
 
       return {
         name: collection.collectionConfig.name,
         folder: collection.collectionConfig.folder,
-        slugs,
+        slugs: entries.map((e) => e.slug),
       };
     }),
   };
