@@ -16,6 +16,7 @@ export const GalleryItemsShape = defineCollection({
         image: fields.image({ label: "Image" }),
         title: fields.string({ label: "Title" }),
         description: fields.text({ label: "Description" }),
+        date: fields.datetime({ label: "Date" }),
         tags: fields.multiSelect({
           label: "Tags",
           refOptions: { collection: "tags", field: "tags" },

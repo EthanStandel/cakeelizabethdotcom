@@ -5,12 +5,13 @@ import { getCollectionItem } from "~/lib/content";
 import { createContentFetch } from "~/primitives/createContentFetch";
 import { Content } from "~/components/Content";
 import { ContentFor } from "~/components/ContentFor";
+import { ListItemChip } from "~/components/ListItemChip";
 
 export const FlavorMenuModule: Component<{ shape: FlavorMenuModuleType }> = (
-  props
+  props,
 ) => {
   const flavorData = createContentFetch(FlavorCategoriesShape.name, () =>
-    getCollectionItem(FlavorCategoriesShape, "main")
+    getCollectionItem(FlavorCategoriesShape, "main"),
   );
 
   return (
@@ -22,7 +23,14 @@ export const FlavorMenuModule: Component<{ shape: FlavorMenuModuleType }> = (
         <Show when={flavorData()}>
           {(data) => (
             <ul class="flex flex-col">
-              <ContentFor each={data()} field="categories" source={{ collection: FlavorCategoriesShape.name, slug: "main" }}>
+              <ContentFor
+                each={data()}
+                field="categories"
+                source={{
+                  collection: FlavorCategoriesShape.name,
+                  slug: "main",
+                }}
+              >
                 {(category) => (
                   <li class="pt-5">
                     <Content content={category} property="name" type="string">
@@ -41,12 +49,9 @@ export const FlavorMenuModule: Component<{ shape: FlavorMenuModuleType }> = (
                             type="string"
                           >
                             {(name, cmsProp) => (
-                              <li
-                                class="rounded-full border border-border bg-eggshell px-2 py-1 text-sm"
-                                {...cmsProp()}
-                              >
+                              <ListItemChip {...cmsProp()}>
                                 {name()}
-                              </li>
+                              </ListItemChip>
                             )}
                           </Content>
                         )}

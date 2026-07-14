@@ -43,3 +43,4 @@ lima.REJECTED.yaml
 !base.lima.yaml
 .devenv
 memory
+.playwright-mcp/

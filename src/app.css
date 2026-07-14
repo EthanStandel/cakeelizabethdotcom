@@ -23,6 +23,9 @@
   --spacing-min-mbl-padding: 16px;
 
   --shadow-base: 0 4px 20px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+
+  --default-transition-duration: 350ms;
+  --default-transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -41,6 +44,10 @@
 
 @utility highlight-border {
   @apply text-secondary-foreground dark:text-primary border-y-2 border-primary py-1;
+}
+
+@utility button-hover {
+  @apply transition-all duration-250 hover:shadow-base active:shadow-none shadow-primary;
 }
 
 * {
