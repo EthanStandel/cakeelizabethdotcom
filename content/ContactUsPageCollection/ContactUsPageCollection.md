@@ -8,6 +8,8 @@ metadata:
 
 Please provide us with as much information as you can such as flavors, serving amount, and design for a more accurate quote, thank you!
 
+To secure an order in our calendar, payment must be made ahead of time.
+
 851 Sawyer St\
 South Portland ME\
 04106
