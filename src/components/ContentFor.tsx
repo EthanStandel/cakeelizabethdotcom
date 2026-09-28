@@ -4,6 +4,7 @@ import {
   CmsProp,
   CmsSource,
   CmsSourceContextProvider,
+  useCmsFieldProps,
 } from "~/lib/cms/CmsPathContext";
 
 type ArrayField<T> = {
@@ -38,15 +39,10 @@ export function ContentFor<TParent, TField extends ArrayField<TParent>>(
     >
       {(item, index) => {
         const pathValue = `${String(props.field)}.${index()}`;
-        const cmsProp: CmsProp = () => ({
-          "data-cms-field": `${String(props.field)}.${index()}`,
-          ...(props.source
-            ? {
-                "data-cms-collection": props.source!.collection,
-                "data-cms-slug": props.source!.slug,
-              }
-            : {}),
-        });
+        const cmsProp: CmsProp = useCmsFieldProps(
+          () => pathValue,
+          props.source
+        );
         return props.source ? (
           <CmsSourceContextProvider
             collection={props.source.collection}

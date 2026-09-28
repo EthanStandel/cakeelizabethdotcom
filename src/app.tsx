@@ -5,6 +5,7 @@ import { Suspense, onMount } from "solid-js";
 import "./app.css";
 import { setupCmsPreview } from "./lib/utils/setupCmsPreview";
 import { ModalRenderer } from "./components/modals/ModalRenderer";
+import { ConstantsProvider } from "./primitives/ConstantsContext";
 
 export default function App() {
   onMount(setupCmsPreview);
@@ -12,11 +13,13 @@ export default function App() {
     <Router
       root={(props) => (
         <MetaProvider>
-          <Title>SolidStart - Basic</Title>
-          <a href="/">Index</a>
-          <a href="/about">About</a>
-          <Suspense>{props.children}</Suspense>
-          <ModalRenderer />
+          <ConstantsProvider>
+            <Title>SolidStart - Basic</Title>
+            <a href="/">Index</a>
+            <a href="/about">About</a>
+            <Suspense>{props.children}</Suspense>
+            <ModalRenderer />
+          </ConstantsProvider>
         </MetaProvider>
       )}
     >

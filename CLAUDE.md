@@ -34,6 +34,14 @@ Allowlisted shortenings (rare exceptions): `dsk` (desktop), `mbl` (mobile).
 
 No inline comments. Comments may only appear directly above a function declaration, and only to note a non-obvious default or behavior choice (e.g. `createBreakpoint` defaults to mobile on server renders) — never to restate what the function does. Prefer a self-documenting function name over a comment explaining behavior.
 
+## CMS-driven strings
+
+Any string a sighted or assistive-technology user might perceive (visible text, `alt`, `aria-label`, `title`, etc.) must come from the CMS, not be hardcoded in a component. One-off strings that don't belong to a specific content collection (e.g. UI labels like a close button's accessible name) should be added to `constants` (see `src/models/Constants.shape.ts` / `src/primitives/ConstantsContext.tsx`) rather than inlined.
+
+## Click-to-edit
+
+Every value rendered from the CMS must carry `data-cms-*` click-to-edit props on the most sensibly relevant element — the element a user would actually want to click to edit that value (e.g. the chip showing a tag, not some unrelated wrapper). Use `Content` / `ContentFor` / `useCmsFieldProps` from `~/lib/cms/CmsPathContext` to derive these props rather than hand-rolling `data-cms-field` — hand-rolled paths silently drift from the ambient `CmsPathContextProvider`/`CmsSourceContextProvider` established by a parent and break click-to-edit. When nesting `ContentFor`/`Content` inside a context that already established the correct collection and path, do not pass a redundant `source` — only pass `source` when establishing a genuinely new root.
+
 ## File and JSX size limits
 
 Files must not exceed 500 lines. If a file grows past that, break it up:

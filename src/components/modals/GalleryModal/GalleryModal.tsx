@@ -13,13 +13,16 @@ import { useNavigate } from "@solidjs/router";
 import { cx } from "cva";
 import { ChevronLeft, ChevronRight, X } from "lucide-solid";
 import { GalleryItemsShape } from "~/models/GalleryItems.shape";
+import { ConstantsShape } from "~/models";
 import { getCollectionItem } from "~/lib/content";
 import { iconLinkButtonClass, LinkButton } from "~/components/LinkButton";
 import { compareDatesDescending } from "~/lib/utils/compareDatesDescending";
 import { createContentFetch } from "~/primitives/createContentFetch";
+import { useConstants } from "~/primitives/ConstantsContext";
 import {
   CmsPathContextProvider,
   CmsSourceContextProvider,
+  useCmsFieldProps,
 } from "~/lib/cms/CmsPathContext";
 import {
   createGalleryModalTransition,
@@ -119,11 +122,19 @@ export const GalleryModal: Component<{ imageUrl: string }> = (props) => {
 
   const navigate = useNavigate();
   const isMobile = createBreakpoint.IsMobileView();
+  const constants = useConstants();
+  const constantsSource = { collection: ConstantsShape.name, slug: "main" };
+  const closeCmsProp = useCmsFieldProps(() => "galleryClose", constantsSource);
+  const prevCmsProp = useCmsFieldProps(
+    () => "galleryPrevious",
+    constantsSource,
+  );
+  const nextCmsProp = useCmsFieldProps(() => "galleryNext", constantsSource);
 
   const handleShare = () => {
     if (typeof navigator === "undefined" || !navigator.share) return;
     navigator.share({
-      title: item()?.title ?? "Cake Elizabeth",
+      title: item()?.title ?? constants()?.siteName ?? "Cake Elizabeth",
       text: item()?.description ?? undefined,
       url: window.location.href,
     });
@@ -371,7 +382,8 @@ export const GalleryModal: Component<{ imageUrl: string }> = (props) => {
         >
           <button
             onClick={handleClose}
-            aria-label="Close"
+            aria-label={constants()?.galleryClose ?? "Close"}
+            {...closeCmsProp()}
             class={cx(
               iconLinkButtonClass,
               "absolute top-4 right-4 z-10 @max-dsk:bg-primary/50 @max-dsk:backdrop-blur-xs",
@@ -385,7 +397,8 @@ export const GalleryModal: Component<{ imageUrl: string }> = (props) => {
               variant="icon"
               href={prevHref()!}
               noScroll
-              aria-label="Previous image"
+              aria-label={constants()?.galleryPrevious ?? "Previous image"}
+              {...prevCmsProp()}
               class="absolute left-4 top-1/2 z-10 -translate-y-1/2 @max-dsk:bg-primary/50 @max-dsk:backdrop-blur-xs"
               onClick={() => (navDirectionPending = "prev")}
             >
@@ -398,7 +411,8 @@ export const GalleryModal: Component<{ imageUrl: string }> = (props) => {
               variant="icon"
               href={nextHref()!}
               noScroll
-              aria-label="Next image"
+              aria-label={constants()?.galleryNext ?? "Next image"}
+              {...nextCmsProp()}
               class="absolute right-4 top-1/2 z-10 -translate-y-1/2 @max-dsk:bg-primary/50 @max-dsk:backdrop-blur-xs"
               onClick={() => (navDirectionPending = "next")}
             >

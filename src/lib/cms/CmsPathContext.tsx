@@ -22,12 +22,31 @@ const CmsContext = createContext<CmsContextValue>({ path: "" });
 export const useCmsPath = () => useContext(CmsContext).path;
 export const useCmsSource = () => useContext(CmsContext).source;
 
+export const useCmsFieldProps = (
+  property: () => string,
+  overrideSource?: CmsSource,
+): CmsProp => {
+  const source = overrideSource ?? useCmsSource();
+  return () => {
+    const path = overrideSource ? "" : useCmsPath();
+    return {
+      "data-cms-field": path ? `${path}.${property()}` : property(),
+      ...(source
+        ? {
+            "data-cms-collection": source.collection,
+            "data-cms-slug": source.slug,
+          }
+        : {}),
+    };
+  };
+};
+
 export const CmsPathContextProvider = (
-  props: ParentProps<{ value: string }>
+  props: ParentProps<{ value: string }>,
 ): JSX.Element => {
   const ctx = useContext(CmsContext);
   const resolved = createMemo(() =>
-    ctx.path ? `${ctx.path}.${props.value}` : props.value
+    ctx.path ? `${ctx.path}.${props.value}` : props.value,
   );
   return (
     <CmsContext.Provider
@@ -44,7 +63,7 @@ export const CmsPathContextProvider = (
 };
 
 export const CmsSourceContextProvider = (
-  props: ParentProps<{ collection: string; slug: string }>
+  props: ParentProps<{ collection: string; slug: string }>,
 ): JSX.Element => (
   <CmsContext.Provider
     value={{
