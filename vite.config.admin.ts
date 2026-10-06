@@ -62,10 +62,6 @@ export default defineConfig(({ command }) => ({
     alias: { "~": resolve(__dirname, "src") },
   },
   server: {
-    watch: {
-      usePolling: true,
-      interval: 500,
-    },
     port: 5174,
     hmr: { clientPort: 5173, path: "/admin/" },
   },

@@ -38,9 +38,5 @@ Thumbs.db
 notes.md
 .claude/settings.local.json
 .vscode
-*.lima.yaml
-lima.REJECTED.yaml
-!base.lima.yaml
-.devenv
 memory
 .playwright-mcp/

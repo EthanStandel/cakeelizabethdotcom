@@ -1,5 +1,17 @@
 See [README.md](README.md) and subfiles within for project architecture and conventions.
 
+## Git staging
+
+NEVER change what is staged without asking first. The index is curated by hand, and what is staged versus unstaged is deliberate. That rules out `git add`, `git restore --staged`, `git reset`, `git rm`, `git mv`, `git stash`, `git commit`, and any other command that stages, unstages or rewrites the index, unless the request for it came in the current conversation. Edit files in the working tree only and leave the result unstaged. If a task seems to need a staging change, stop and ask.
+
+## Specs
+
+Feature specs live at `specs/NNN-feature-name/SPEC.md`; the index and dependency order are in [README.md](README.md#specs). Before changing a feature, read its spec, including "Known gaps" — it records why non-obvious details exist (e.g. the gallery filter animation's ordering and timing) and which problems are already known.
+
+When a change alters behavior a spec describes, update that spec in the same change: the body, "Known gaps" (remove what was fixed, add what was found), and the status and snapshot rows in its header. A new feature gets a new spec under the next number, following the conventions listed in [README.md](README.md#specs). Anything that describes how specs in general are written (path style, level of detail, how specs reference each other) belongs in that README section, never inside a spec. Organize specs by feature, not by directory, and never put a `SPEC.md` inside `src/`, `admin/` or `scripts/` or at the repository root.
+
+Whenever a `SPEC.md` cites a section with `§`, the citation must be a hash-link to that section's heading: `[§9.6](#96-click-to-edit-focusing-the-editor-field)` within the same spec, `[000 §13.2](../000-initial/SPEC.md#132-modules)` into another. Never leave a bare `§N`. Point the link at a heading that exists, and when a heading is renamed or renumbered, update every link that targets it.
+
 ## Playwright screenshots
 
 When taking screenshots with the Playwright MCP server, always pass a filename with the `.playwright-mcp/` directory prefix (e.g. `filename: ".playwright-mcp/my-screenshot.png"`) so they don't land in the project root.
