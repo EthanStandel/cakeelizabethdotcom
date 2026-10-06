@@ -1,0 +1,21 @@
+# Spec conventions
+
+How every feature spec is written. The conventions are stated here once and not repeated in the specs: anything that describes how specs in general are written (path style, level of detail, how specs reference each other) belongs in this file, never inside a spec or the README. When to read a spec and when to update one is in [CLAUDE.md](../CLAUDE.md#specs).
+
+## Location
+
+A feature spec lives at `specs/NNN-feature-name/SPEC.md`, and a new feature gets a new spec under the next number. Specs are organized by feature, not by directory: a feature `SPEC.md` never goes inside `src/`, `admin/` or `scripts/` or at the repository root.
+
+The layout follows [spec-kit](https://github.com/github/spec-kit)'s numbered feature folders, with `SPEC.md` in place of spec-kit's lowercase `spec.md`.
+
+## Conventions
+
+- **Header.** It opens with its status, the specs it depends on, and the date and commit it was last checked against.
+- **Body.** It describes behavior and the reasons behind it. Coding conventions stay in [CLAUDE.md](../CLAUDE.md#code-conventions).
+- **Paths.** They are written from the repository root. Once a file has been given with its full path, or a table or section is headed with a directory, the bare name is used after that.
+- **Visual detail.** A spec gives the values that define the look: tokens, type scale, and each component and module's dimensions. It uses Tailwind's names (`text-5xl`, `px-6`) where the code does. It does not reproduce every class string; where a spec is silent on a detail, the component file is the reference.
+- **Shared files.** A file is described in the spec of the feature that introduces it. When a later feature adds to that file, the later spec describes the addition and the earlier one lists it with a link.
+- **Cross-references.** A spec links to another by number or name. The table in [README.md](../README.md#specs) is the only index; a spec does not point back to it.
+- **Section references.** A section is cited as `§` and its number, and every such citation is a link to that heading's anchor. Within a spec the link text is the section alone: `[§9.6](#96-click-to-edit-focusing-the-editor-field)`. Into another spec it is that spec's number followed directly by the section, with no space between them: `[000§13.2](../000-initial/SPEC.md#132-modules)`. Never leave a `§N` unlinked. Point the link at a heading that exists, and when a heading is renamed or renumbered, update every link that targets it.
+- **Global acceptance criteria references.** A criterion in [GLOBAL_ACCEPTANCE_CRITERIA.md](GLOBAL_ACCEPTANCE_CRITERIA.md) is cited as `GAC§` and its number, linked like any other section reference: `[GAC§3](../GLOBAL_ACCEPTANCE_CRITERIA.md)`. The criteria are a numbered list with no heading anchors, so the link targets the file. Cite a criterion only where a technical decision was made to satisfy it; a spec does not list the criteria it merely complies with.
+- **Known gaps.** It ends with a "Known gaps" section: things that are wrong or missing in what exists, as opposed to work not yet started.
