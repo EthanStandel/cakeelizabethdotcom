@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach to Vite (VM)",
+      "name": "Attach to Vite",
       "type": "node",
       "request": "attach",
       "port": 9229,

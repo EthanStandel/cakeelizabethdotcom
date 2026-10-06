@@ -19,10 +19,6 @@ const adminTrailingSlash = (): Plugin => ({
 
 export default defineConfig(({ command }) => ({
   server: {
-    watch: {
-      usePolling: true,
-      interval: 500,
-    },
     proxy: {
       "/admin": {
         target: "http://localhost:5174",
