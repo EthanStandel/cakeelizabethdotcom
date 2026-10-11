@@ -9,6 +9,7 @@
   --color-dark-secondary-foreground: #cccccc;
   --color-border: #e8e2da;
   --color-eggshell: #f3f1ee;
+  --color-error: #b23a2e;
 
   --font-serif: "Old Standard TT", serif;
   --font-sans: "Montserrat", sans-serif;
@@ -42,6 +43,28 @@
   @apply not-first:mt-5;
 }
 
+@utility module-section {
+  &:not(:where(.group\/grid-container *)) {
+    @apply page-container mt-12 @max-dsk:mt-10;
+  }
+}
+
+@utility module-content {
+  &:not(:where(.group\/grid-container *)) {
+    @apply content-container;
+  }
+}
+
+@utility heading-3 {
+  @apply text-xl @dsk:text-2xl not-italic text-secondary-foreground;
+}
+
+@utility markdown-content {
+  & a {
+    @apply underline decoration-primary decoration-2 underline-offset-4;
+  }
+}
+
 @utility highlight-border {
   @apply text-secondary-foreground dark:text-primary border-y-2 border-primary py-1;
 }
@@ -69,40 +92,50 @@ body {
 }
 
 /* Prose enabled by default at root */
-h1,
-h2,
-h3 {
-  @apply font-serif text-primary-foreground dark:text-dark-primary-foreground;
-}
+@layer base {
+  h1,
+  h2,
+  h3 {
+    @apply font-serif text-primary-foreground dark:text-dark-primary-foreground;
+  }
 
-h1,
-h2,
-h3,
-p {
-  @apply block-padding text-balance;
-}
+  h1,
+  h2,
+  h3,
+  p {
+    @apply block-padding text-balance;
+  }
 
-h1 {
-  @apply text-5xl @dsk:text-6xl;
-}
+  h1 {
+    @apply text-5xl @dsk:text-6xl;
+  }
 
-h2 {
-  @apply text-4xl @dsk:text-5xl italic;
-}
+  h2 {
+    @apply text-4xl @dsk:text-5xl italic;
+  }
 
-h3 {
-  @apply text-xl @dsk:text-2xl text-secondary-foreground;
-}
+  h3 {
+    @apply heading-3;
+  }
 
-p {
-  @apply font-sans text-sm @dsk:text-base text-secondary-foreground dark:text-dark-secondary-foreground;
-}
+  p {
+    @apply font-sans text-base text-secondary-foreground dark:text-dark-secondary-foreground;
+  }
 
-a,
-button {
-  @apply outline-4 outline-transparent outline-offset-4;
+  blockquote {
+    @apply block-padding;
 
-  &:focus-visible {
-    @apply outline-primary;
+    & p {
+      @apply font-serif italic text-xl @dsk:text-2xl text-primary-foreground dark:text-dark-primary-foreground;
+    }
+  }
+
+  a,
+  button {
+    @apply outline-4 outline-transparent outline-offset-4;
+
+    &:focus-visible {
+      @apply outline-primary;
+    }
   }
 }

@@ -10,6 +10,10 @@ Files are frequently edited by hand between turns, so what was read earlier in a
 
 Prefer targeted edits over full-file overwrites. Rewrite a whole file only when creating it or when nearly every line changes.
 
+### Markdown tables
+
+Write each table row with exactly one space between a `|` and the cell's content, and `---` for each column of the separator row. Never pad cells to line the columns up: padding makes a change to one cell rewrite every row, so the whole table shows as modified in a diff. In a table that is already padded, write only the rows you add or change this way and leave the others untouched. Do not run Prettier, or any formatter that aligns tables, over a Markdown file.
+
 ## Specs
 
 Every engineering and product decision is recorded in a spec. Each spec document has its moment to be read:

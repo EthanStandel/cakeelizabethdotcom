@@ -8,7 +8,7 @@ export const GeneralModuleShape = {
     submodules: fields.list({
       label: "Submodules",
       fields: {
-        title: fields.string({ label: "Title" }),
+        title: fields.string({ label: "Title", required: false }),
         heroImage: fields.image({ label: "Hero image", required: false }),
         body: fields.markdown({ label: "Body", required: false }),
         ctaList: fields.list({

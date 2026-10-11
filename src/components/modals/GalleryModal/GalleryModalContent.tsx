@@ -67,7 +67,7 @@ export const GalleryModalContent: Component<GalleryModalContentProps> = (
         >
           {(description, cmsProp) => (
             <p
-              class="text-sm leading-relaxed text-secondary-foreground text-center"
+              class="leading-relaxed text-secondary-foreground text-center"
               {...cmsProp()}
             >
               {description()}

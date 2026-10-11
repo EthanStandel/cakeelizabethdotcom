@@ -1,14 +1,10 @@
 ---
-title: Test page
-content: |-
-  # Some test page content
-
-  Hello!
+title: Home
 modules:
   - type: hero
     eyebrow: Custom Cakes · Maine
     content: |-
-      # Cakes that *tell your story*
+      # Cakes that *tell your story*
 
       Just reach out and we'll bring your vision to life!
     ctaList:
@@ -50,10 +46,4 @@ modules:
               truly special.
   - type: gallery
     heading: Gallery
-  - type: hero
-    eyebrow: Custom Cakes · Maine
-    content: |-
-      # Cakes that *tell your story*
-
-      Just reach out and we'll bring your vision to life!
 ---
