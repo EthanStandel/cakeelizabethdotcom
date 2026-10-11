@@ -35,7 +35,7 @@ export function Content<
             () =>
               (
                 <div
-                  class="not-first:mt-5"
+                  class="markdown-content not-first:mt-5"
                   innerHTML={marked(value()!) as string}
                 />
               ) as any,
@@ -44,7 +44,7 @@ export function Content<
         ) : (
           <div
             {...cmsProp()}
-            class="not-first:mt-5"
+            class="markdown-content not-first:mt-5"
             innerHTML={marked(value()!) as string}
           />
         )

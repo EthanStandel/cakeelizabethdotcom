@@ -139,6 +139,56 @@ function listField(opts: {
   });
 }
 
+type SelectOptions = readonly [string, ...string[]];
+
+type OptionsSelectConfig<T extends SelectOptions> = {
+  label: string;
+  options: T;
+  required?: boolean;
+  default?: T[number];
+};
+
+type RefOptionsSelectConfig = {
+  label: string;
+  refOptions: { collection: string; field: string };
+  required?: boolean;
+};
+
+const optionsSelectField = <const T extends SelectOptions>(
+  opts: OptionsSelectConfig<T>
+) =>
+  makeField(applyRequired(z.enum(opts.options), opts.required), {
+    widget: "select",
+    label: opts.label,
+    required: opts.required ?? true,
+    options: [...opts.options],
+    multiple: false,
+    default: opts.default,
+  });
+
+const refOptionsSelectField = (opts: RefOptionsSelectConfig) =>
+  makeField(applyRequired(z.string(), opts.required), {
+    widget: "select",
+    label: opts.label,
+    required: opts.required ?? true,
+    multiple: false,
+    ref_options: opts.refOptions,
+  });
+
+function selectField<const T extends SelectOptions>(
+  opts: OptionsSelectConfig<T>
+): ReturnType<typeof optionsSelectField<T>>;
+function selectField(
+  opts: RefOptionsSelectConfig
+): ReturnType<typeof refOptionsSelectField>;
+function selectField(
+  opts: OptionsSelectConfig<SelectOptions> | RefOptionsSelectConfig
+): CmsField<z.ZodTypeAny> {
+  return "refOptions" in opts
+    ? refOptionsSelectField(opts)
+    : optionsSelectField(opts);
+}
+
 export const fields = {
   string(opts: { label: string; required?: boolean; default?: string }) {
     return makeField(applyRequired(z.string(), opts.required), {
@@ -224,21 +274,7 @@ export const fields = {
     });
   },
 
-  select<const T extends readonly [string, ...string[]]>(opts: {
-    label: string;
-    options: T;
-    required?: boolean;
-    default?: T[number];
-  }) {
-    return makeField(applyRequired(z.enum(opts.options), opts.required), {
-      widget: "select",
-      label: opts.label,
-      required: opts.required ?? true,
-      options: [...opts.options],
-      multiple: false,
-      default: opts.default,
-    });
-  },
+  select: selectField,
 
   multiSelect(opts: {
     label: string;

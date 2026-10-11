@@ -5,6 +5,10 @@ import { GridModule } from "./GridModule";
 import { FlavorMenuModule } from "./FlavorMenuModule";
 import { GeneralModule } from "./GeneralModule";
 import { GalleryModule } from "./GalleryModule";
+import { HorizontalListModule } from "./HorizontalListModule";
+import { VerticalStepperModule } from "./VerticalStepperModule";
+import { ContactFormModule } from "./ContactFormModule";
+import { FlavorCombinationsModule } from "./FlavorCombinationsModule";
 import { Dynamic } from "solid-js/web";
 
 // TODO - make this more strict so that prop types properly align
@@ -14,6 +18,10 @@ export const moduleRegistry = {
   flavorMenu: FlavorMenuModule,
   general: GeneralModule,
   gallery: GalleryModule,
+  horizontalList: HorizontalListModule,
+  verticalStepper: VerticalStepperModule,
+  contactForm: ContactFormModule,
+  flavorCombinations: FlavorCombinationsModule,
 } satisfies Record<keyof ModuleRegistryType, Component<{ shape: any }>>;
 
 export const ModuleRegistry: Component<{

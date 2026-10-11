@@ -27,6 +27,34 @@ async function expandItem(item: Element): Promise<void> {
   await new Promise<void>((resolve) => setTimeout(resolve, 300));
 }
 
+// An object widget's control is its top bar followed by its fields, and Decap
+// hides the fields (display:none) while the object is collapsed. A list
+// control never matches: its top bar is followed by its items, which stay
+// displayed.
+function isObjectCollapsed(control: Element): boolean {
+  const topBar = control.firstElementChild;
+  const objectFields = topBar?.nextElementSibling;
+  if (!topBar?.querySelector("button") || !objectFields) return false;
+  return getComputedStyle(objectFields).display === "none";
+}
+
+async function expandObject(control: Element): Promise<void> {
+  if (!isObjectCollapsed(control)) return;
+  control.firstElementChild?.querySelector<HTMLButtonElement>("button")?.click();
+  await new Promise<void>((resolve) => setTimeout(resolve, 300));
+}
+
+// A list control is its top bar followed by a wrapper that holds one element
+// per item. The wrapper also holds the drag-and-drop library's two helper
+// elements, which are its only children without a button.
+function getListItems(listControl: Element): Element[] {
+  const itemsWrapper = listControl.firstElementChild?.nextElementSibling;
+  if (!itemsWrapper) return [];
+  return Array.from(itemsWrapper.children).filter((child) =>
+    child.querySelector("button")
+  );
+}
+
 async function navigateToField(fieldPath: string): Promise<void> {
   const keys = fieldPath.split(".");
   let searchSpace: Element = document.documentElement;
@@ -37,34 +65,7 @@ async function navigateToField(fieldPath: string): Promise<void> {
     const isNumeric = /^\d+$/.test(key);
 
     if (isNumeric) {
-      const n = parseInt(key, 10);
-      const firstLabel = searchSpace.querySelector<HTMLLabelElement>("label");
-      if (!firstLabel) return;
-
-      // Ascend until we find a level where multiple siblings share the same
-      // first-label text — that's the true list-items container, not some
-      // intermediate field wrapper inside a single item.
-      const labelText = firstLabel.textContent?.trim();
-      let listContainer: Element | null = null;
-      let candidate: Element | null = firstLabel.parentElement;
-      while (candidate) {
-        const parent = candidate.parentElement;
-        if (!parent) break;
-        const itemsWithSameFirstLabel = Array.from(parent.children).filter(
-          (child) => child.querySelector("label")?.textContent?.trim() === labelText
-        );
-        if (itemsWithSameFirstLabel.length > 1) {
-          listContainer = parent;
-          break;
-        }
-        if (parent === searchSpace) break;
-        candidate = parent;
-      }
-      // Fallback to the original 2-level heuristic (handles single-item lists)
-      if (!listContainer) listContainer = firstLabel.parentElement?.parentElement ?? null;
-
-      if (!listContainer) return;
-      const nthItem = listContainer.children[n];
+      const nthItem = getListItems(searchSpace)[parseInt(key, 10)];
       if (!nthItem) return;
       await expandItem(nthItem);
       searchSpace = nthItem;
@@ -94,6 +95,7 @@ async function navigateToField(fieldPath: string): Promise<void> {
           ? document.getElementById(target.htmlFor)
           : null;
         if (!container) return;
+        await expandObject(container);
         searchSpace = container;
       }
     }

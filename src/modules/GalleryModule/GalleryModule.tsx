@@ -48,6 +48,14 @@ export const GalleryModule: Component<{ shape: GalleryModuleType }> = (
     createQueryParamRouting.galleryFilterTag.href();
   const { getModalHref } = createQueryParamRouting.modal.href();
 
+  const presetTag = () => props.shape?.tag ?? null;
+  const activeTag = () => presetTag() ?? galleryFilterTag();
+  const getItemHref = (imageUrl: string) => {
+    const modalHref = getModalHref({ type: "gallery", payload: { imageUrl } });
+    const tag = presetTag();
+    return tag ? getGalleryFilterTagHref(tag, modalHref) : modalHref;
+  };
+
   const allItems = createMemo(() => galleryData()?.items ?? []);
   const allTags = createMemo(() => galleryTagsData()?.tags ?? []);
   const dateSortedItems = createMemo(() =>
@@ -60,11 +68,7 @@ export const GalleryModule: Component<{ shape: GalleryModuleType }> = (
   const activeColumns = () => (isMobile() ? MOBILE_COLS : DESKTOP_COLS);
 
   const { displayBuckets, leavingIndices, enteringIndices, containerRef } =
-    createGalleryFilterAnimation(
-      galleryFilterTag,
-      dateSortedItems,
-      activeColumns,
-    );
+    createGalleryFilterAnimation(activeTag, dateSortedItems, activeColumns);
 
   return (
     <section class="mt-12 @max-dsk:mt-10 page-container">
@@ -74,13 +78,13 @@ export const GalleryModule: Component<{ shape: GalleryModuleType }> = (
         </Content>
 
         <Suspense>
-          <Show when={allTags().length > 0}>
+          <Show when={allTags().length > 0 && !presetTag()}>
             <div class="flex flex-wrap gap-2 my-6">
               <A
                 href={getGalleryFilterTagHref(null)}
                 noScroll
                 aria-selected={galleryFilterTag() === null}
-                class="rounded-full px-4 py-1 text-sm border cursor-pointer border-border text-secondary-foreground hover:border-primary aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:border-primary button-hover"
+                class="rounded-full px-4 py-1 text-sm @max-dsk:text-base border cursor-pointer border-border text-secondary-foreground hover:border-primary aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:border-primary button-hover"
               >
                 All
               </A>
@@ -95,7 +99,7 @@ export const GalleryModule: Component<{ shape: GalleryModuleType }> = (
                     noScroll
                     aria-selected={galleryFilterTag() === tag}
                     {...cmsProp()}
-                    class="rounded-full px-4 py-1 text-sm border cursor-pointer border-border text-secondary-foreground hover:border-primary aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:border-primary button-hover"
+                    class="rounded-full px-4 py-1 text-sm @max-dsk:text-base border cursor-pointer border-border text-secondary-foreground hover:border-primary aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:border-primary button-hover"
                   >
                     {tag}
                   </A>
@@ -110,7 +114,7 @@ export const GalleryModule: Component<{ shape: GalleryModuleType }> = (
               "--mobile-cols": MOBILE_COLS,
               "--desktop-cols": DESKTOP_COLS,
             }}
-            class="grid gap-4 items-start grid-cols-[repeat(var(--desktop-cols),minmax(0,1fr))] @max-dsk:grid-cols-[repeat(var(--mobile-cols),minmax(0,1fr))]"
+            class="block-padding grid gap-4 items-start grid-cols-[repeat(var(--desktop-cols),minmax(0,1fr))] @max-dsk:grid-cols-[repeat(var(--mobile-cols),minmax(0,1fr))]"
           >
             <For each={COLUMN_INDICES}>
               {(colIndex) => {
@@ -133,7 +137,9 @@ export const GalleryModule: Component<{ shape: GalleryModuleType }> = (
                         return (
                           <div
                             class={cx(
-                              "grid overflow-hidden rounded-2xl transition-[grid-template-rows,margin-bottom] last:mb-0",
+                              "grid overflow-hidden rounded-2xl last:mb-0",
+                              !isEntering() &&
+                                "transition-[grid-template-rows,margin-bottom]",
                               isLeaving() || isEntering()
                                 ? "grid-rows-[0fr] mb-0"
                                 : "grid-rows-[1fr] mb-4",
@@ -147,10 +153,7 @@ export const GalleryModule: Component<{ shape: GalleryModuleType }> = (
                                 value={`items.${originalIndex}`}
                               >
                                 <A
-                                  href={getModalHref({
-                                    type: "gallery",
-                                    payload: { imageUrl: item().image ?? "" },
-                                  })}
+                                  href={getItemHref(item().image ?? "")}
                                   noScroll
                                   class="block button-hover rounded-2xl overflow-hidden min-h-0"
                                   style={{

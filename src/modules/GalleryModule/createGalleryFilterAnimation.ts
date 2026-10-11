@@ -42,6 +42,21 @@ const buildColumnBuckets = <T extends { tags?: string[] }>(
   return columns;
 };
 
+// Derived from the columns instead of by unfreezing the list, because a page
+// scrolled to its end would lose scroll position the moment the list shrank.
+const measureUnfrozenHeight = (list: HTMLUListElement): number => {
+  const { paddingTop, paddingBottom } = getComputedStyle(list);
+  const columnHeights = Array.from(
+    list.children,
+    (column) => column.getBoundingClientRect().height,
+  );
+  return (
+    Math.max(...columnHeights) +
+    parseFloat(paddingTop) +
+    parseFloat(paddingBottom)
+  );
+};
+
 export const createGalleryFilterAnimation = <T extends { tags?: string[] }>(
   galleryFilterTag: Accessor<string | null>,
   orderedItems: Accessor<ReadonlyArray<IndexedGalleryItem<T>>>,
@@ -64,38 +79,36 @@ export const createGalleryFilterAnimation = <T extends { tags?: string[] }>(
 
   let listRef: HTMLUListElement | undefined;
   let releaseTimer: ReturnType<typeof setTimeout> | null = null;
-  let scheduledReleaseTimer: ReturnType<typeof setTimeout> | null = null;
 
-  const clearReleaseTimers = () => {
+  const clearReleaseTimer = () => {
     if (releaseTimer) {
       clearTimeout(releaseTimer);
       releaseTimer = null;
     }
-    if (scheduledReleaseTimer) {
-      clearTimeout(scheduledReleaseTimer);
-      scheduledReleaseTimer = null;
-    }
+  };
+
+  const release = () => {
+    clearReleaseTimer();
+    if (!listRef) return;
+    listRef.style.minHeight = "";
+    listRef.style.transition = "";
   };
 
   const freeze = () => {
     if (!listRef) return;
-    clearReleaseTimers();
+    clearReleaseTimer();
     listRef.style.transition = "";
     listRef.style.minHeight = `${listRef.offsetHeight}px`;
   };
 
-  const release = () => {
+  // Must run while entering items are still fully expanded, so that the height
+  // it measures is the one the list settles at.
+  const resizeToSettledHeight = () => {
     if (!listRef) return;
-    clearReleaseTimers();
+    const settledHeight = measureUnfrozenHeight(listRef);
     listRef.style.transition = galleryTransition("min-height");
-    listRef.style.minHeight = "0px";
-    releaseTimer = setTimeout(() => {
-      if (listRef) {
-        listRef.style.minHeight = "";
-        listRef.style.transition = "";
-      }
-      releaseTimer = null;
-    }, GALLERY_DURATION_MS + 50);
+    listRef.style.minHeight = `${settledHeight}px`;
+    releaseTimer = setTimeout(release, GALLERY_DURATION_MS + 50);
   };
 
   let initialized = false;
@@ -119,11 +132,7 @@ export const createGalleryFilterAnimation = <T extends { tags?: string[] }>(
       (columns) => {
         const items = orderedItems();
         if (!items.length || !initialized) return;
-        clearReleaseTimers();
-        if (listRef) {
-          listRef.style.minHeight = "";
-          listRef.style.transition = "";
-        }
+        release();
         setEnteringIndices(new Set<number>());
         setLeavingIndices(new Set<number>());
         setDisplayBuckets(
@@ -162,19 +171,14 @@ export const createGalleryFilterAnimation = <T extends { tags?: string[] }>(
 
         const commit = () => {
           withViewTransition(() => {
-            setEnteringIndices(new Set<number>(entering));
             setDisplayBuckets(newBuckets);
             setLeavingIndices(new Set<number>());
+            resizeToSettledHeight();
+            setEnteringIndices(new Set<number>(entering));
           }, ["gallery-filter"]);
 
           requestAnimationFrame(() =>
-            requestAnimationFrame(() => {
-              setEnteringIndices(new Set<number>());
-              scheduledReleaseTimer = setTimeout(
-                release,
-                GALLERY_DURATION_MS + 50,
-              );
-            }),
+            requestAnimationFrame(() => setEnteringIndices(new Set<number>())),
           );
         };
 
@@ -190,7 +194,7 @@ export const createGalleryFilterAnimation = <T extends { tags?: string[] }>(
     ),
   );
 
-  onCleanup(clearReleaseTimers);
+  onCleanup(clearReleaseTimer);
 
   return {
     displayBuckets,

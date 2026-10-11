@@ -8,7 +8,7 @@
 
 ## Description
 
-This is the root of the spec tree. It records every decision made in the repository up to the snapshot: the toolchain and development environment, the single-source-of-truth content model, the Decap CMS integration and its customized admin, the site shell and design tokens, the page modules, and the gallery and its modal. The content itself is not part of the spec: entries are authored through the CMS during build-out and are not engineering decisions. Later specs build on this one and describe only what they add or change. This document may be subject to change in the future to ensure that it maintains accuracy to the repository. Other spec files will likely not be updated and will be allowed to fall out of date.
+This is the root of the spec tree. It records every decision made in the repository up to the snapshot: the toolchain and development environment, the single-source-of-truth content model, the Decap CMS integration and its customized admin, the site shell and design tokens, the page modules, and the gallery and its modal. The content itself is not part of the spec: entries are authored through the CMS during build-out and are not engineering decisions. Later specs build on this one and describe only what they add or change.
 
 ## 1. Purpose and shape of the project
 

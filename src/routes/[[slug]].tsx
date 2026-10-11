@@ -1,9 +1,10 @@
-import { useParams } from "@solidjs/router";
+import { Navigate, useLocation, useParams } from "@solidjs/router";
 import { Title } from "@solidjs/meta";
 import { HttpStatusCode } from "@solidjs/start";
-import { Show, Suspense } from "solid-js";
+import { Component, Show, Suspense } from "solid-js";
 import { getCollectionItem } from "~/lib/content";
 import { PageShape, ConstantsShape } from "~/models";
+import { HOME_PAGE_SLUG } from "~/models/Page.shape";
 import {
   contentQuery,
   createCmsContent,
@@ -19,13 +20,12 @@ const getPage = contentQuery("page", fetchPage);
 
 export const route = {
   preload({ params }: { params: Record<string, string> }) {
-    void getPage(params["slug"]!);
+    void getPage(params["slug"] ?? HOME_PAGE_SLUG);
   },
 };
 
-const Page = () => {
-  const params = useParams<{ slug: string }>();
-  const content = createCmsContent(PageShape, fetchPage, () => params.slug);
+const PageContent: Component<{ slug: string }> = (props) => {
+  const content = createCmsContent(PageShape, fetchPage, () => props.slug);
   const constants = useConstants();
 
   return (
@@ -54,11 +54,11 @@ const Page = () => {
         }
       >
         {(p) => (
-          <main>
+          <main class="pb-12 @max-dsk:pb-10">
             <Title>{p().title}</Title>
             <CmsSourceContextProvider
               collection={PageShape.name}
-              slug={params.slug}
+              slug={props.slug}
             >
               <ContentFor each={p()} field="modules">
                 {(module) => (
@@ -70,6 +70,20 @@ const Page = () => {
         )}
       </Show>
     </Suspense>
+  );
+};
+
+const Page = () => {
+  const params = useParams<{ slug?: string }>();
+  const location = useLocation();
+
+  return (
+    <Show
+      when={params.slug !== HOME_PAGE_SLUG}
+      fallback={<Navigate href={`/${location.search}`} />}
+    >
+      <PageContent slug={params.slug ?? HOME_PAGE_SLUG} />
+    </Show>
   );
 };
 

@@ -1,18 +1,19 @@
-import { Component } from "solid-js";
+import { Component, Show } from "solid-js";
 import { GeneralModuleType } from "~/models/modules/GeneralModule.shape";
 import { Content } from "~/components/Content";
 import { ContentFor } from "~/components/ContentFor";
-import { Eyebrow } from "~/components/Eyebrow";
-import { LinkButton } from "~/components/LinkButton";
+import { CtaList } from "~/components/CtaList";
 
 export const GeneralModule: Component<{ shape: GeneralModuleType }> = (
   props
 ) => (
-  <section class="not-first:pt-10">
+  <section>
     <ContentFor each={props.shape} field="submodules">
-      {(item) => (
-        <div class="not-first:pt-10 @dsk:not-first:pt-12 group/submodule">
-          <hr class="group-first/submodule:@dsk:hidden h-0.5 w-full bg-primary text-primary mb-10 @dsk:mb-12" />
+      {(item, index) => (
+        <div class="not-first:pt-10 @dsk:not-first:pt-12">
+          <Show when={index() > 0}>
+            <hr class="h-0.5 w-full bg-primary text-primary mb-10 @dsk:mb-12" />
+          </Show>
           <Content content={item} property="title" type="string">
             {(title, cmsProp) => <h2 {...cmsProp()}>{title()}</h2>}
           </Content>
@@ -29,24 +30,7 @@ export const GeneralModule: Component<{ shape: GeneralModuleType }> = (
             )}
           </Content>
           <Content content={item} property="body" type="markdown" />
-          <ContentFor each={item} field="ctaList">
-            {(cta) => (
-              <Content content={cta} property="label" type="string">
-                {(label, cmsProp) =>
-                  cta.url && cta.label ? (
-                    <LinkButton
-                      href={cta.url}
-                      variant={cta.variant}
-                      class="not-first:mt-5"
-                      {...cmsProp()}
-                    >
-                      {label()}
-                    </LinkButton>
-                  ) : null
-                }
-              </Content>
-            )}
-          </ContentFor>
+          <CtaList each={item} />
         </div>
       )}
     </ContentFor>

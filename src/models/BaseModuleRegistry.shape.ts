@@ -4,6 +4,10 @@ import { HeroModuleShape } from "./modules/HeroModule.shape";
 import { FlavorMenuModuleShape } from "./modules/FlavorMenuModule.shape";
 import { GeneralModuleShape } from "./modules/GeneralModule.shape";
 import { GalleryModuleShape } from "./modules/GalleryModule.shape";
+import { HorizontalListModuleShape } from "./modules/HorizontalListModule.shape";
+import { VerticalStepperModuleShape } from "./modules/VerticalStepperModule.shape";
+import { ContactFormModuleShape } from "./modules/ContactFormModule.shape";
+import { FlavorCombinationsModuleShape } from "./modules/FlavorCombinationsModule.shape";
 import type { GroupFields } from "~/lib/cms/types";
 
 export const baseModuleFieldGroups = {
@@ -11,6 +15,10 @@ export const baseModuleFieldGroups = {
   flavorMenu: FlavorMenuModuleShape,
   general: GeneralModuleShape,
   gallery: GalleryModuleShape,
+  horizontalList: HorizontalListModuleShape,
+  verticalStepper: VerticalStepperModuleShape,
+  contactForm: ContactFormModuleShape,
+  flavorCombinations: FlavorCombinationsModuleShape,
 };
 
 type Groups = typeof baseModuleFieldGroups;

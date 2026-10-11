@@ -20,18 +20,28 @@ const buildHref = <TKey extends string, TSchema extends ZodType>(
     }
   });
 
-  const getHref = (value: ZodOutput<TSchema> | nil): string => {
+  const currentHref = (): string => {
     const params = new URLSearchParams();
     for (const [k, v] of Object.entries(searchParams ?? {})) {
       if (typeof v === "string") params.set(k, v);
     }
+    const query = params.toString();
+    return `${location.pathname}${query ? `?${query}` : ""}`;
+  };
+
+  const getHref = (
+    value: ZodOutput<TSchema> | nil,
+    baseHref: string = currentHref()
+  ): string => {
+    const [pathname, baseQuery] = baseHref.split("?");
+    const params = new URLSearchParams(baseQuery);
     if (value != null) {
       params.set(param.key, JSON.stringify(value));
     } else {
       params.delete(param.key);
     }
     const query = params.toString();
-    return `${location.pathname}${query ? `?${query}` : ""}`;
+    return `${pathname}${query ? `?${query}` : ""}`;
   };
 
   return { currentValue, getHref };
@@ -40,7 +50,7 @@ const buildHref = <TKey extends string, TSchema extends ZodType>(
 const href = <TKey extends string, TSchema extends ZodType>(
   param: QueryParamSchema<TKey, TSchema>
 ): Record<TKey, Accessor<ZodOutput<TSchema> | null>> &
-  Record<`get${Capitalize<TKey>}Href`, (value: ZodOutput<TSchema> | nil) => string> => {
+  Record<`get${Capitalize<TKey>}Href`, (value: ZodOutput<TSchema> | nil, baseHref?: string) => string> => {
   const { currentValue, getHref } = buildHref(param);
   const capitalizedKey = (param.key.charAt(0).toUpperCase() + param.key.slice(1)) as Capitalize<TKey>;
 
@@ -48,7 +58,7 @@ const href = <TKey extends string, TSchema extends ZodType>(
     [param.key]: currentValue,
     [`get${capitalizedKey}Href`]: getHref,
   } as Record<TKey, Accessor<ZodOutput<TSchema> | null>> &
-    Record<`get${Capitalize<TKey>}Href`, (value: ZodOutput<TSchema> | nil) => string>;
+    Record<`get${Capitalize<TKey>}Href`, (value: ZodOutput<TSchema> | nil, baseHref?: string) => string>;
 };
 
 const navigate = <TKey extends string, TSchema extends ZodType>(
