@@ -4,7 +4,7 @@
 | ---------- | ---------------------------------------------------------------------- |
 | Status | Implemented |
 | Depends on | [000](../000-initial/SPEC.md), [001](../001-design-v2-modules/SPEC.md) |
-| Snapshot | 2026-10-12, commit `023db611b188a36929990932ec754b39048149cf` |
+| Snapshot | 2026-10-12, commit `213aaecd9ef4f8ec00e347f9dc0f1d694b9d37ba` |
 
 ## Description
 
@@ -80,7 +80,9 @@ A closed menu is not displayed, so the column's growth and each link's fade star
 
 ### 2.5 Position
 
-The header should act _partially_ sticky, with a blurred background that is faded to be lighter (so that there is always proper legible contrast between the text the background).
+The header should act regular sticky on desktop and _partially_ sticky on mobile, with a blurred background that is faded to be lighter (so that there is always proper legible contrast between the text the background).
+
+The regular sticky header stays at the top of the window however the page is scrolled, as `position: sticky; top: 0;`.
 
 The partially sticky header should always naturally scroll out of frame when scrolling down, but should actually lock as if it were `position: sticky; top: -100%;` (where the `100%` represents the height of the header itself). When scrolling up, it should immediately start naturally scrolling back into frame as if it was just out of frame but then stick as if it was `position: sticky; top: 0;`.
 
@@ -98,7 +100,9 @@ The track is laid over the page and takes no clicks; a spacer of the header's he
 
 Settling moves the anchor to the scroll position or to one header-height above it, and the track's height is transitioned for that move only. A scroll that arrives during the transition takes the anchor from where the track has got to, so the header carries on from where it is.
 
-Two additions cover what the scroll alone does not. When focus enters the header while it is hidden, as it does for a visitor tabbing back to it, the header pops out, so that the focused link is not out of frame. Without JavaScript the anchor stays at the top of the page, so the header scrolls away with the page and does not return.
+On desktop the track is as tall as the page and does not follow the anchor, so its end never reaches the header and what is left is the header's own `position: sticky; top: 0`. The width decides that in CSS, so the server markup and a page without JavaScript are sticky on desktop as well. `Header` tells `createPartiallyStickyHeader` whether the header is partially sticky, from `createBreakpoint` ([000§11.2](../000-initial/SPEC.md#112-responsive-model)), and while it is not, the scroll handler, the settling, and the pop-out do nothing. When the viewport comes back to mobile width the anchor is brought within reach of the scroll position again, as it is on any scroll.
+
+Two additions cover what the scroll alone does not. When focus enters the header while it is hidden, as it does for a visitor tabbing back to it, the header pops out, so that the focused link is not out of frame. Without JavaScript the anchor stays at the top of the page, so on mobile the header scrolls away with the page and does not return.
 
 ## 3. Footer
 

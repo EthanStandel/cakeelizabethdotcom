@@ -10,7 +10,7 @@ export const CtaList: Component<{
   class?: string | false;
 }> = (props) => (
   <Show when={props.each?.ctaList?.length}>
-    <div class={cx("flex gap-2 not-first:mt-5", props.class)}>
+    <div class={cx("flex flex-wrap gap-2 not-first:mt-5", props.class)}>
       <ContentFor each={props.each} field="ctaList">
         {(cta) => (
           <Content content={cta} property="label" type="string">

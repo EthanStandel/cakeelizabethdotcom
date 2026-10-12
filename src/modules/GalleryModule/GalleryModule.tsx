@@ -71,7 +71,7 @@ export const GalleryModule: Component<{ shape: GalleryModuleType }> = (
     createGalleryFilterAnimation(activeTag, dateSortedItems, activeColumns);
 
   return (
-    <section class="mt-12 @max-dsk:mt-10 page-container">
+    <section class="mt-module-dsk-gap @max-dsk:mt-module-mbl-gap page-container">
       <div class="content-container">
         <Content content={props.shape} property="heading" type="string">
           {(heading, cmsProp) => <h2 {...cmsProp()}>{heading()}</h2>}

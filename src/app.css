@@ -22,6 +22,8 @@
   --spacing-max-page: var(--container-widest);
   --spacing-min-dsk-padding: 40px;
   --spacing-min-mbl-padding: 16px;
+  --spacing-module-dsk-gap: 96px;
+  --spacing-module-mbl-gap: 64px;
   --spacing-header: 80px;
   --spacing-header-feather: 250px;
 
@@ -40,7 +42,7 @@
 @property --header-feather {
   syntax: "<length>";
   inherits: true;
-  initial-value: 24px;
+  initial-value: 16px;
 }
 
 @utility page-container {
@@ -57,7 +59,7 @@
 
 @utility module-section {
   &:not(:where(.group\/grid-container *)) {
-    @apply page-container mt-12 @max-dsk:mt-10;
+    @apply page-container mt-module-dsk-gap @max-dsk:mt-module-mbl-gap;
   }
 }
 
