@@ -11,6 +11,10 @@ export const ConstantsShape = defineCollection({
   fields: {
     name: fields.string({ label: "Name" }),
     siteName: fields.string({ label: "Site Name", default: "Cake Elizabeth" }),
+    logo: fields.image({ label: "Logo" }),
+    phone: fields.string({ label: "Phone" }),
+    email: fields.string({ label: "Email" }),
+    copyright: fields.string({ label: "Copyright" }),
     galleryClose: fields.string({
       label: "Gallery: Close Label",
       default: "Close",

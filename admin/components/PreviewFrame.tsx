@@ -36,6 +36,7 @@ const VIEW_SCALE_WIDTHS: Record<Exclude<ViewScale, "native">, number> = {
 interface PreviewFrameProps {
   src: string;
   entry: CmsEntry;
+  collection: string;
   slug: string;
   onPathChange: (path: string) => void;
   viewScale: ViewScale;
@@ -44,7 +45,7 @@ interface PreviewFrameProps {
 // --- PreviewFrame ---
 
 export const PreviewFrame = forwardRef<PreviewFrameHandle, PreviewFrameProps>(
-  ({ src, entry, slug, onPathChange, viewScale }, ref) => {
+  ({ src, entry, collection, slug, onPathChange, viewScale }, ref) => {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const outerRef = useRef<HTMLDivElement>(null);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
@@ -101,12 +102,17 @@ export const PreviewFrame = forwardRef<PreviewFrameHandle, PreviewFrameProps>(
       if (!iframe || !slug) return;
       const data = entry.get("data")?.toJS() ?? {};
       const send = () => {
-        if (iframe.contentWindow) dispatch(iframe.contentWindow, "cms-preview-update", { slug, data });
+        if (iframe.contentWindow)
+          dispatch(iframe.contentWindow, "cms-preview-update", {
+            collection,
+            slug,
+            data,
+          });
       };
       iframe.addEventListener("load", send);
       send();
       return () => iframe.removeEventListener("load", send);
-    }, [entry, slug]);
+    }, [entry, collection, slug]);
 
     const { scaledWidth, scale, effectiveWidth, effectiveHeight } =
       useMemo(() => {

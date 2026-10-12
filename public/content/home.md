@@ -46,4 +46,16 @@ modules:
               truly special.
   - type: gallery
     heading: Gallery
+  - type: hero
+    alignment: center
+    ruleAbove: true
+    content: |-
+      ## Ready to begin?
+
+      Reach out early — dates book quickly.
+    ctaList:
+      - type: link
+        variant: primary
+        label: Get in touch
+        url: /contact
 ---

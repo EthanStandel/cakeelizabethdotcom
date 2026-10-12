@@ -4,7 +4,7 @@ import { HttpStatusCode } from "@solidjs/start";
 import { Component, Show, Suspense } from "solid-js";
 import { getCollectionItem } from "~/lib/content";
 import { PageShape, ConstantsShape } from "~/models";
-import { HOME_PAGE_SLUG } from "~/models/Page.shape";
+import { HOME_PAGE_PATH, HOME_PAGE_SLUG } from "~/models/Page.shape";
 import {
   contentQuery,
   createCmsContent,
@@ -80,7 +80,7 @@ const Page = () => {
   return (
     <Show
       when={params.slug !== HOME_PAGE_SLUG}
-      fallback={<Navigate href={`/${location.search}`} />}
+      fallback={<Navigate href={`${HOME_PAGE_PATH}${location.search}`} />}
     >
       <PageContent slug={params.slug ?? HOME_PAGE_SLUG} />
     </Show>

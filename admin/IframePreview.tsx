@@ -12,8 +12,10 @@ export interface PreviewProps {
 }
 
 export const buildIframePreviewComponent = ({
+  collection,
   previewPath,
 }: {
+  collection: string;
   previewPath: ((slug: string) => string) | null;
 }) => {
   const IframePreview = ({ entry }: PreviewProps) => {
@@ -114,6 +116,7 @@ export const buildIframePreviewComponent = ({
           ref={previewRef}
           src={`${base}${iframeSrc}`}
           entry={entry}
+          collection={collection}
           slug={slug}
           onPathChange={handlePathChange}
           viewScale={viewScale}

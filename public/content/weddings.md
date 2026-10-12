@@ -44,8 +44,4 @@ modules:
         variant: primary
         label: Request a consultation
         url: /contact
-      - type: link
-        variant: secondary
-        label: 207 370-4008
-        url: tel:2073704008
 ---

@@ -6,7 +6,7 @@ import { createMessageHandler } from "~/lib/cms/messages";
 
 export function createCmsLiveContent<F extends CmsFieldsMap>(
   collection: CollectionDefinition<F>,
-  slug: Accessor<string>
+  slug: Accessor<string>,
 ): Accessor<ContentItem<F> | undefined> {
   const [liveContent, setLiveContent] = createSignal<
     ContentItem<F> | undefined
@@ -14,8 +14,12 @@ export function createCmsLiveContent<F extends CmsFieldsMap>(
 
   onMount(() => {
     const handler = createMessageHandler({
-      "cms-preview-update": ({ slug: msgSlug, data }) => {
-        if (msgSlug !== slug()) return;
+      "cms-preview-update": ({
+        collection: msgCollection,
+        slug: msgSlug,
+        data,
+      }) => {
+        if (msgCollection !== collection.name || msgSlug !== slug()) return;
         const parsed = collection.schema.safeParse(data);
         if (parsed.success) {
           setLiveContent({ ...parsed.data, _slug: msgSlug } as any);

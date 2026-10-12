@@ -1,7 +1,11 @@
 export interface CmsMessageMap {
   "cms-field-focus": { fieldPath: string; collection?: string; slug?: string };
   "cms-route-change": { path: string; source: "push" | "replace" | "pop" };
-  "cms-preview-update": { slug: string; data: Record<string, unknown> };
+  "cms-preview-update": {
+    collection: string;
+    slug: string;
+    data: Record<string, unknown>;
+  };
 }
 
 export type CmsMessage = {
