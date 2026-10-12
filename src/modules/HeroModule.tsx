@@ -11,7 +11,12 @@ export const HeroModule: Component<{ shape: HeroModuleType }> = (props) => {
     props.shape?.ruleAbove && !props.shape?.backgroundImage;
 
   return (
-    <section class="@dsk:m-10 m-4">
+    <section
+      class={cx(
+        props.shape?.backgroundImage ? "@dsk:mx-10 mx-4" : "@dsk:m-10 m-4"
+      )}
+      data-rule-above={hasRuleAbove() || undefined}
+    >
       <div
         class={cx(
           "page-container relative",
@@ -54,9 +59,8 @@ export const HeroModule: Component<{ shape: HeroModuleType }> = (props) => {
         <div
           class={cx(
             "relative z-30 content-container px-min-mbl-padding @dsk:px-min-dsk-padding",
-            props.shape?.backgroundImage
-              ? "@dsk:py-30 pt-30 pb-5"
-              : "@dsk:py-12 py-8"
+            props.shape?.backgroundImage && "@dsk:py-30 pt-30 pb-5",
+            hasRuleAbove() && "@dsk:py-12 py-8"
           )}
         >
           <div

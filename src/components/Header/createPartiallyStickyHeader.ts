@@ -1,12 +1,21 @@
 import debounce from "lodash/debounce";
-import { createSignal, onCleanup, onMount } from "solid-js";
+import {
+  createEffect,
+  createSignal,
+  on,
+  onCleanup,
+  onMount,
+  type Accessor,
+} from "solid-js";
 
 const SETTLE_DELAY_MS = 500;
 const REVEAL_THRESHOLD = 0.5;
 
 // The anchor is the document offset the header rests at. It stays 0 on the
 // server and until mount, which leaves the header at the top of the page.
-export const createPartiallyStickyHeader = () => {
+export const createPartiallyStickyHeader = (
+  isPartiallySticky: Accessor<boolean>,
+) => {
   let track: HTMLElement | undefined;
   let header: HTMLElement | undefined;
   const [anchor, setAnchor] = createSignal(0);
@@ -24,6 +33,7 @@ export const createPartiallyStickyHeader = () => {
     );
 
   const settleTo = (value: number) => {
+    if (!isPartiallySticky()) return;
     setIsSettling(true);
     setAnchor(withinReach(value));
   };
@@ -40,12 +50,24 @@ export const createPartiallyStickyHeader = () => {
   }, SETTLE_DELAY_MS);
 
   const follow = () => {
+    if (!isPartiallySticky()) return;
     const interrupted =
       isSettling() && track ? track.offsetHeight - headerHeight() : anchor();
     setIsSettling(false);
     setAnchor(withinReach(interrupted));
     settle();
   };
+
+  createEffect(
+    on(
+      isPartiallySticky,
+      (partiallySticky) => {
+        if (partiallySticky) follow();
+        else setIsSettling(false);
+      },
+      { defer: true },
+    ),
+  );
 
   onMount(() => {
     const listeners = new AbortController();

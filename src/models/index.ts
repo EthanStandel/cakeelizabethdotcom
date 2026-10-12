@@ -5,6 +5,7 @@ import { GalleryItemsShape } from "./GalleryItems.shape";
 import { TagsShape } from "./Tags.shape";
 import { ConstantsShape } from "./Constants.shape";
 import { NavigationShape } from "./Navigation.shape";
+import { UniversalSuffixModuleShape } from "./UniversalSuffixModule.shape";
 
 export const collectionRegistry: CollectionDefinition<CmsFieldsMap>[] = [
   PageShape,
@@ -13,6 +14,7 @@ export const collectionRegistry: CollectionDefinition<CmsFieldsMap>[] = [
   GalleryItemsShape,
   ConstantsShape,
   NavigationShape,
+  UniversalSuffixModuleShape,
 ];
 
 export {
@@ -22,4 +24,5 @@ export {
   TagsShape,
   ConstantsShape,
   NavigationShape,
+  UniversalSuffixModuleShape,
 };

@@ -17,7 +17,7 @@ export const Header: Component<{
   const navigation = useNavigation();
   const navigationId = createUniqueId();
   const isMobileView = createBreakpoint.IsMobileView();
-  const stickyHeader = createPartiallyStickyHeader();
+  const stickyHeader = createPartiallyStickyHeader(isMobileView);
 
   const closeMenu = () => props.onMenuOpenChange(false);
 
@@ -53,8 +53,8 @@ export const Header: Component<{
       <div
         ref={stickyHeader.setTrack}
         class={cx(
-          "pointer-events-none absolute inset-x-0 top-0 z-40 h-[calc(var(--spacing-header)+var(--header-anchor))]",
-          stickyHeader.isSettling() && "transition-[height]",
+          "pointer-events-none absolute inset-x-0 top-0 z-40 h-full @max-dsk:h-[calc(var(--spacing-header)+var(--header-anchor))]",
+          stickyHeader.isSettling() && "@max-dsk:transition-[height]",
         )}
         style={{ "--header-anchor": `${stickyHeader.anchor()}px` }}
       >

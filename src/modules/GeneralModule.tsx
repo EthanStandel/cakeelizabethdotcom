@@ -10,9 +10,9 @@ export const GeneralModule: Component<{ shape: GeneralModuleType }> = (
   <section>
     <ContentFor each={props.shape} field="submodules">
       {(item, index) => (
-        <div class="not-first:pt-10 @dsk:not-first:pt-12">
+        <div class="not-first:pt-module-dsk-gap @max-dsk:not-first:pt-module-mbl-gap">
           <Show when={index() > 0}>
-            <hr class="h-0.5 w-full bg-primary text-primary mb-10 @dsk:mb-12" />
+            <hr class="h-0.5 w-full bg-primary text-primary mb-module-dsk-gap @max-dsk:mb-module-mbl-gap" />
           </Show>
           <Content content={item} property="title" type="string">
             {(title, cmsProp) => <h2 {...cmsProp()}>{title()}</h2>}

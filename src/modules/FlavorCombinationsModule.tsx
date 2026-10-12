@@ -36,13 +36,13 @@ export const FlavorCombinationsModule: Component<{
           <ContentFor each={props.shape} field="combinations">
             {(combination) => (
               <li
-                class="grid grid-rows-subgrid gap-y-0 @max-dsk:block rounded-2xl border border-border p-5"
+                class="grid grid-rows-subgrid gap-y-0 @max-dsk:block rounded-2xl border border-border p-4"
                 style={{ "grid-row": CARD_SPAN }}
               >
                 <Content content={combination} property="name" type="string">
                   {(name, cmsProp) => (
                     <h3
-                      class="row-start-1 flex items-center justify-center text-center border-primary border-b-2"
+                      class="row-start-1 flex items-center justify-center text-center border-primary border-b-2 pb-4"
                       {...cmsProp()}
                     >
                       {name()}

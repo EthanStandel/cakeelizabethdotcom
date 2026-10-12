@@ -14,6 +14,10 @@ import { Content } from "~/components/Content";
 import { ContentFor } from "~/components/ContentFor";
 import { CmsSourceContextProvider } from "~/lib/cms/CmsPathContext";
 import { useConstants } from "~/primitives/ConstantsContext";
+import {
+  UniversalSuffixModules,
+  preloadUniversalSuffixModule,
+} from "~/components/UniversalSuffixModules";
 
 const fetchPage = (slug: string) => getCollectionItem(PageShape, slug);
 const getPage = contentQuery("page", fetchPage);
@@ -21,6 +25,7 @@ const getPage = contentQuery("page", fetchPage);
 export const route = {
   preload({ params }: { params: Record<string, string> }) {
     void getPage(params["slug"] ?? HOME_PAGE_SLUG);
+    preloadUniversalSuffixModule();
   },
 };
 
@@ -54,7 +59,7 @@ const PageContent: Component<{ slug: string }> = (props) => {
         }
       >
         {(p) => (
-          <main class="pb-12 @max-dsk:pb-10">
+          <main class="pb-module-dsk-gap @max-dsk:pb-module-mbl-gap has-[>[data-rule-above]:last-child]:pb-0 *:data-rule-above:last:mb-0">
             <Title>{p().title}</Title>
             <CmsSourceContextProvider
               collection={PageShape.name}
@@ -66,6 +71,7 @@ const PageContent: Component<{ slug: string }> = (props) => {
                 )}
               </ContentFor>
             </CmsSourceContextProvider>
+            <UniversalSuffixModules pageSlug={props.slug} />
           </main>
         )}
       </Show>
