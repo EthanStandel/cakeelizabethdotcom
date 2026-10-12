@@ -18,6 +18,10 @@ import {
   UniversalSuffixModules,
   preloadUniversalSuffixModule,
 } from "~/components/UniversalSuffixModules";
+import {
+  ModuleTransition,
+  ModuleTransitionProvider,
+} from "~/components/ModuleTransition";
 
 const fetchPage = (slug: string) => getCollectionItem(PageShape, slug);
 const getPage = contentQuery("page", fetchPage);
@@ -59,19 +63,24 @@ const PageContent: Component<{ slug: string }> = (props) => {
         }
       >
         {(p) => (
-          <main class="pb-module-dsk-gap @max-dsk:pb-module-mbl-gap has-[>[data-rule-above]:last-child]:pb-0 *:data-rule-above:last:mb-0">
+          <main class="pb-module-dsk-gap @max-dsk:pb-module-mbl-gap has-[>:last-child>[data-rule-above]]:pb-0 *:last:*:data-rule-above:mb-0">
             <Title>{p().title}</Title>
             <CmsSourceContextProvider
               collection={PageShape.name}
               slug={props.slug}
             >
               <ContentFor each={p()} field="modules">
-                {(module) => (
-                  <ModuleRegistry module={module.type} shape={module} />
+                {(module, index) => (
+                  <ModuleTransition index={index()}>
+                    <ModuleRegistry module={module.type} shape={module} />
+                  </ModuleTransition>
                 )}
               </ContentFor>
             </CmsSourceContextProvider>
-            <UniversalSuffixModules pageSlug={props.slug} />
+            <UniversalSuffixModules
+              pageSlug={props.slug}
+              transitionIndexOffset={p().modules?.length ?? 0}
+            />
           </main>
         )}
       </Show>
@@ -84,12 +93,14 @@ const Page = () => {
   const location = useLocation();
 
   return (
-    <Show
-      when={params.slug !== HOME_PAGE_SLUG}
-      fallback={<Navigate href={`${HOME_PAGE_PATH}${location.search}`} />}
-    >
-      <PageContent slug={params.slug ?? HOME_PAGE_SLUG} />
-    </Show>
+    <ModuleTransitionProvider>
+      <Show
+        when={params.slug !== HOME_PAGE_SLUG}
+        fallback={<Navigate href={`${HOME_PAGE_PATH}${location.search}`} />}
+      >
+        <PageContent slug={params.slug ?? HOME_PAGE_SLUG} />
+      </Show>
+    </ModuleTransitionProvider>
   );
 };
 

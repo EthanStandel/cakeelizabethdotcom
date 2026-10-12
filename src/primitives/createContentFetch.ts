@@ -1,5 +1,5 @@
 import { createAsync, query } from "@solidjs/router";
-import { createEffect } from "solid-js";
+import { createEffect, untrack } from "solid-js";
 import { createStore, reconcile } from "solid-js/store";
 import type { Accessor } from "solid-js";
 import type { CollectionDefinition, CmsFieldsMap } from "~/lib/cms/types";
@@ -54,7 +54,7 @@ export function createCmsContent<F extends CmsFieldsMap>(
   const [state, setState] = createStore<{
     content: ContentItem<F> | undefined;
   }>({
-    content: undefined,
+    content: untrack(fetched),
   });
 
   createEffect(() => {
@@ -70,7 +70,15 @@ export function createCmsContent<F extends CmsFieldsMap>(
     }
   });
 
-  // Fall back to fetched() directly until the effect has initialized the store
-  // (covers SSR and the brief moment before the first effect run on the client).
-  return () => state.content ?? fetched();
+  // The store starts from the fetched value when it is already there, as it is while
+  // hydrating, so the first render and every later one read the same proxy and lists
+  // keyed on its items are not rebuilt once the effect runs. Until the store holds a
+  // value the accessor falls back to fetched() directly (covers SSR and a client-side
+  // mount whose fetch is still in flight). fetched() is read on every call, so that a
+  // navigation to another slug suspends until that slug's content has loaded instead of
+  // ending while the old content is drawn.
+  return () => {
+    const latest = fetched();
+    return state.content ?? latest;
+  };
 }
