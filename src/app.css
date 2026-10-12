@@ -22,14 +22,26 @@
   --spacing-max-page: var(--container-widest);
   --spacing-min-dsk-padding: 40px;
   --spacing-min-mbl-padding: 16px;
+  --spacing-header: 80px;
+  --spacing-header-feather: 250px;
 
   --shadow-base: 0 4px 20px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
 
-  --default-transition-duration: 350ms;
+  --default-transition-duration: 250ms;
   --default-transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --menu-transition-duration: 500ms;
+  --navigation-link-stagger: 100ms;
+  --navigation-link-fade: 500ms;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+@property --header-feather {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 24px;
+}
 
 @utility page-container {
   @apply max-w-max-page mx-auto;
@@ -59,10 +71,18 @@
   @apply text-xl @dsk:text-2xl not-italic text-secondary-foreground;
 }
 
+@utility underlined-link {
+  @apply underline decoration-primary decoration-2 underline-offset-4;
+}
+
 @utility markdown-content {
   & a {
-    @apply underline decoration-primary decoration-2 underline-offset-4;
+    @apply underlined-link;
   }
+}
+
+@utility link-underline {
+  @apply relative after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:origin-right after:scale-x-0 after:bg-primary after:transition-transform hover:after:origin-left hover:after:scale-x-100 aria-[current=page]:after:origin-left aria-[current=page]:after:scale-x-100 starting:aria-[current=page]:after:scale-x-0;
 }
 
 @utility highlight-border {

@@ -9,6 +9,9 @@ CMS.init();
 collectionRegistry.forEach((collection) => {
   CMS.registerPreviewTemplate(
     collection.name,
-    buildIframePreviewComponent({ previewPath: collection.previewPath })
+    buildIframePreviewComponent({
+      collection: collection.name,
+      previewPath: collection.previewPath,
+    })
   );
 });
