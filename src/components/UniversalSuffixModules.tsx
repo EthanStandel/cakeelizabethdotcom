@@ -8,6 +8,7 @@ import {
 } from "~/primitives/createContentFetch";
 import { ModuleRegistry } from "~/modules/ModuleRegistry";
 import { ContentFor } from "~/components/ContentFor";
+import { ModuleTransition } from "~/components/ModuleTransition";
 
 const UNIVERSAL_SUFFIX_MODULE_SLUG = "main";
 
@@ -27,9 +28,10 @@ const getUniversalSuffixModule = contentQuery(
 export const preloadUniversalSuffixModule = () =>
   void getUniversalSuffixModule(UNIVERSAL_SUFFIX_MODULE_SLUG);
 
-export const UniversalSuffixModules: Component<{ pageSlug: string }> = (
-  props,
-) => {
+export const UniversalSuffixModules: Component<{
+  pageSlug: string;
+  transitionIndexOffset: number;
+}> = (props) => {
   const content = createCmsContent(
     UniversalSuffixModuleShape,
     fetchUniversalSuffixModule,
@@ -45,7 +47,11 @@ export const UniversalSuffixModules: Component<{ pageSlug: string }> = (
         field="modules"
         source={universalSuffixModuleSource}
       >
-        {(module) => <ModuleRegistry module={module.type} shape={module} />}
+        {(module, index) => (
+          <ModuleTransition index={props.transitionIndexOffset + index()}>
+            <ModuleRegistry module={module.type} shape={module} />
+          </ModuleTransition>
+        )}
       </ContentFor>
     </Show>
   );

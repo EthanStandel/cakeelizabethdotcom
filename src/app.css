@@ -35,6 +35,9 @@
   --menu-transition-duration: 500ms;
   --navigation-link-stagger: 100ms;
   --navigation-link-fade: 500ms;
+
+  --module-transition-stagger: var(--navigation-link-stagger);
+  --module-transition-fade: var(--navigation-link-fade);
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -42,7 +45,7 @@
 @property --header-feather {
   syntax: "<length>";
   inherits: true;
-  initial-value: 16px;
+  initial-value: 8px;
 }
 
 @utility page-container {
