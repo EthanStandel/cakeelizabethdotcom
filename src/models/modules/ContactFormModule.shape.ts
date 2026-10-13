@@ -39,6 +39,15 @@ export const ContactFormModuleShape = {
       },
     }),
     submitLabel: fields.string({ label: "Submit label" }),
+    failureMessage: fields.markdown({ label: "Failure message" }),
+    sent: fields.object({
+      label: "Sent panel",
+      fields: {
+        heading: fields.string({ label: "Heading" }),
+        body: fields.text({ label: "Body" }),
+        resetLabel: fields.string({ label: "Reset label" }),
+      },
+    }),
     footnote: fields.markdown({ label: "Footnote", required: false }),
   },
 };

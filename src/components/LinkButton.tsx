@@ -13,12 +13,14 @@ export const primaryLinkButtonClass = cx(
   "text-pr bg-primary text-primary-foreground border-primary",
 );
 
+export const secondaryLinkButtonClass = cx(
+  textButtonBase,
+  "text-primary-foreground dark:text-dark-primary-foreground bg-secondary hover:bg-primary hover:text-primary-foreground hover:border-primary border-current",
+);
+
 const variants = {
   primary: primaryLinkButtonClass,
-  secondary: cx(
-    textButtonBase,
-    "text-primary-foreground dark:text-dark-primary-foreground bg-secondary hover:bg-primary hover:text-primary-foreground hover:border-primary border-current",
-  ),
+  secondary: secondaryLinkButtonClass,
   icon: iconLinkButtonClass,
 };
 
