@@ -6,6 +6,20 @@
       "runtimeExecutable": "env",
       "runtimeArgs": ["-u", "PORT", "npm", "run", "dev"],
       "port": 5173
+    },
+    {
+      "name": "dev-no-mail",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "-u",
+        "PORT",
+        "NO_MAIL=true",
+        "NO_MAIL_DELAY=2000",
+        "npm",
+        "run",
+        "dev"
+      ],
+      "port": 5173
     }
   ]
 }

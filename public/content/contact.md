@@ -30,6 +30,11 @@ modules:
           hint: Date, servings, theme and flavors help us quote faster — but rough ideas are perfectly fine.
           requiredError: Tell us a little about your cake.
         submitLabel: Send request
+        failureMessage: Looks like something went wrong, so please just shoot an email with what you're looking for over to [info@cakeelizabeth.com](mailto:info@cakeelizabeth.com)
+        sent:
+          heading: Thank you, {firstName}
+          body: We’ve received your request and will be in touch at {email} within 48 hours with questions or a quote.
+          resetLabel: Send another
         footnote: Prefer to talk? Call [207 370-4008](tel:2073704008) or email us directly [info@cakeelizabeth.com](mailto:info@cakeelizabeth.com) with images of your ideas!
       - type: verticalStepper
         antecedent: 1
