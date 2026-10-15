@@ -12,7 +12,7 @@ export const Footer: Component = () => {
 
   return (
     <CmsSourceContextProvider collection={ConstantsShape.name} slug="main">
-      <footer class="page-container w-full">
+      <footer class="page-container mt-auto w-full">
         <div class="content-container">
           <hr class="h-0.5 w-full bg-primary text-primary" />
           <div class="flex items-center justify-between gap-5 py-6 @max-dsk:flex-col @max-dsk:py-4">

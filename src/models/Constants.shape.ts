@@ -27,14 +27,6 @@ export const ConstantsShape = defineCollection({
       label: "Gallery: Next Image Label",
       default: "Next image",
     }),
-    notFoundTitle: fields.string({
-      label: "Not Found: Page Title",
-      default: "Not Found",
-    }),
-    notFoundHeading: fields.string({
-      label: "Not Found: Heading",
-      default: "Page Not Found",
-    }),
     inquireLabel: fields.string({
       label: "Inquire Button: Label",
       default: "Inquire",

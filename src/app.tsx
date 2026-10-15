@@ -27,9 +27,7 @@ export default function App() {
                   />
                 </Suspense>
                 <div class="flex grow flex-col" inert={isMenuOpen()}>
-                  <div class="grow">
-                    <Suspense>{props.children}</Suspense>
-                  </div>
+                  <Suspense>{props.children}</Suspense>
                   <Suspense>
                     <Footer />
                   </Suspense>
