@@ -76,9 +76,12 @@ export function createCmsContent<F extends CmsFieldsMap>(
   // value the accessor falls back to fetched() directly (covers SSR and a client-side
   // mount whose fetch is still in flight). fetched() is read on every call, so that a
   // navigation to another slug suspends until that slug's content has loaded instead of
-  // ending while the old content is drawn.
+  // ending while the old content is drawn. A fetch that found no entry answers with
+  // nothing even while the store still holds the entry of the slug before it, unless a
+  // live preview is supplying the content.
   return () => {
     const latest = fetched();
+    if (latest == null && liveContent() == null) return undefined;
     return state.content ?? latest;
   };
 }

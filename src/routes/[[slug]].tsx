@@ -1,19 +1,18 @@
 import { Navigate, useLocation, useParams } from "@solidjs/router";
 import { Title } from "@solidjs/meta";
-import { HttpStatusCode } from "@solidjs/start";
-import { Component, Show, Suspense } from "solid-js";
+import { Component, Match, Show, Suspense, Switch } from "solid-js";
 import { getCollectionItem } from "~/lib/content";
-import { PageShape, ConstantsShape } from "~/models";
+import { PageShape } from "~/models";
 import { HOME_PAGE_PATH, HOME_PAGE_SLUG } from "~/models/Page.shape";
+import { NOT_FOUND_PAGE_SLUG } from "~/models/NotFound.shape";
 import {
   contentQuery,
   createCmsContent,
 } from "~/primitives/createContentFetch";
 import { ModuleRegistry } from "~/modules/ModuleRegistry";
-import { Content } from "~/components/Content";
 import { ContentFor } from "~/components/ContentFor";
 import { CmsSourceContextProvider } from "~/lib/cms/CmsPathContext";
-import { useConstants } from "~/primitives/ConstantsContext";
+import { NotFound, preloadNotFound } from "~/components/NotFound";
 import {
   UniversalSuffixModules,
   preloadUniversalSuffixModule,
@@ -28,6 +27,7 @@ const getPage = contentQuery("page", fetchPage);
 
 export const route = {
   preload({ params }: { params: Record<string, string> }) {
+    if (params["slug"] === NOT_FOUND_PAGE_SLUG) return preloadNotFound();
     void getPage(params["slug"] ?? HOME_PAGE_SLUG);
     preloadUniversalSuffixModule();
   },
@@ -35,33 +35,10 @@ export const route = {
 
 const PageContent: Component<{ slug: string }> = (props) => {
   const content = createCmsContent(PageShape, fetchPage, () => props.slug);
-  const constants = useConstants();
 
   return (
     <Suspense>
-      <Show
-        when={content()}
-        fallback={
-          <>
-            <Title>{constants()?.notFoundTitle ?? "Not Found"}</Title>
-            <HttpStatusCode code={404} />
-            <CmsSourceContextProvider
-              collection={ConstantsShape.name}
-              slug="main"
-            >
-              <main>
-                <h1>
-                  <Content
-                    content={constants()}
-                    property="notFoundHeading"
-                    type="string"
-                  />
-                </h1>
-              </main>
-            </CmsSourceContextProvider>
-          </>
-        }
-      >
+      <Show when={content()} fallback={<NotFound />}>
         {(p) => (
           <main class="pb-module-dsk-gap @max-dsk:pb-module-mbl-gap has-[>:last-child>[data-rule-above]]:pb-0 *:last:*:data-rule-above:mb-0">
             <Title>{p().title}</Title>
@@ -94,12 +71,14 @@ const Page = () => {
 
   return (
     <ModuleTransitionProvider>
-      <Show
-        when={params.slug !== HOME_PAGE_SLUG}
-        fallback={<Navigate href={`${HOME_PAGE_PATH}${location.search}`} />}
-      >
-        <PageContent slug={params.slug ?? HOME_PAGE_SLUG} />
-      </Show>
+      <Switch fallback={<PageContent slug={params.slug ?? HOME_PAGE_SLUG} />}>
+        <Match when={params.slug === HOME_PAGE_SLUG}>
+          <Navigate href={`${HOME_PAGE_PATH}${location.search}`} />
+        </Match>
+        <Match when={params.slug === NOT_FOUND_PAGE_SLUG}>
+          <NotFound />
+        </Match>
+      </Switch>
     </ModuleTransitionProvider>
   );
 };
