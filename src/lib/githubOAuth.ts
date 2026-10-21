@@ -1,5 +1,3 @@
-import { readSiteUrl } from "~/lib/siteUrl";
-
 export const OAUTH_PROVIDER = "github";
 export const OAUTH_STATE_COOKIE = "cms_oauth_state";
 export const OAUTH_CALLBACK_PATH = "/api/callback";
@@ -12,11 +10,18 @@ export const readOAuthClient = () => ({
   clientSecret: process.env.GITHUB_OAUTH_CLIENT_SECRET?.trim() || undefined,
 });
 
-export const getOAuthOrigin = (request: Request) =>
-  new URL(readSiteUrl() ?? request.url).origin;
+const FORWARDED_PROTO_HEADER = "X-Forwarded-Proto";
 
-export const getOAuthRedirectUri = (request: Request) =>
-  new URL(OAUTH_CALLBACK_PATH, getOAuthOrigin(request)).href;
+// The server sees plain HTTP behind a TLS-terminating proxy, so the scheme the browser used is read from the proxy's header.
+export const getOAuthRedirectUri = (request: Request) => {
+  const url = new URL(OAUTH_CALLBACK_PATH, request.url);
+  const forwardedProto = request.headers
+    .get(FORWARDED_PROTO_HEADER)
+    ?.split(",")[0]
+    .trim();
+  if (forwardedProto) url.protocol = forwardedProto;
+  return url.href;
+};
 
 export const serializeStateCookie = (state: string) =>
   `${OAUTH_STATE_COOKIE}=${state}; Path=${OAUTH_STATE_COOKIE_PATH}; Max-Age=${OAUTH_STATE_MAX_AGE_SECONDS}; HttpOnly; Secure; SameSite=Lax`;

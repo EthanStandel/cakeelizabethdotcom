@@ -5,7 +5,7 @@ import "./browser-patches";
 import "./admin.css";
 import "./navigateToField";
 
-CMS.init();
+CMS.init({ config: { backend: { base_url: window.location.origin } } } as Parameters<typeof CMS.init>[0]);
 collectionRegistry.forEach((collection) => {
   CMS.registerPreviewTemplate(
     collection.name,
