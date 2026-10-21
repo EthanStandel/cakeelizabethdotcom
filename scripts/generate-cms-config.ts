@@ -76,6 +76,8 @@ function generate() {
           name: "github",
           repo: env.CMS_GITHUB_REPO,
           branch: env.CMS_GITHUB_BRANCH || "main",
+          base_url: env.SITE_URL && new URL(env.SITE_URL).origin,
+          auth_endpoint: "api/auth",
         },
     media_folder: "public/images",
     public_folder: "/images",

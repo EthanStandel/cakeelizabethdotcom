@@ -2,6 +2,8 @@ import { loadEnv } from "vite";
 
 const REQUIRED_VARIABLES = [
   "CMS_GITHUB_REPO",
+  "GITHUB_OAUTH_CLIENT_ID",
+  "GITHUB_OAUTH_CLIENT_SECRET",
   "MAIL_API_KEY",
   "MAIL_FROM",
   "MAIL_TARGET",

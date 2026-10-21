@@ -28,9 +28,9 @@ const adminTrailingSlash = (): Plugin => ({
   },
 });
 
-const SERVER_ENV_PREFIXES = ["MAIL_", "NO_MAIL", "SITE_URL"];
+const SERVER_ENV_PREFIXES = ["MAIL_", "NO_MAIL", "SITE_URL", "GITHUB_OAUTH_"];
 
-// Vite exposes env files only on import.meta.env, so the server-only mail variables are copied to process.env; loadEnv already lets the shell's value win. A build fixes SITE_URL into the bundle, so the origin only has to be set where the site is built.
+// Vite exposes env files only on import.meta.env, so the server-only variables are copied to process.env; loadEnv already lets the shell's value win. A build fixes SITE_URL into the bundle, so the origin only has to be set where the site is built.
 const serverEnv = (): Plugin => ({
   name: "server-env",
   config(_config, { mode, command }) {
