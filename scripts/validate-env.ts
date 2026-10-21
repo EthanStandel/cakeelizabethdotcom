@@ -1,6 +1,12 @@
 import { loadEnv } from "vite";
 
-const REQUIRED_VARIABLES = ["MAIL_API_KEY", "MAIL_FROM", "MAIL_TARGET"];
+const REQUIRED_VARIABLES = [
+  "CMS_GITHUB_REPO",
+  "MAIL_API_KEY",
+  "MAIL_FROM",
+  "MAIL_TARGET",
+  "SITE_URL",
+];
 
 const BUILD_MODE = "production";
 

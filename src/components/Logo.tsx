@@ -1,10 +1,10 @@
 import { Component } from "solid-js";
 import { Content } from "~/components/Content";
 import { HOME_PAGE_PATH } from "~/models/Page.shape";
-import { useConstants } from "~/primitives/ConstantsContext";
+import { useSiteWide } from "~/primitives/SiteWideContext";
 
 export const Logo: Component<{ onClick?: () => void }> = (props) => {
-  const constants = useConstants();
+  const [constants] = useSiteWide("constants");
 
   return (
     <Content content={constants()} property="logo" type="string">

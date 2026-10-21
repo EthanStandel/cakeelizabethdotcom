@@ -20,7 +20,6 @@ export const buildIframePreviewComponent = ({
 }) => {
   const IframePreview = ({ entry }: PreviewProps) => {
     const slug = entry.get("slug");
-    const base = import.meta.env.VITE_SERVER_URL ?? "";
     const headerRef = useRef<HTMLDivElement>(null);
     const previewRef = useRef<PreviewFrameHandle>(null);
     const isFirstRender = useRef(true);
@@ -114,7 +113,7 @@ export const buildIframePreviewComponent = ({
         />
         <PreviewFrame
           ref={previewRef}
-          src={`${base}${iframeSrc}`}
+          src={iframeSrc}
           entry={entry}
           collection={collection}
           slug={slug}

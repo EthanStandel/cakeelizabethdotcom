@@ -5,6 +5,7 @@ import { Content } from "~/components/Content";
 import { secondaryLinkButtonClass } from "~/components/LinkButton";
 import { moduleArrivalClass } from "~/components/ModuleTransition";
 import { CmsPathContextProvider } from "~/lib/cms/CmsPathContext";
+import { fillTokens } from "~/lib/utils/fillTokens";
 
 type SentPanelTokens = Record<"firstName" | "email", string>;
 
@@ -14,15 +15,6 @@ interface ContactFormSentPanelProps {
   email: string;
   onReset: () => void;
 }
-
-const TOKEN_PATTERN = /\{(\w+)\}/g;
-
-const fillTokens = (text: string, tokens: SentPanelTokens) =>
-  text.replace(TOKEN_PATTERN, (placeholder, token: string) =>
-    Object.hasOwn(tokens, token)
-      ? tokens[token as keyof SentPanelTokens]
-      : placeholder,
-  );
 
 const firstWordOf = (name: string) => name.trim().split(/\s+/)[0];
 

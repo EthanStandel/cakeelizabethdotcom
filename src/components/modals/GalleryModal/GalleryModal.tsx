@@ -18,7 +18,7 @@ import { getCollectionItem } from "~/lib/content";
 import { iconLinkButtonClass, LinkButton } from "~/components/LinkButton";
 import { compareDatesDescending } from "~/lib/utils/compareDatesDescending";
 import { createContentFetch } from "~/primitives/createContentFetch";
-import { useConstants } from "~/primitives/ConstantsContext";
+import { useSiteWide } from "~/primitives/SiteWideContext";
 import {
   CmsPathContextProvider,
   CmsSourceContextProvider,
@@ -122,7 +122,7 @@ export const GalleryModal: Component<{ imageUrl: string }> = (props) => {
 
   const navigate = useNavigate();
   const isMobile = createBreakpoint.IsMobileView();
-  const constants = useConstants();
+  const [constants] = useSiteWide("constants");
   const constantsSource = { collection: ConstantsShape.name, slug: "main" };
   const closeCmsProp = useCmsFieldProps(() => "galleryClose", constantsSource);
   const prevCmsProp = useCmsFieldProps(

@@ -32,4 +32,7 @@ modules:
   - type: gallery
     heading: Wedding gallery
     tag: Wedding
+seo:
+  title: "Wedding Cakes"
+  description: "The best cakes are created with the help of our clients. Order your cake at least 6 weeks ahead, and schedule your tasting as soon as possible."
 ---

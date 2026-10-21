@@ -36,4 +36,7 @@ modules:
         variant: primary
         label: Ask about flavors
         url: /contact
+seo:
+  title: "Flavor options"
+  description: "We offer a multitude of flavor options and combinations of cake, filling, and icing."
 ---

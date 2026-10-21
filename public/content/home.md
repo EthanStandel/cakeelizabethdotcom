@@ -46,4 +46,7 @@ modules:
               truly special.
   - type: gallery
     heading: Gallery
+seo:
+  title: "Local Maine Cakes"
+  description: "See why our custom cakes cause a stir in Southern Maine: wedding, birthday, baby shower, and special event cakes, baked fresh daily."
 ---

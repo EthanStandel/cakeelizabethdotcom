@@ -7,6 +7,7 @@ import { ConstantsShape } from "./Constants.shape";
 import { NavigationShape } from "./Navigation.shape";
 import { UniversalSuffixModuleShape } from "./UniversalSuffixModule.shape";
 import { NotFoundShape } from "./NotFound.shape";
+import { SeoShape } from "./Seo.shape";
 
 export const collectionRegistry: CollectionDefinition<CmsFieldsMap>[] = [
   PageShape,
@@ -17,6 +18,7 @@ export const collectionRegistry: CollectionDefinition<CmsFieldsMap>[] = [
   NavigationShape,
   UniversalSuffixModuleShape,
   NotFoundShape,
+  SeoShape,
 ];
 
 export {
@@ -28,4 +30,5 @@ export {
   NavigationShape,
   UniversalSuffixModuleShape,
   NotFoundShape,
+  SeoShape,
 };

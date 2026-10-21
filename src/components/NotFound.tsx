@@ -1,6 +1,5 @@
-import { Title } from "@solidjs/meta";
 import { HttpStatusCode } from "@solidjs/start";
-import { Component } from "solid-js";
+import { Component, Show } from "solid-js";
 import { getCollectionItem } from "~/lib/content";
 import { NotFoundShape } from "~/models";
 import {
@@ -12,6 +11,7 @@ import { Content } from "~/components/Content";
 import { CtaList } from "~/components/CtaList";
 import { Eyebrow } from "~/components/Eyebrow";
 import { ModuleTransition } from "~/components/ModuleTransition";
+import { SeoMarkup } from "~/components/seo/SeoMarkup";
 
 const NOT_FOUND_ENTRY_SLUG = "main";
 const NOT_FOUND_STATUS = 404;
@@ -31,7 +31,9 @@ export const NotFound: Component = () => {
 
   return (
     <>
-      <Title>{content()?.title}</Title>
+      <Show when={content()}>
+        {(entry) => <SeoMarkup title={entry().title} />}
+      </Show>
       <HttpStatusCode code={NOT_FOUND_STATUS} />
       <main class="flex grow flex-col justify-center py-module-dsk-gap @max-dsk:py-module-mbl-gap">
         <ModuleTransition index={0}>

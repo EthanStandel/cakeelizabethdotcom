@@ -216,7 +216,7 @@ Two `window` methods are monkey-patched in `admin/browser-patches.ts`, imported 
 
 ## Environment Variables
 
-`VITE_SERVER_URL` — prepended to all iframe `src` URLs and manifest fetch URLs. Defaults to `""` (same-origin). Set to `http://localhost:5173` in `.env` for local development so the admin (served on port 5174) can reach the SolidStart dev server.
+The admin reads no environment variables. The preview iframe's `src` is a same-origin path, since the admin is always reached through the site's origin (the `/admin` proxy in development, Nitro's static files in a build). Vite reads env files from the config's root, `admin/`, so the repository's `.env` files do not reach the bundle.
 
 ## React and TypeScript
 

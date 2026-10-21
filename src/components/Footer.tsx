@@ -3,12 +3,12 @@ import { ConstantsShape } from "~/models";
 import { Content } from "~/components/Content";
 import { Logo } from "~/components/Logo";
 import { CmsSourceContextProvider } from "~/lib/cms/CmsPathContext";
-import { useConstants } from "~/primitives/ConstantsContext";
+import { useSiteWide } from "~/primitives/SiteWideContext";
 
 const telephoneHref = (phone: string) => `tel:${phone.replace(/\D/g, "")}`;
 
 export const Footer: Component = () => {
-  const constants = useConstants();
+  const [constants] = useSiteWide("constants");
 
   return (
     <CmsSourceContextProvider collection={ConstantsShape.name} slug="main">

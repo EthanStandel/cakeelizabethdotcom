@@ -20,6 +20,18 @@
         "dev"
       ],
       "port": 5173
+    },
+    {
+      "name": "production-build",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "PORT=3100",
+        "NO_MAIL=true",
+        "SITE_URL=http://localhost:3100",
+        "node",
+        ".output/server/index.mjs"
+      ],
+      "port": 3100
     }
   ]
 }

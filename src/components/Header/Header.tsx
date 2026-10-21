@@ -4,7 +4,7 @@ import { ConstantsShape } from "~/models";
 import { Logo } from "~/components/Logo";
 import { CmsSourceContextProvider } from "~/lib/cms/CmsPathContext";
 import { createBreakpoint } from "~/lib/utils/createBreakpoint";
-import { useNavigation } from "~/primitives/NavigationContext";
+import { useSiteWide } from "~/primitives/SiteWideContext";
 import { createPartiallyStickyHeader } from "./createPartiallyStickyHeader";
 import { HeaderBackground } from "./HeaderBackground";
 import { MenuToggleButton } from "./MenuToggleButton";
@@ -14,7 +14,7 @@ export const Header: Component<{
   isMenuOpen: boolean;
   onMenuOpenChange: (isMenuOpen: boolean) => void;
 }> = (props) => {
-  const navigation = useNavigation();
+  const [navigation] = useSiteWide("navigation");
   const navigationId = createUniqueId();
   const isMobileView = createBreakpoint.IsMobileView();
   const stickyHeader = createPartiallyStickyHeader(isMobileView);

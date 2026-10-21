@@ -48,4 +48,7 @@ modules:
             description: Once we get you a quote, a deposit secures your date!
           - title: Enjoy your cake
             description: We handle the rest — delivery or pickup available.
+seo:
+  title: "Contact us"
+  description: "Reach out to us here or with an email to info@cakeelizabeth.com"
 ---

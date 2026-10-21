@@ -1,9 +1,12 @@
 import { Navigate, useLocation, useParams } from "@solidjs/router";
-import { Title } from "@solidjs/meta";
 import { Component, Match, Show, Suspense, Switch } from "solid-js";
 import { getCollectionItem } from "~/lib/content";
 import { PageShape } from "~/models";
-import { HOME_PAGE_PATH, HOME_PAGE_SLUG } from "~/models/Page.shape";
+import {
+  HOME_PAGE_PATH,
+  HOME_PAGE_SLUG,
+  getPagePath,
+} from "~/models/Page.shape";
 import { NOT_FOUND_PAGE_SLUG } from "~/models/NotFound.shape";
 import {
   contentQuery,
@@ -13,6 +16,7 @@ import { ModuleRegistry } from "~/modules/ModuleRegistry";
 import { ContentFor } from "~/components/ContentFor";
 import { CmsSourceContextProvider } from "~/lib/cms/CmsPathContext";
 import { NotFound, preloadNotFound } from "~/components/NotFound";
+import { SeoMarkup } from "~/components/seo/SeoMarkup";
 import {
   UniversalSuffixModules,
   preloadUniversalSuffixModule,
@@ -41,7 +45,11 @@ const PageContent: Component<{ slug: string }> = (props) => {
       <Show when={content()} fallback={<NotFound />}>
         {(p) => (
           <main class="pb-module-dsk-gap @max-dsk:pb-module-mbl-gap has-[>:last-child>[data-rule-above]]:pb-0 *:last:*:data-rule-above:mb-0">
-            <Title>{p().title}</Title>
+            <SeoMarkup
+              title={p().title}
+              seo={p().seo}
+              path={getPagePath(props.slug)}
+            />
             <CmsSourceContextProvider
               collection={PageShape.name}
               slug={props.slug}

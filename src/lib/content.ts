@@ -1,3 +1,4 @@
+import { getRequestEvent, isServer } from "solid-js/web";
 import type {
   CollectionDefinition,
   CmsFieldsMap,
@@ -18,6 +19,8 @@ interface CmsManifest {
   collections: ManifestCollection[];
 }
 
+type ContentFetch = NonNullable<App.RequestEventLocals["contentFetch"]>;
+
 function nullToUndefined(value: unknown): unknown {
   if (value === null) return undefined;
   if (Array.isArray(value)) return value.map(nullToUndefined);
@@ -34,31 +37,52 @@ function nullToUndefined(value: unknown): unknown {
 
 const isDev = import.meta.env.DEV;
 
-// Cached per server instance / browser session. Content is static after generate:cms runs.
-let manifestCache: CmsManifest | null = null;
+let manifestCache: { origin: string; manifest: CmsManifest } | undefined;
 
-async function getManifest(): Promise<CmsManifest> {
-  if (!isDev && manifestCache) return manifestCache;
-  const base = import.meta.env.VITE_SERVER_URL ?? "";
+// The server fetches from the origin the current request reached, because a server-side fetch needs an absolute address; the browser fetches same-origin.
+function getContentOrigin(): string {
+  if (!isServer) return "";
+  const event = getRequestEvent();
+  if (!event) {
+    throw new Error("Content can only be fetched on the server during a request");
+  }
+  return new URL(event.request.url).origin;
+}
+
+// While Nitro prerenders a page no server listens on the request's origin, so the middleware supplies a fetch that reaches the Nitro app in the same process.
+function getContentFetch(): ContentFetch {
+  if (!isServer) return fetch;
+  return getRequestEvent()?.locals.contentFetch ?? fetch;
+}
+
+// Cached per origin for the life of the server process or browser session, since content is static after generate:cms runs; a request under another host name replaces the entry rather than reading it.
+async function getManifest(origin: string): Promise<CmsManifest> {
+  if (!isDev && manifestCache?.origin === origin) return manifestCache.manifest;
   const fetchOptions: RequestInit = isDev ? { cache: "no-store" } : {};
-  const res = await fetch(`${base}/cms-manifest.json`, fetchOptions);
+  const res = await getContentFetch()(
+    `${origin}/cms-manifest.json`,
+    fetchOptions
+  );
   if (!res.ok) throw new Error(`Failed to load CMS manifest: ${res.status}`);
-  const data = (await res.json()) as CmsManifest;
-  if (!isDev) manifestCache = data;
-  return data;
+  const manifest = (await res.json()) as CmsManifest;
+  if (!isDev) manifestCache = { origin, manifest };
+  return manifest;
 }
 
 export async function getCollectionItem<F extends CmsFieldsMap>(
   collection: CollectionDefinition<F>,
   slug: string
 ): Promise<ContentItem<F> | undefined> {
-  const manifest = await getManifest();
+  const origin = getContentOrigin();
+  const manifest = await getManifest(origin);
   const found = manifest.collections.find((c) => c.name === collection.name);
   if (!found?.slugs.includes(slug)) return undefined;
-  const base = import.meta.env.VITE_SERVER_URL ?? "";
   const servePath = collection.collectionConfig.folder.replace(/^public/, "");
   const fetchOptions: RequestInit = isDev ? { cache: "no-store" } : {};
-  const res = await fetch(`${base}${servePath}/${slug}.json`, fetchOptions);
+  const res = await getContentFetch()(
+    `${origin}${servePath}/${slug}.json`,
+    fetchOptions
+  );
   if (!res.ok) return undefined;
   const data = await res.json();
   const parsed = collection.schema.parse(nullToUndefined(data));
@@ -68,7 +92,7 @@ export async function getCollectionItem<F extends CmsFieldsMap>(
 export async function getCollection<F extends CmsFieldsMap>(
   collection: CollectionDefinition<F>
 ): Promise<ContentItem<F>[]> {
-  const manifest = await getManifest();
+  const manifest = await getManifest(getContentOrigin());
   const found = manifest.collections.find((c) => c.name === collection.name);
   if (!found) return [];
   const items = await Promise.all(

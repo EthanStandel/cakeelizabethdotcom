@@ -3,10 +3,7 @@ import { useLocation } from "@solidjs/router";
 import { cx } from "cva";
 import { Content } from "~/components/Content";
 import { ContentFor } from "~/components/ContentFor";
-import {
-  navigationSource,
-  useNavigation,
-} from "~/primitives/NavigationContext";
+import { navigationSource, useSiteWide } from "~/primitives/SiteWideContext";
 
 const withoutTrailingSlash = (path: string) =>
   path.length > 1 ? path.replace(/\/+$/, "") : path;
@@ -18,7 +15,7 @@ export const NavigationLinks: Component<{
   itemClass?: string;
   onLinkClick?: () => void;
 }> = (props) => {
-  const navigation = useNavigation();
+  const [navigation] = useSiteWide("navigation");
   const location = useLocation();
   const isCurrentPage = (url: string) =>
     withoutTrailingSlash(location.pathname) === withoutTrailingSlash(url);

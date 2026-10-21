@@ -41,4 +41,7 @@ modules:
         description: Proud to serve the Maine community.
       - title: Yours
         description: No two cakes are ever exactly alike.
+seo:
+  title: "About us"
+  description: "Cake Elizabeth brings over 20 years of cake baking experience to our happy Maine customers."
 ---

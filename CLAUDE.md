@@ -18,13 +18,13 @@ Write each table row with exactly one space between a `|` and the cell's content
 
 Every engineering and product decision is recorded in a spec. Each spec document has its moment to be read:
 
-- **Before changing a feature**, read its spec at `specs/NNN-feature-name/SPEC.md` (indexed in [README.md](README.md#specs)), including "Known gaps". It records why non-obvious details exist (e.g. the gallery filter animation's ordering and timing) and which problems are already known.
+- **Before changing a feature**, read its spec at `specs/NNN-feature-name/SPEC.md` (indexed in [README.md](README.md#specs)), including "Known gaps" and "Accepted gaps". It records why non-obvious details exist (e.g. the gallery filter animation's ordering and timing), which problems are already known, and which of them were deliberately left as they are.
 - **Before any frontend build-out**, read [specs/GLOBAL_ACCEPTANCE_CRITERIA.md](specs/GLOBAL_ACCEPTANCE_CRITERIA.md): the architectural rules every main-application feature must meet, such as CMS-sourced strings, click-to-edit, server rendering, URL state and modules.
 - **Before writing or editing a spec**, read [specs/SPEC_CONVENTIONS.md](specs/SPEC_CONVENTIONS.md): where specs live, what the header holds, and how paths, sections and criteria are cited.
 
 Document a feature before implementing it: when a product change is requested, write it into the spec first and then build it. A change that is only layout, spacing, style, design or aesthetic can be made directly.
 
-When a change alters behavior a spec describes, update that spec in the same change: the body, "Known gaps" (remove what was fixed, add what was found), and the status and snapshot rows in its header. A new feature gets a new spec under the next number.
+When a change alters behavior a spec describes, update that spec in the same change: the body, "Known gaps" (remove what was fixed, add what was found; move a gap to "Accepted gaps" only when the user decides not to fix it), and the status and snapshot rows in its header. A new feature gets a new spec under the next number.
 
 When referring to a spec section (`§N` or `§N.M`) in a reply to the user, link it to the spec file at the heading's line, e.g. `[§4.1](specs/000-initial/SPEC.md:88)`, so the section can be opened directly. A criterion (`GAC§N`) links to its line the same way, e.g. `[GAC§3](specs/GLOBAL_ACCEPTANCE_CRITERIA.md:9)`. Never mention a section number bare.
 

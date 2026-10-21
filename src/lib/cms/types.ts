@@ -29,6 +29,7 @@ export interface DecapFieldConfig {
   value_type?: "int" | "float";
   min?: number;
   max?: number;
+  pattern?: [regex: string, message: string];
   step?: number;
   collection?: string;
   search_fields?: string[];
@@ -67,7 +68,6 @@ export interface CollectionDefinition<F extends CmsFieldsMap> {
   collectionConfig: DecapCollectionConfig;
   previewPath: ((slug: string) => string) | null;
 }
-
 
 export type GroupFields<T> = T extends { fields: infer F extends CmsFieldsMap }
   ? F

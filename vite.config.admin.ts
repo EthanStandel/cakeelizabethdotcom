@@ -1,6 +1,5 @@
 import { defineConfig, type Plugin } from "vite";
 import { resolve } from "path";
-import { readFileSync } from "fs";
 
 const UNIST_PATCH = `\nexport {visitParents as default} from './lib/index.js';`;
 
@@ -16,50 +15,44 @@ const reloadOnConfigYml = (configYmlPath: string): Plugin => ({
   },
 });
 
+const appendUnistDefaultExport = {
+  filter: {
+    id: {
+      include: /unist-util-visit-parents[/\\]index\.js/,
+      exclude: /decap-cms-widget-markdown/,
+    },
+    code: "export {",
+  },
+  handler: (code: string) => ({ code: code + UNIST_PATCH, map: null }),
+};
+
 const fixMissingDefaultExports: Plugin = {
   name: "fix-missing-default-exports",
   config: () => ({
     optimizeDeps: {
-      esbuildOptions: {
+      rolldownOptions: {
         plugins: [
           {
-            name: "fix-unist-default-esbuild",
-            setup(build) {
-              build.onLoad(
-                { filter: /unist-util-visit-parents[/\\]index\.js$/ },
-                (args) => {
-                  const contents = readFileSync(args.path, "utf8");
-                  if (!contents.includes("export {")) return undefined;
-                  return { contents: contents + UNIST_PATCH, loader: "js" };
-                }
-              );
-            },
+            name: "fix-missing-default-exports",
+            transform: appendUnistDefaultExport,
           },
         ],
       },
     },
   }),
-  transform(code, id) {
-    if (
-      id.includes("/unist-util-visit-parents/index.js") &&
-      !id.includes("decap-cms-widget-markdown") &&
-      code.includes("export {")
-    ) {
-      return { code: code + UNIST_PATCH, map: null };
-    }
-  },
+  transform: appendUnistDefaultExport,
 };
 
-export default defineConfig(({ command }) => ({
-  root: command === "serve" ? resolve(__dirname, "admin") : __dirname,
+export default defineConfig({
+  root: resolve(import.meta.dirname, "admin"),
   base: "/admin/",
-  publicDir: resolve(__dirname, "public/admin"),
+  publicDir: resolve(import.meta.dirname, "public/admin"),
   plugins: [
-    reloadOnConfigYml(resolve(__dirname, "public/admin/config.yml")),
+    reloadOnConfigYml(resolve(import.meta.dirname, "public/admin/config.yml")),
     fixMissingDefaultExports,
   ],
   resolve: {
-    alias: { "~": resolve(__dirname, "src") },
+    alias: { "~": resolve(import.meta.dirname, "src") },
   },
   server: {
     port: 5174,
@@ -67,12 +60,7 @@ export default defineConfig(({ command }) => ({
   },
   cacheDir: "node_modules/.vite-admin",
   build: {
-    outDir: resolve(__dirname, "public/admin"),
+    outDir: resolve(import.meta.dirname, "public/admin"),
     emptyOutDir: false,
-    rollupOptions: {
-      input: {
-        admin: "admin/index.html",
-      },
-    },
   },
-}));
+});

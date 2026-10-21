@@ -8,7 +8,7 @@ import { Eyebrow } from "~/components/Eyebrow";
 import { LinkButton } from "~/components/LinkButton";
 import { ListItemChip } from "~/components/ListItemChip";
 import { useCmsFieldProps } from "~/lib/cms/CmsPathContext";
-import { useConstants } from "~/primitives/ConstantsContext";
+import { useSiteWide } from "~/primitives/SiteWideContext";
 
 export type GalleryItem = NonNullable<GalleryItemsType["items"]>[number];
 
@@ -27,7 +27,7 @@ const formatGalleryDate = (date: string): string =>
 export const GalleryModalContent: Component<GalleryModalContentProps> = (
   props,
 ) => {
-  const constants = useConstants();
+  const [constants] = useSiteWide("constants");
   const inquireCmsProp = useCmsFieldProps(() => "inquireLabel", {
     collection: ConstantsShape.name,
     slug: "main",

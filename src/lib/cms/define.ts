@@ -7,9 +7,8 @@ import type {
   DecapFieldConfig,
 } from "./types";
 
-type ExtractShape<Z extends z.ZodTypeAny> = Z extends z.ZodObject<infer S>
-  ? S
-  : never;
+type ExtractShape<Z extends z.ZodTypeAny> =
+  Z extends z.ZodObject<infer S> ? S : never;
 
 type TypedListItem<T extends Record<string, CmsField>> = {
   [K in keyof T & string]: z.ZodObject<
@@ -17,17 +16,16 @@ type TypedListItem<T extends Record<string, CmsField>> = {
   >;
 }[keyof T & string];
 
-
 function makeField<Z extends z.ZodTypeAny>(
   schema: Z,
-  config: Omit<DecapFieldConfig, "name">
+  config: Omit<DecapFieldConfig, "name">,
 ): CmsField<Z> {
   return { _zodSchema: schema, _decapConfig: config };
 }
 
 function applyRequired<Z extends z.ZodTypeAny, R extends boolean | undefined>(
   schema: Z,
-  required: R
+  required: R,
 ): R extends false ? z.ZodOptional<Z> : Z {
   return (required === false ? schema.optional() : schema) as never;
 }
@@ -73,18 +71,18 @@ function listField(opts: {
     const extended = entries.map(([name, f]) =>
       (f._zodSchema as z.ZodObject<z.ZodRawShape>).extend({
         type: z.literal(name),
-      })
+      }),
     );
     const itemSchema: z.ZodTypeAny =
       extended.length === 0
         ? z.never()
         : extended.length === 1
-        ? extended[0]
-        : z.union([extended[0], extended[1], ...extended.slice(2)] as [
-            z.ZodTypeAny,
-            z.ZodTypeAny,
-            ...z.ZodTypeAny[]
-          ]);
+          ? extended[0]
+          : z.union([extended[0], extended[1], ...extended.slice(2)] as [
+              z.ZodTypeAny,
+              z.ZodTypeAny,
+              ...z.ZodTypeAny[],
+            ]);
     const decapTypes = entries.map(([name, f]) => ({
       name,
       label: `${f._decapConfig.label} [${name}]`,
@@ -110,7 +108,7 @@ function listField(opts: {
 
   if (opts.fields) {
     const shape = Object.fromEntries(
-      Object.entries(opts.fields).map(([k, v]) => [k, v._zodSchema])
+      Object.entries(opts.fields).map(([k, v]) => [k, v._zodSchema]),
     );
     itemSchema = z.object(shape as Record<string, z.ZodTypeAny>);
     decapField.fields = Object.entries(opts.fields).map(([name, f]) => ({
@@ -155,7 +153,7 @@ type RefOptionsSelectConfig = {
 };
 
 const optionsSelectField = <const T extends SelectOptions>(
-  opts: OptionsSelectConfig<T>
+  opts: OptionsSelectConfig<T>,
 ) =>
   makeField(applyRequired(z.enum(opts.options), opts.required), {
     widget: "select",
@@ -176,36 +174,61 @@ const refOptionsSelectField = (opts: RefOptionsSelectConfig) =>
   });
 
 function selectField<const T extends SelectOptions>(
-  opts: OptionsSelectConfig<T>
+  opts: OptionsSelectConfig<T>,
 ): ReturnType<typeof optionsSelectField<T>>;
 function selectField(
-  opts: RefOptionsSelectConfig
+  opts: RefOptionsSelectConfig,
 ): ReturnType<typeof refOptionsSelectField>;
 function selectField(
-  opts: OptionsSelectConfig<SelectOptions> | RefOptionsSelectConfig
+  opts: OptionsSelectConfig<SelectOptions> | RefOptionsSelectConfig,
 ): CmsField<z.ZodTypeAny> {
   return "refOptions" in opts
     ? refOptionsSelectField(opts)
     : optionsSelectField(opts);
 }
 
+type TextFieldConfig = {
+  label: string;
+  required?: boolean;
+  default?: string;
+  maxLength?: number;
+};
+
+const limitedString = (maxLength: number | undefined) =>
+  maxLength === undefined ? z.string() : z.string().max(maxLength);
+
+const lengthPattern = (
+  maxLength: number | undefined,
+): DecapFieldConfig["pattern"] =>
+  maxLength === undefined
+    ? undefined
+    : [`^[\\s\\S]{0,${maxLength}}$`, `${maxLength} characters or fewer`];
+
 export const fields = {
-  string(opts: { label: string; required?: boolean; default?: string }) {
-    return makeField(applyRequired(z.string(), opts.required), {
-      widget: "string",
-      label: opts.label,
-      required: opts.required ?? true,
-      default: opts.default,
-    });
+  string(opts: TextFieldConfig) {
+    return makeField(
+      applyRequired(limitedString(opts.maxLength), opts.required),
+      {
+        widget: "string",
+        label: opts.label,
+        required: opts.required ?? true,
+        default: opts.default,
+        pattern: lengthPattern(opts.maxLength),
+      },
+    );
   },
 
-  text(opts: { label: string; required?: boolean; default?: string }) {
-    return makeField(applyRequired(z.string(), opts.required), {
-      widget: "text",
-      label: opts.label,
-      required: opts.required ?? true,
-      default: opts.default,
-    });
+  text(opts: TextFieldConfig) {
+    return makeField(
+      applyRequired(limitedString(opts.maxLength), opts.required),
+      {
+        widget: "text",
+        label: opts.label,
+        required: opts.required ?? true,
+        default: opts.default,
+        pattern: lengthPattern(opts.maxLength),
+      },
+    );
   },
 
   markdown(opts: { label: string; required?: boolean }) {
@@ -326,20 +349,23 @@ export const fields = {
     const extended = entries.map(([name, f]) =>
       (f._zodSchema as z.ZodObject<z.ZodRawShape>).extend({
         type: z.literal(name),
-      })
+      }),
     );
     const itemSchema: z.ZodTypeAny =
       extended.length === 0
         ? z.never()
         : extended.length === 1
-        ? extended[0]
-        : z.union([extended[0], extended[1], ...extended.slice(2)] as [
-            z.ZodTypeAny,
-            z.ZodTypeAny,
-            ...z.ZodTypeAny[]
-          ]);
+          ? extended[0]
+          : z.union([extended[0], extended[1], ...extended.slice(2)] as [
+              z.ZodTypeAny,
+              z.ZodTypeAny,
+              ...z.ZodTypeAny[],
+            ]);
 
-    const arraySchema = z.array(itemSchema).min(1).max(1)
+    const arraySchema = z
+      .array(itemSchema)
+      .min(1)
+      .max(1)
       .transform((arr) => arr[0] as Item);
 
     const decapTypes = entries.map(([name, f]) => ({
@@ -367,14 +393,14 @@ export const fields = {
   }) {
     type ObjSchema = z.ZodObject<{ [K in keyof F]: F[K]["_zodSchema"] }>;
     const shape = Object.fromEntries(
-      Object.entries(opts.fields).map(([k, v]) => [k, v._zodSchema])
+      Object.entries(opts.fields).map(([k, v]) => [k, v._zodSchema]),
     ) as { [K in keyof F]: F[K]["_zodSchema"] };
     const decapFields: DecapFieldConfig[] = Object.entries(opts.fields).map(
       ([name, f]) => ({
         name,
         ...f._decapConfig,
         label: `${f._decapConfig.label} [${name}]`,
-      })
+      }),
     );
     return makeField(
       applyRequired(z.object(shape) as ObjSchema, opts.required),
@@ -384,7 +410,7 @@ export const fields = {
         required: opts.required ?? true,
         collapsed: true,
         fields: decapFields,
-      }
+      },
     );
   },
 };
@@ -406,7 +432,7 @@ export function defineCollection<F extends CmsFieldsMap>(opts: {
       v._decapConfig.widget === "list"
         ? v._zodSchema.optional().default([])
         : v._zodSchema.optional(),
-    ])
+    ]),
   ) as { [K in keyof F]: z.ZodOptional<F[K]["_zodSchema"]> };
 
   const decapFields: DecapFieldConfig[] = Object.entries(opts.fields).map(
@@ -414,7 +440,7 @@ export function defineCollection<F extends CmsFieldsMap>(opts: {
       name,
       ...f._decapConfig,
       label: `${f._decapConfig.label} [${name}]`,
-    })
+    }),
   );
 
   const collectionConfig: DecapCollectionConfig = {

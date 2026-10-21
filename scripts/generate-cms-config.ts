@@ -9,11 +9,13 @@ import {
 import { resolve, join, basename } from "node:path";
 import jsYaml from "js-yaml";
 import matter from "gray-matter";
+import { loadEnv } from "vite";
 import { collectionRegistry } from "../src/models/index";
 import type { DecapFieldConfig } from "../src/lib/cms/types";
 
 const isDev = process.argv.includes("--dev");
 const isWatch = process.argv.includes("--watch");
+const env = loadEnv("production", process.cwd(), "");
 
 type ContentMap = Record<string, Array<{ slug: string; data: Record<string, unknown> }>>;
 
@@ -72,8 +74,8 @@ function generate() {
       ? { name: "test-repo" }
       : {
           name: "github",
-          repo: process.env.CMS_GITHUB_REPO,
-          branch: process.env.CMS_GITHUB_BRANCH ?? "main",
+          repo: env.CMS_GITHUB_REPO,
+          branch: env.CMS_GITHUB_BRANCH || "main",
         },
     media_folder: "public/images",
     public_folder: "/images",

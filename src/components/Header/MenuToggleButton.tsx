@@ -1,10 +1,7 @@
 import { Component } from "solid-js";
 import { cx } from "cva";
 import { useCmsFieldProps } from "~/lib/cms/CmsPathContext";
-import {
-  navigationSource,
-  useNavigation,
-} from "~/primitives/NavigationContext";
+import { navigationSource, useSiteWide } from "~/primitives/SiteWideContext";
 
 const lineClass =
   "origin-center transition-[translate,rotate,opacity] duration-(--menu-transition-duration) [transform-box:fill-box]";
@@ -15,7 +12,7 @@ export const MenuToggleButton: Component<{
   class?: string;
   onToggle: () => void;
 }> = (props) => {
-  const navigation = useNavigation();
+  const [navigation] = useSiteWide("navigation");
   const menuOpenCmsProp = useCmsFieldProps(() => "menuOpen", navigationSource);
   const menuCloseCmsProp = useCmsFieldProps(
     () => "menuClose",
