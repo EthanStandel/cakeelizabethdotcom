@@ -4,7 +4,7 @@
 | --- | --- |
 | Status | Implemented |
 | Depends on | [000](../000-initial/SPEC.md), [006](../006-not-found-page/SPEC.md), [007](../007-seo/SPEC.md), [008](../008-stable-solidstart/SPEC.md), [009](../009-production-build-addresses/SPEC.md) |
-| Snapshot | 2026-10-20, commit `a62a9a02b69c0a143ec94e5e9c9f90fa8a2414f2` |
+| Snapshot | 2026-10-21, commit `f8833df870b156905de36ade32984830ccc89815` |
 
 ## Description
 
@@ -24,9 +24,11 @@ Nitro renders the pages after it has built the client and the server and copied 
 
 ### 2.1 Content during the build
 
-Nitro renders each page by handing a request to a copy of the server inside the build process. Nothing listens on a port, and the request's address is `http://localhost/<path>`, so the content origin of [009§2.1](../009-production-build-addresses/SPEC.md#21-on-the-server), the request's own, reaches no server.
+Nitro renders each page by handing a request to a copy of the server in a worker thread of the build process, which listens on a loopback port Nitro picks at random. The content origin of [009§2.1](../009-production-build-addresses/SPEC.md#21-on-the-server), the request's own, is that port, which no other step of the build can rely on.
 
 Nitro marks each of these requests with an `x-nitro-prerender` header. For a request that carries it, the middleware in `src/middleware.ts` gives the request event a `contentFetch` local: `serverFetch` from `nitro/app`, which passes a request to the Nitro app in the same process, where the public files are served. `getManifest` and `getCollectionItem` in `src/lib/content.ts` fetch through the local when it is set and through the global `fetch` otherwise, with the same addresses. Every other request on the server keeps the request's origin, and the browser keeps fetching same-origin.
+
+The copy serves the public files it finds in its own public folder when it is built, and Nitro builds it with a preset of its own, `nitro-prerender`, whose public folder is `.output/public/` whatever the build's preset. A preset that writes the public files elsewhere, as Vercel's writes them to `.vercel/output/static/`, leaves the copy with no public files on a fresh checkout, so the manifest is not found while the pages render. `prerenderPages` therefore sets the copy's public folder to the build's own through Nitro's `prerender:config` hook, which runs before the copy is created.
 
 ### 2.2 What is fixed at build time
 
@@ -60,3 +62,9 @@ Served by the `production-build` configuration of [007§7](../007-seo/SPEC.md#7-
 - A request with `Host: localhost:1`, whose content cannot be fetched ([009§4](../009-production-build-addresses/SPEC.md#4-checking-a-build)), still answers 200 at a page's address, which shows that nothing is rendered, and answers 500 at the same address with a query, which shows that it is rendered.
 - A gallery modal address carries its item's social card, `/about/` and `/home` answer 301, and `/404` answers 404.
 - A stored page loaded in a frame marks its body `cms-preview`, replaces a module's field with the value of a `cms-preview-update` message, and sends `cms-field-focus` with the field's path to the top window when that field is clicked, with no errors in the console.
+
+`VERCEL=1 SITE_URL=https://cakeelizabeth.com npx vite build`, run with no `.output/` and no `.vercel/` folder, prerenders the same six pages, and the copy's list of public files names `/cms-manifest.json` under `.vercel/output/static/`.
+
+## Known gaps
+
+- A content file the copy of [§2.1](#21-content-during-the-build) cannot find makes the build loop instead of failing. The request falls through to the not-found view ([006](../006-not-found-page/SPEC.md)), whose own content requests carry no `x-nitro-prerender` header, so they go through the global `fetch` to the copy's loopback address, miss again and render the not-found view again, until the build runs out of connections (`fetch failed`, `ECONNRESET` on Vercel) or times out. A missing public folder caused this on Vercel before the fix of [§2.1](#21-content-during-the-build).

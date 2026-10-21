@@ -75,13 +75,19 @@ const readPagePaths = () => {
   return new Set((pages?.slugs ?? []).map(getPagePath));
 };
 
-// Kept as server assets rather than public files, because Nitro's static handler matches a file by path alone and would also answer the page's addresses that carry a query, which render on the server.
+// Kept as server assets rather than public files, because Nitro's static handler matches a file by path alone and would also answer the page's addresses that carry a query, which render on the server. The prerenderer is pointed at the build's public folder because its own preset defaults to `.output/public`, which a preset such as Vercel's never fills.
 function prerenderPages(nitro: Nitro) {
   const pagesDir = resolve(nitro.options.buildDir, PRERENDERED_PAGES_ASSETS);
   const pagePaths = readPagePaths();
   nitro.options.serverAssets.push({
     baseName: PRERENDERED_PAGES_ASSETS,
     dir: pagesDir,
+  });
+  nitro.hooks.hook("prerender:config", (config) => {
+    config.output = {
+      ...config.output,
+      publicDir: nitro.options.output.publicDir,
+    };
   });
   nitro.hooks.hook("prerender:routes", async (routes) => {
     await rm(pagesDir, { recursive: true, force: true });

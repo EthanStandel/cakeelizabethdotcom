@@ -29,4 +29,4 @@ The build steps are described in [000§5](specs/000-initial/SPEC.md#5-build), an
 
 ## Deploy
 
-The site deploys to Vercel. The preset, the build output and the project's settings are described in [011](specs/011-vercel-deployment/SPEC.md).
+The site deploys to Vercel. Everything specific to Vercel is kept in [`vercel.json`](vercel.json).
