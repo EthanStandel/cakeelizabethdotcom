@@ -40,3 +40,4 @@ notes.md
 .vscode
 memory
 .playwright-mcp/
+/.vitest

@@ -1,0 +1,1 @@
+export { HeroModule } from "./HeroModule";

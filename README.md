@@ -27,6 +27,17 @@ npm run build
 
 The build steps are described in [000§5](specs/000-initial/SPEC.md#5-build), and the environment variables a production build needs in [000§4.2](specs/000-initial/SPEC.md#42-environment-variables).
 
+## Test
+
+```bash
+# Check against existing files
+npm test
+# Update screenshots
+npm run test:update
+```
+
+Screenshot tests compare every module, the header and the footer with committed baselines. Each test is a `*.test.tsx` in its component's directory that renders the component directly, with its baselines in a `__screenshots__` folder next to it; `npm run test:update` rewrites the baselines that changed. They are described in [012](specs/012-module-screenshot-tests/SPEC.md).
+
 ## Deploy
 
 The site deploys to Vercel. Everything specific to Vercel is kept in [`vercel.json`](vercel.json).

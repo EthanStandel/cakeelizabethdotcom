@@ -1,0 +1,1 @@
+export { GeneralModule } from "./GeneralModule";

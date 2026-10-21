@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
 import { GridModuleType } from "~/models/modules/GridModule.shape";
-import { ModuleRegistry } from "./ModuleRegistry";
+import { ModuleRegistry } from "../ModuleRegistry";
 import { ContentFor } from "~/components/ContentFor";
 
 export const GridModule: Component<{ shape: GridModuleType }> = (props) => (
