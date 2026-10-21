@@ -30,14 +30,20 @@ const adminTrailingSlash = (): Plugin => ({
 
 const SERVER_ENV_PREFIXES = ["MAIL_", "NO_MAIL", "SITE_URL"];
 
-// Vite exposes env files only on import.meta.env, so the server-only mail variables are copied to process.env; loadEnv already lets the shell's value win.
+// Vite exposes env files only on import.meta.env, so the server-only mail variables are copied to process.env; loadEnv already lets the shell's value win. A build fixes SITE_URL into the bundle, so the origin only has to be set where the site is built.
 const serverEnv = (): Plugin => ({
   name: "server-env",
-  config(_config, { mode }) {
+  config(_config, { mode, command }) {
     Object.assign(
       process.env,
       loadEnv(mode, process.cwd(), SERVER_ENV_PREFIXES),
     );
+    if (command !== "build") return;
+    return {
+      define: {
+        "process.env.SITE_URL": JSON.stringify(process.env.SITE_URL ?? ""),
+      },
+    };
   },
 });
 

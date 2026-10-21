@@ -1,4 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": null
+  "framework": null,
+  "buildCommand": "SITE_URL=https://$VERCEL_PROJECT_PRODUCTION_URL npm run build"
 }
