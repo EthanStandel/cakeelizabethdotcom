@@ -3,7 +3,7 @@ title: About
 modules:
   - type: hero
     eyebrow: Our story
-    content: "# Made with love, *from Southern Maine*"
+    content: "# Made with love, *from Maine*"
   - type: grid
     items:
       - type: general
