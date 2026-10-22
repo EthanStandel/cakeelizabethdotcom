@@ -1,0 +1,89 @@
+# 011 — CMS GitHub OAuth
+
+| | |
+| --- | --- |
+| Status | Implemented |
+| Depends on | [000](../000-initial/SPEC.md), [005](../005-contact-form-email/SPEC.md) |
+| Snapshot | 2026-10-21, commit `1bede50` |
+
+## Description
+
+The production admin uses Decap's `github` backend ([000§6.7](../000-initial/SPEC.md#67-generated-artifacts)). Without a `base_url`, that backend sends an editor's login through Netlify's OAuth proxy, `api.netlify.com/auth`, with the page's host as the `site_id`. Netlify only knows sites it hosts. On `localhost`, Decap sends `demo.decapcms.org` as the `site_id`, a site Decap registers on Netlify for its demo, which is why login worked from a local production build. The site deploys to Vercel, so its host is unknown to Netlify, and the login window shows `Not Found`.
+
+This spec moves the OAuth flow into the site's own server: two API routes and a GitHub OAuth App owned by the project. Nothing changes in development, which uses `local_backend` and never logs in.
+
+## 1. The flow
+
+1. The editor presses "Login with GitHub". Decap opens a popup at `<base_url>/<auth_endpoint>?provider=github&site_id=…&scope=repo`.
+2. `GET /api/auth` ([§2](#2-get-apiauth)) redirects the popup to GitHub's authorize page.
+3. Behind a proxy that terminates TLS, as Vercel's does, the server sees the request as plain HTTP, so the scheme is taken from the first value of `X-Forwarded-Proto` when the request carries one; GitHub refuses an `http` callback for an `https` registration. GitHub sends the popup back to `GET /api/callback` with a `code` and the `state`.
+4. `/api/callback` ([§3](#3-get-apicallback)) exchanges the code for an access token and answers with a page that hands the token to the admin window ([§4](#4-handing-the-token-to-the-admin)).
+
+## 2. `GET /api/auth`
+
+`src/routes/api/auth.ts`. It answers `302` to `https://github.com/login/oauth/authorize` with:
+
+- `client_id`: `GITHUB_OAUTH_CLIENT_ID`.
+- `redirect_uri`: `/api/callback` on the request's origin.
+- `scope`: the request's `scope` when it is `repo` or `public_repo`, and `repo` otherwise. Decap asks for `repo`, which a private repository needs; any other value is not passed on to GitHub.
+- `state`: a random value from `crypto.randomUUID()`.
+
+The same `state` is set in an `HttpOnly`, `Secure`, `SameSite=Lax` cookie scoped to `/api`, which lasts ten minutes. `Lax` is what lets the cookie come back on GitHub's top-level redirect to the callback.
+
+The request's origin is used, and not `SITE_URL`, so that login happens on whatever domain the admin was opened on and nothing in the routes knows which deployment they run in. GitHub sends the popup back to the host it was sent from, so the origin is the same in both routes, which GitHub requires: it refuses an exchange whose `redirect_uri` differs from the one it authorized.
+
+A server without `GITHUB_OAUTH_CLIENT_ID` answers with the error page of [§4](#4-handing-the-token-to-the-admin) and does not redirect.
+
+## 3. `GET /api/callback`
+
+`src/routes/api/callback.ts`. It:
+
+1. Refuses a request whose `state` is missing or differs from the cookie's. This stops a page from logging an editor in with someone else's code. The cookie is cleared in every answer.
+2. Refuses a request that carries GitHub's `error` instead of a `code`, which is what GitHub sends when the editor denies access.
+3. `POST`s `client_id`, `client_secret` (`GITHUB_OAUTH_CLIENT_SECRET`), `code` and `redirect_uri` to `https://github.com/login/oauth/access_token`, asking for JSON. A response without an `access_token` is refused.
+
+Each refusal answers with the error page; success answers with the success page.
+
+## 4. Handing the token to the admin
+
+Both pages are a short inline script with no visible content, so nothing in them is perceivable copy ([GAC§1](../GLOBAL_ACCEPTANCE_CRITERIA.md)). They speak Decap's popup protocol, which is the same for every OAuth provider it supports:
+
+1. The popup posts `authorizing:github` to `window.opener`.
+2. The admin answers with a message of its own.
+3. The popup posts `authorization:github:success:{"token":…,"provider":"github"}`, or `authorization:github:error:{"message":…}`, back to that answer's origin.
+
+The popup only answers a message from its own origin, and posts its first message only to it. The admin is served by the same server ([000§1](../000-initial/SPEC.md#1-purpose-and-shape-of-the-project)), so its origin is the popup's; a page on any other origin that opened the popup never receives the token. Decap applies the same check from its side: it takes the token only from `base_url`'s origin.
+
+The token is written into the script with `JSON.stringify`, with `<` escaped, so no value can close the `<script>` element. The page is sent with `Cache-Control: no-store`.
+
+The routes hand the token to the admin and keep nothing. The token stays in the editor's browser, where Decap keeps it, and every save goes from there to GitHub's API.
+
+## 5. Config
+
+The production backend generated by `scripts/generate-cms-config.ts` gains `auth_endpoint: api/auth`.
+
+`base_url` is not generated. `admin/admin.tsx` passes it to `CMS.init` as the admin's own origin, `window.location.origin`, and Decap merges a config passed to `init` over `config.yml`, the passed values winning. A generated value would fix one domain into the build, and a build is served from several: the production domain and each `*.vercel.app` address. Decap compares `base_url` with the popup's origin as a string, so an origin, with no trailing slash or path, is what it must be. In development the value is passed as well and goes unused, because `local_backend` replaces the backend ([000§6.7](../000-initial/SPEC.md#67-generated-artifacts)).
+
+## 6. Environment
+
+| Variable | Holds |
+| --- | --- |
+| `GITHUB_OAUTH_CLIENT_ID` | The OAuth App's client ID |
+| `GITHUB_OAUTH_CLIENT_SECRET` | The OAuth App's client secret |
+
+Both are required by `scripts/validate-env.ts` ([005§3.1](../005-contact-form-email/SPEC.md#31-environment-check)) and listed in `.env.example`. They are read from `process.env` at request time and never fixed into the bundle, so the secret is not in the build output. `GITHUB_OAUTH_` joins the prefixes that `vite.config.ts` copies from env files to `process.env`, so a local production build reads them as the mail variables are read.
+
+### 6.1 The OAuth App
+
+The app is a GitHub OAuth App (not a GitHub App), registered at GitHub → Settings → Developer settings → OAuth Apps, with:
+
+- **Authorization callback URL:** `https://<domain>/api/callback`, on the one domain editors log in from. Before launch this is the branch's stable Vercel address; at launch it changes to the production domain.
+- Device Flow off.
+
+An OAuth App has one callback URL. GitHub accepts a `redirect_uri` on that host and under that path only.
+
+- _Awaits deployment:_ change the callback URL to the production domain, and log in to `/admin` there.
+
+## Known gaps
+
+- **Only one domain can log in.** The OAuth App accepts a callback on its registered host only ([§6.1](#61-the-oauth-app)), so the admin on any other deployment opens GitHub's authorize page and is refused there.

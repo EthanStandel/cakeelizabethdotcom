@@ -1,0 +1,166 @@
+@import "tailwindcss";
+@import "./assets/fonts/fonts.css";
+
+@theme {
+  --color-primary: #65ffce;
+  --color-primary-foreground: #181614;
+  --color-secondary-foreground: #444444;
+  --color-dark-primary-foreground: #ffffff;
+  --color-dark-secondary-foreground: #cccccc;
+  --color-border: #e8e2da;
+  --color-eggshell: #f3f1ee;
+  --color-error: #b23a2e;
+
+  --font-serif: "Old Standard TT", serif;
+  --font-sans: "Montserrat", sans-serif;
+
+  --container-dsk: 1024px;
+  /* preferred "max" but that has a naming conflict within TW */
+  --container-widest: 1920px;
+
+  --spacing-max-content: var(--container-dsk);
+  --spacing-max-page: var(--container-widest);
+  --spacing-min-dsk-padding: 40px;
+  --spacing-min-mbl-padding: 16px;
+  --spacing-module-dsk-gap: 96px;
+  --spacing-module-mbl-gap: 64px;
+  --spacing-header: 80px;
+  --spacing-header-feather: 250px;
+
+  --shadow-base: 0 4px 20px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+
+  --default-transition-duration: 250ms;
+  --default-transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --menu-transition-duration: 500ms;
+  --navigation-link-stagger: 100ms;
+  --navigation-link-fade: 500ms;
+
+  --module-transition-stagger: var(--navigation-link-stagger);
+  --module-transition-fade: var(--navigation-link-fade);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@property --header-feather {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 8px;
+}
+
+@utility page-container {
+  @apply max-w-max-page mx-auto;
+}
+
+@utility content-container {
+  @apply max-w-max-content mx-auto px-min-mbl-padding @dsk:px-min-dsk-padding;
+}
+
+@utility block-padding {
+  @apply not-first:mt-5;
+}
+
+@utility module-section {
+  &:not(:where(.group\/grid-container *)) {
+    @apply page-container mt-module-dsk-gap @max-dsk:mt-module-mbl-gap;
+  }
+}
+
+@utility module-content {
+  &:not(:where(.group\/grid-container *)) {
+    @apply content-container;
+  }
+}
+
+@utility heading-3 {
+  @apply text-xl @dsk:text-2xl not-italic text-secondary-foreground;
+}
+
+@utility underlined-link {
+  @apply underline decoration-primary decoration-2 underline-offset-4;
+}
+
+@utility markdown-content {
+  & a {
+    @apply underlined-link;
+  }
+}
+
+@utility link-underline {
+  @apply relative after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:origin-right after:scale-x-0 after:bg-primary after:transition-transform hover:after:origin-left hover:after:scale-x-100 aria-[current=page]:after:origin-left aria-[current=page]:after:scale-x-100 starting:aria-[current=page]:after:scale-x-0;
+}
+
+@utility highlight-border {
+  @apply text-secondary-foreground dark:text-primary border-y-2 border-primary py-1;
+}
+
+@utility button-hover {
+  @apply transition-all duration-250 hover:shadow-base active:shadow-none shadow-primary;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  &.cms-preview [data-cms-field] {
+    @apply outline-2 outline-dashed outline-transparent outline-offset-8 cursor-pointer transition-colors duration-150;
+
+    &:hover {
+      @apply outline-primary;
+    }
+  }
+}
+
+/* Prose enabled by default at root */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    @apply font-serif text-primary-foreground dark:text-dark-primary-foreground;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    @apply block-padding text-balance;
+  }
+
+  h1 {
+    @apply text-5xl @dsk:text-6xl;
+  }
+
+  h2 {
+    @apply text-4xl @dsk:text-5xl italic;
+  }
+
+  h3 {
+    @apply heading-3;
+  }
+
+  p {
+    @apply font-sans text-base text-secondary-foreground dark:text-dark-secondary-foreground;
+  }
+
+  blockquote {
+    @apply block-padding;
+
+    & p {
+      @apply font-serif italic text-xl @dsk:text-2xl text-primary-foreground dark:text-dark-primary-foreground;
+    }
+  }
+
+  a,
+  button {
+    @apply outline-4 outline-transparent outline-offset-4;
+
+    &:focus-visible {
+      @apply outline-primary;
+    }
+  }
+}

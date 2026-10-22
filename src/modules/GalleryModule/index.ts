@@ -1,0 +1,1 @@
+export { GalleryModule } from "./GalleryModule";

@@ -1,38 +1,43 @@
 # cakeelizabeth.com
 
-## Tooling overview
+SolidStart site with an aggressively customized Decap CMS admin interface. Content is stored as Markdown files in `public/content/` and committed to the repo.
 
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Deployment**: [Vercel](https://vercel.com)
-- **Content**: [Tina](https://tina.io/)
-- **Styling**: [Tailwind](https://tailwindcss.com/)
-- **Animations**: [use-presence](https://www.npmjs.com/package/use-presence)
-- **Mailer**: [Sendgrid](https://sendgrid.com/)
-- **Logging**: [LogFlare](https://logflare.app/)
+## Specs
 
-## Running locally
+The architecture, environment, and behavior of the project are documented in the specs. Each feature has a spec at `specs/NNN-feature-name/SPEC.md`. The specs are organized by feature, so a feature that spans the site and the admin has one spec. They are numbered in the order the features build on each other: reading them in order explains the project from the ground up, and none depends on a later one.
 
-### Basic
+[`specs/GLOBAL_ACCEPTANCE_CRITERIA.md`](specs/GLOBAL_ACCEPTANCE_CRITERIA.md) holds the global acceptance criteria: the architectural decisions every feature in the main application must satisfy regardless of its own spec.
+
+The conventions for writing specs are in [`specs/SPEC_CONVENTIONS.md`](specs/SPEC_CONVENTIONS.md). Claude is used to scaffold new specs; when it reads and updates them is in [CLAUDE.md](CLAUDE.md#specs).
+
+## Dev
 
 ```bash
-git clone git@github.com:EthanStandel/cakeelizabethdotcom.git
-cd cakeelizabethdotcom
-npm i
+npm install
 npm run dev
 ```
 
-### Making the contact form work
+The processes this starts, their ports, and debugging are described in [000§4](specs/000-initial/SPEC.md#4-local-development).
 
-Create a `.env.local` file in the root directory and fulfill these SendGrid properties
+## Build
 
-```env
-MAIL_API_KEY=
-MAIL_TARGET=
-MAIL_FROM=
+```bash
+npm run build
 ```
 
-## Codebase overview
+The build steps are described in [000§5](specs/000-initial/SPEC.md#5-build), and the environment variables a production build needs in [000§4.2](specs/000-initial/SPEC.md#42-environment-variables).
 
-- `public/*` - all content that gets served publically
-- `src/*` - all logic, templating, and styles
-  - `src/app/*` - all route content
+## Test
+
+```bash
+# Check against existing files
+npm test
+# Update screenshots
+npm run test:update
+```
+
+Screenshot tests compare every module, the header and the footer with committed baselines. Each test is a `*.test.tsx` in its component's directory that renders the component directly, with its baselines in a `__screenshots__` folder next to it; `npm run test:update` rewrites the baselines that changed. They are described in [012](specs/012-module-screenshot-tests/SPEC.md).
+
+## Deploy
+
+The site deploys to Vercel. Everything specific to Vercel is kept in [`vercel.json`](vercel.json).

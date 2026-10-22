@@ -1,0 +1,19 @@
+/* VT rules target root and pseudo-elements — must stay global */
+:root:active-view-transition-type(gallery-filter) {
+  view-transition-name: none;
+
+  &::view-transition-old(*) {
+    animation: none;
+    opacity: 0;
+  }
+
+  &::view-transition-new(*) {
+    animation: none;
+    opacity: 1;
+  }
+
+  &::view-transition-group(*) {
+    animation-duration: var(--default-transition-duration);
+    animation-timing-function: var(--default-transition-timing-function);
+  }
+}
