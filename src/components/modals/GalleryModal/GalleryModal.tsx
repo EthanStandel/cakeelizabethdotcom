@@ -49,7 +49,7 @@ export const GalleryModal: Component<{ imageUrl: string }> = (props) => {
 
   const { getModalHref } = createQueryParamRouting.modal.href();
 
-  const galleryData = createContentFetch("gallery-items", () =>
+  const galleryData = createContentFetch(GalleryItemsShape.name, () =>
     getCollectionItem(GalleryItemsShape, "main"),
   );
 
@@ -371,7 +371,7 @@ export const GalleryModal: Component<{ imageUrl: string }> = (props) => {
   });
 
   return (
-    <CmsSourceContextProvider collection="gallery-items" slug="main">
+    <CmsSourceContextProvider collection={GalleryItemsShape.name} slug="main">
       <CmsPathContextProvider value={`items.${itemIndex()}`}>
         <div
           data-modal

@@ -51,7 +51,7 @@ CMS_GITHUB_REPO=owner/repo
 CMS_GITHUB_BRANCH=main
 ```
 
-`dev:cms` generates `config.yml` at startup, then watches content folders for `.md` file changes (via Node's `fs.watch`) to regenerate the per-entry JSON files and `cms-manifest.json`. TypeScript model changes require restarting the process. The admin Vite server detects the `config.yml` write (via the `reloadOnConfigYml` plugin) and sends a full-reload. Model files are excluded from admin Vite's own watcher to prevent a race condition where the reload fires before the new `config.yml` is written.
+`dev:cms` generates `config.yml` at startup, then watches content folders for `.md` file changes (via Node's `fs.watch`) to regenerate the per-entry JSON files and `cms-manifest.json`. TypeScript model changes require restarting the process. The admin Vite server detects the `config.yml` write (via the `reloadOnConfigYml` plugin) and sends a full-reload.
 
 ## Collection Models as Single Source of Truth
 
@@ -125,7 +125,7 @@ export const blogCollection = defineCollection({
 
 ### Iframe sizing
 
-The preview component uses a `ResizeObserver` on the Decap-provided parent container to mirror its exact `clientHeight` onto the iframe, avoiding both the 150 px browser default and the slight overflow that `100vh` produces inside the CMS chrome.
+`IframePreview` lays the preview out as a `100dvh` grid: the navbar takes its natural height and `PreviewFrame` fills the rest, avoiding the 150 px iframe default. Inside `PreviewFrame`, a `ResizeObserver` on the outer element measures the space left after the rulers, which drives the ruler scales and the iframe's simulated viewport.
 
 ## Live Preview
 

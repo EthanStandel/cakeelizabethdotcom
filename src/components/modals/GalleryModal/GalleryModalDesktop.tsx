@@ -30,7 +30,7 @@ export const GalleryModalDesktop: Component<GalleryModalDesktopProps> = (
       <CmsPathContextProvider value={`items.${props.outgoingItemIndex()}`}>
         <div
           class={cx(
-            "absolute top-1/2 left-1/2 aspect-(--gallery-modal-aspect-ratio) h-[min(85vh,calc(85vw/var(--gallery-modal-aspect-ratio)),calc(var(--gallery-modal-max-size)/var(--gallery-modal-aspect-ratio)))] flex flex-row overflow-hidden rounded-2xl bg-white shadow-base pointer-events-auto",
+            "absolute top-1/2 left-1/2 aspect-(--gallery-modal-aspect-ratio) h-[min(80vh,calc(80vw/var(--gallery-modal-aspect-ratio)),calc(var(--gallery-modal-max-size)/var(--gallery-modal-aspect-ratio)))] flex flex-row overflow-hidden rounded-2xl bg-white shadow-base pointer-events-auto",
             props.outgoingAnimate()
               ? "transition-transform"
               : "transition-none",

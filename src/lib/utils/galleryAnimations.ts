@@ -1,5 +1,4 @@
-// Mirrors --default-transition-duration in app.css — kept here for JS setTimeout calculations
-export const GALLERY_DURATION_MS = 250;
+export const GALLERY_DURATION_MS = __THEME_DEFAULT_TRANSITION_DURATION_MS__;
 
 // For places where Tailwind classes can't be used (setting ref.style directly)
 export const galleryTransition = (property: string, active = true): string =>

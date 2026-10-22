@@ -22,7 +22,7 @@ testScreenshot("left", () => <HeroModule shape={{ eyebrow: "Custom Cakes", conte
 
 There is no registry of fixtures and no page that renders them: the test file is the fixture.
 
-`vitest.config.ts` is separate from `vite.config.ts`, because the app's config builds a SolidStart server with Nitro and the tests need only the browser side. It has Tailwind, `vite-plugin-solid` and the `~` alias. Vite serves `public/` as usual, so `/test/test.png` and the generated content are both available.
+`vitest.config.ts` is separate from `vite.config.ts`, because the app's config builds a SolidStart server with Nitro and the tests need only the browser side. It has Tailwind, `vite-plugin-solid` (a direct dev dependency, not only the copy SolidStart brings) and the `~` alias. It sets `environment: "node"` although no test runs in Node: left unset, `vite-plugin-solid` fills in `jsdom`, and Vitest then asks to install jsdom on every interactive run even though browser mode never uses it. Vite serves `public/` as usual, so `/test/test.png` and the generated content are both available.
 
 Each test sits beside what it captures, as a `*.test.tsx` file in the component's directory (`src/modules/HeroModule/HeroModule.test.tsx`, `src/components/Header/Header.test.tsx`), and its baselines in a `__screenshots__` folder in the same directory, named `<case>-<instance>-<platform>.png`. A change to a module and the change to its baselines show up side by side. The actual and diff images of a failed comparison go to `.vitest/`, which is ignored.
 

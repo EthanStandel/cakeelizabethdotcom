@@ -3,11 +3,12 @@ import { defineConfig } from "vitest/config";
 import { playwright } from "@vitest/browser-playwright";
 import tailwindcss from "@tailwindcss/vite";
 import solid from "vite-plugin-solid";
+import { themeTokens } from "./scripts/lib/themeTokens";
 
 const SCREENSHOT_DIRECTORY = "__screenshots__";
 
 export default defineConfig({
-  plugins: [tailwindcss(), solid()],
+  plugins: [tailwindcss(), themeTokens(), solid()],
   resolve: { alias: { "~": resolve(import.meta.dirname, "src") } },
   test: {
     include: ["src/**/*.test.tsx"],

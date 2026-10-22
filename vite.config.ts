@@ -8,6 +8,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { solidStart } from "@solidjs/start/config";
 import { REDIRECT_STATUS, redirects } from "./src/lib/redirects";
 import { PAGE_COLLECTION_NAME, getPagePath } from "./src/lib/pagePaths";
+import { themeTokens } from "./scripts/lib/themeTokens";
 import {
   PRERENDERED_PAGES_ASSETS,
   toPrerenderedPageFile,
@@ -123,6 +124,7 @@ export default defineConfig(({ command }) => ({
   },
   plugins: [
     tailwindcss(),
+    themeTokens(),
     adminTrailingSlash(),
     serverEnv(),
     solidStart({ middleware: "src/middleware.ts" }),

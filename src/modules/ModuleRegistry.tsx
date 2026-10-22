@@ -11,7 +11,6 @@ import { ContactFormModule } from "./ContactFormModule";
 import { FlavorCombinationsModule } from "./FlavorCombinationsModule";
 import { Dynamic } from "solid-js/web";
 
-// TODO - make this more strict so that prop types properly align
 export const moduleRegistry = {
   hero: HeroModule,
   grid: GridModule,
@@ -22,11 +21,21 @@ export const moduleRegistry = {
   verticalStepper: VerticalStepperModule,
   contactForm: ContactFormModule,
   flavorCombinations: FlavorCombinationsModule,
-} satisfies Record<keyof ModuleRegistryType, Component<{ shape: any }>>;
+} satisfies {
+  [K in keyof ModuleRegistryType]: Component<{ shape: ModuleRegistryType[K] }>;
+};
 
-export const ModuleRegistry: Component<{
-  module: keyof typeof moduleRegistry;
-  shape: any;
-}> = (props) => (
-  <Dynamic component={moduleRegistry[props.module]} shape={props.shape} />
+export type ModuleEntry = {
+  [K in keyof ModuleRegistryType]: ModuleRegistryType[K] & { type: K };
+}[keyof ModuleRegistryType];
+
+// Each call site is checked against the entry union; Dynamic cannot correlate
+// an entry's type with its shape, so the lookup widens to accept any entry.
+export const ModuleRegistry: Component<{ module: ModuleEntry }> = (props) => (
+  <Dynamic
+    component={
+      moduleRegistry[props.module.type] as Component<{ shape: ModuleEntry }>
+    }
+    shape={props.module}
+  />
 );

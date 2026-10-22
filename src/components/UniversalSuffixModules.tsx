@@ -49,7 +49,7 @@ export const UniversalSuffixModules: Component<{
       >
         {(module, index) => (
           <ModuleTransition index={props.transitionIndexOffset + index()}>
-            <ModuleRegistry module={module.type} shape={module} />
+            <ModuleRegistry module={module} />
           </ModuleTransition>
         )}
       </ContentFor>

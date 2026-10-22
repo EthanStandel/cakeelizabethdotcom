@@ -57,7 +57,7 @@ const PageContent: Component<{ slug: string }> = (props) => {
               <ContentFor each={p()} field="modules">
                 {(module, index) => (
                   <ModuleTransition index={index()}>
-                    <ModuleRegistry module={module.type} shape={module} />
+                    <ModuleRegistry module={module} />
                   </ModuleTransition>
                 )}
               </ContentFor>

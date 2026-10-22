@@ -14,7 +14,7 @@ export const GridModule: Component<{ shape: GridModuleType }> = (props) => (
       }}
     >
       <ContentFor each={props.shape} field="items">
-        {(item) => <ModuleRegistry module={item.type} shape={item} />}
+        {(item) => <ModuleRegistry module={item} />}
       </ContentFor>
     </div>
   </section>

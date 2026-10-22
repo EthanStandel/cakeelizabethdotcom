@@ -1,8 +1,7 @@
 import { createSignal, onCleanup, onMount, type Accessor } from "solid-js";
 import { isServer } from "solid-js/web";
 
-// Mirrors --container-dsk in app.css
-export const DSK_BREAKPOINT_PX = 1024;
+export const DSK_BREAKPOINT_PX = __THEME_CONTAINER_DSK_PX__;
 
 // Defaults to mobile so the first client render matches the server render;
 // the real breakpoint is resolved in onMount to avoid a hydration mismatch.
