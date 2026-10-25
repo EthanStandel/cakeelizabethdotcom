@@ -19,13 +19,16 @@ const slideDuration = 300;
 type Phase = "hidden" | "entering" | "docked" | "closing";
 
 /**
- * Shown only on the contact page. Lives in the layout so that once closed, it
- * stays closed while navigating around the site.
+ * Pops up on the contact page. Lives in the layout so that once it has popped
+ * up it stays open while navigating around the site, and once closed it stays
+ * closed.
  */
 export const AbsenceBanner = () => {
-  const pathname = usePathname();
+  const onContactPage = usePathname() === "/contact";
+  const [shown, setShown] = useState(false);
   const [closed, setClosed] = useState(false);
-  if (closed || pathname !== "/contact") return null;
+  if (onContactPage && !shown) setShown(true);
+  if (closed || !(shown || onContactPage)) return null;
   return <AbsenceBannerStrip onClosed={() => setClosed(true)} />;
 };
 
