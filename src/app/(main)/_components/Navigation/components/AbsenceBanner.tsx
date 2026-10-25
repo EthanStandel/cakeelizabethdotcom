@@ -4,6 +4,7 @@ import { CSSProperties, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { e } from "easy-tailwind";
 import cx from "classnames";
+import CloseIcon from "../GrClose.svg";
 
 // Temporary, hard-coded announcement. Remove once it's no longer needed.
 const message =
@@ -11,8 +12,12 @@ const message =
 
 const centeredDuration = 4000;
 const dockDuration = 700;
+const closeDuration = 250;
 
-type Phase = "centered" | "docking" | "docked";
+type Phase = "centered" | "docking" | "docked" | "closing" | "closed";
+
+// Shared by the floating card and the strip so the hand-off between them is seamless
+const dockedPaddingClassName = e("py-3 pl-4 pr-9", { desktop: "px-10" });
 
 const bannerTextClassName = e("text-text text-sm text-center leading-relaxed", {
   desktop: "text-base",
@@ -20,7 +25,7 @@ const bannerTextClassName = e("text-text text-sm text-center leading-relaxed", {
 
 /**
  * Starts as a card fixed in the center of the screen, then glides into a
- * sticky strip directly below the navigation bar.
+ * sticky strip directly below the navigation bar, where it can be closed.
  */
 export const AbsenceBanner = () => {
   const [mounted, setMounted] = useState(false);
@@ -54,6 +59,16 @@ export const AbsenceBanner = () => {
     return () => clearTimeout(timeout);
   }, [phase, duration]);
 
+  useEffect(() => {
+    if (phase !== "closing") return;
+    const timeout = setTimeout(() => setPhase("closed"), closeDuration);
+    return () => clearTimeout(timeout);
+  }, [phase]);
+
+  if (phase === "closed") return null;
+
+  const floating = phase === "centered" || phase === "docking";
+
   const transition = `all ${duration}ms ease-in-out`;
   const cardStyle: CSSProperties =
     phase === "centered"
@@ -63,7 +78,6 @@ export const AbsenceBanner = () => {
           width: "calc(100% - 2rem)",
           maxWidth: "36rem",
           transform: "translate(-50%, -50%)",
-          padding: "2rem 1.5rem",
           borderRadius: "24px",
           transition,
         }
@@ -73,7 +87,6 @@ export const AbsenceBanner = () => {
           width: "100%",
           maxWidth: "100%",
           transform: "translate(0, 0)",
-          padding: "0.75rem 1rem",
           borderRadius: 0,
           transition,
         };
@@ -88,21 +101,32 @@ export const AbsenceBanner = () => {
           transition: `grid-template-rows ${duration}ms ease-in-out`,
         }}
       >
-        <div className={cx("min-h-0", phase !== "docked" && "overflow-hidden")}>
+        <div className={cx("min-h-0", floating && "overflow-hidden")}>
           <div
             role="region"
             aria-label="Announcement"
             className={cx(
-              "bg-white shadow-sm-even shadow-black/20 py-3 px-4",
-              phase !== "docked" && "opacity-0"
+              "relative bg-white shadow-sm-even shadow-black/20",
+              dockedPaddingClassName,
+              floating && "opacity-0",
+              phase === "closing" && "opacity-0 transition-opacity"
             )}
           >
             <p className={bannerTextClassName}>{message}</p>
+            {!floating && (
+              <button
+                aria-label="Close announcement"
+                onClick={() => setPhase("closing")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text"
+              >
+                <CloseIcon className="h-4 w-4" />
+              </button>
+            )}
           </div>
         </div>
       </div>
       {mounted &&
-        phase !== "docked" &&
+        floating &&
         createPortal(
           <div aria-hidden onClick={dock} className="fixed inset-0 z-50">
             <div
@@ -113,7 +137,10 @@ export const AbsenceBanner = () => {
               }}
             />
             <div
-              className="fixed bg-white shadow-even shadow-black/20"
+              className={cx(
+                "fixed bg-white shadow-even shadow-black/20",
+                phase === "centered" ? "py-8 px-6" : dockedPaddingClassName
+              )}
               style={cardStyle}
             >
               <p className={bannerTextClassName}>{message}</p>
