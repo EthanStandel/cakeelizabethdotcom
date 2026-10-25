@@ -63,9 +63,10 @@ export const AbsenceBanner = () => {
   return (
     // Only transform is animated: animating height makes the sticky position
     // lag behind the slide. The clip hides the strip below its resting edge
-    // while leaving room for its shadow above.
+    // while leaving room for its shadow above. The negative margin cancels the
+    // footer's top margin so the strip rests directly on it at the page end.
     <div
-      className={e("sticky bottom-0 z-[5]", { desktop: "bottom-8" })}
+      className={e("sticky bottom-0 z-[5] -mb-16", { desktop: "bottom-8" })}
       style={{ clipPath: "inset(-1rem 0 0 0)" }}
     >
       <div
