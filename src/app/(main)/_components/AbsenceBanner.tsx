@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { e } from "easy-tailwind";
 import cx from "classnames";
 import CloseIcon from "./Navigation/GrClose.svg";
@@ -15,7 +16,18 @@ const hideAt = new Date("2026-11-02T00:00:00-05:00").getTime();
 
 const slideDuration = 300;
 
-type Phase = "hidden" | "entering" | "docked" | "closing" | "closed";
+type Phase = "hidden" | "entering" | "docked" | "closing";
+
+/**
+ * Shown only on the contact page. Lives in the layout so that once closed, it
+ * stays closed while navigating around the site.
+ */
+export const AbsenceBanner = () => {
+  const pathname = usePathname();
+  const [closed, setClosed] = useState(false);
+  if (closed || pathname !== "/contact") return null;
+  return <AbsenceBannerStrip onClosed={() => setClosed(true)} />;
+};
 
 /**
  * A strip stuck to the bottom of the screen (above the sticky footer on
@@ -23,7 +35,7 @@ type Phase = "hidden" | "entering" | "docked" | "closing" | "closed";
  * only on the client so the expiry check uses the visitor's clock rather than
  * a pre-rendered page.
  */
-export const AbsenceBanner = () => {
+const AbsenceBannerStrip = ({ onClosed }: { onClosed: () => void }) => {
   const [mounted, setMounted] = useState(false);
   const [phase, setPhase] = useState<Phase>("hidden");
   const [reduceMotion, setReduceMotion] = useState(false);
@@ -56,17 +68,13 @@ export const AbsenceBanner = () => {
   const duration = reduceMotion ? 0 : slideDuration;
 
   useEffect(() => {
-    const timeline: Partial<Record<Phase, Phase>> = {
-      entering: "docked",
-      closing: "closed",
-    };
-    const next = timeline[phase];
-    if (!next) return;
-    const timeout = setTimeout(() => setPhase(next), duration);
+    if (phase !== "entering" && phase !== "closing") return;
+    const next = phase === "entering" ? () => setPhase("docked") : onClosed;
+    const timeout = setTimeout(next, duration);
     return () => clearTimeout(timeout);
   }, [phase, duration]);
 
-  if (!mounted || phase === "closed") return null;
+  if (!mounted) return null;
 
   const open = phase === "entering" || phase === "docked";
   const easing = open
