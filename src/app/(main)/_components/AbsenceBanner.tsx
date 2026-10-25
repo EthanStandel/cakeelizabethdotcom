@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { e } from "easy-tailwind";
 import cx from "classnames";
-import CloseIcon from "../GrClose.svg";
+import CloseIcon from "./Navigation/GrClose.svg";
 
 // Temporary, hard-coded announcement. Remove once it's no longer needed.
 const title = "Away This Week";
@@ -18,8 +18,8 @@ const slideDuration = 300;
 type Phase = "hidden" | "entering" | "docked" | "closing" | "closed";
 
 /**
- * A sticky strip that slides down from behind the navigation bar on load and
- * slides back up when closed. Renders only on the client so the expiry check
+ * A strip stuck to the bottom of the screen (above the sticky footer on
+ * desktop) that slides up on load and slides back down when closed. Renders only on the client so the expiry check
  * uses the visitor's clock rather than a pre-rendered page.
  */
 export const AbsenceBanner = () => {
@@ -62,7 +62,7 @@ export const AbsenceBanner = () => {
 
   return (
     <div
-      className="grid"
+      className={e("grid sticky bottom-0 z-[5]", { desktop: "bottom-8" })}
       style={{
         gridTemplateRows: open ? "1fr" : "0fr",
         transition: `grid-template-rows ${duration}ms ${easing}`,
@@ -77,7 +77,7 @@ export const AbsenceBanner = () => {
             e("py-3 pl-4 pr-9", { desktop: "px-10" })
           )}
           style={{
-            transform: open ? "translateY(0)" : "translateY(-100%)",
+            transform: open ? "translateY(0)" : "translateY(100%)",
             transition: `transform ${duration}ms ${easing}`,
           }}
         >
@@ -94,7 +94,7 @@ export const AbsenceBanner = () => {
               onClick={() => setPhase("closing")}
               className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text"
             >
-              <CloseIcon className="h-4 w-4" />
+              <CloseIcon aria-hidden className="h-4 w-4" />
             </button>
           )}
         </div>

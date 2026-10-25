@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SubNavMenu } from "./components/SubNavMenu";
-import { AbsenceBanner } from "./components/AbsenceBanner";
 import Image from "next/image";
 import FaFacebook from "./FaFacebook.svg";
 import FaInstagram from "./FaInstagram.svg";
@@ -104,7 +103,6 @@ export const NavigationClient = ({
           mobileOpen={mobileMenuOpen}
           closeMobile={() => setMobileMenuOpen(false)}
         />
-        <AbsenceBanner />
       </div>
     </>
   );
