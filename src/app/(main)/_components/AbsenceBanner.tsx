@@ -61,43 +61,41 @@ export const AbsenceBanner = () => {
     : "cubic-bezier(0.4, 0, 1, 1)";
 
   return (
+    // Only transform is animated: animating height makes the sticky position
+    // lag behind the slide. The clip hides the strip below its resting edge
+    // while leaving room for its shadow above.
     <div
-      className={e("grid sticky bottom-0 z-[5]", { desktop: "bottom-8" })}
-      style={{
-        gridTemplateRows: open ? "1fr" : "0fr",
-        transition: `grid-template-rows ${duration}ms ${easing}`,
-      }}
+      className={e("sticky bottom-0 z-[5]", { desktop: "bottom-8" })}
+      style={{ clipPath: "inset(-1rem 0 0 0)" }}
     >
-      <div className={cx("min-h-0", phase !== "docked" && "overflow-hidden")}>
-        <div
-          role="region"
-          aria-label="Announcement"
-          className={cx(
-            "relative bg-white shadow-sm-even shadow-black/20",
-            e("py-3 pl-4 pr-9", { desktop: "px-10" })
-          )}
-          style={{
-            transform: open ? "translateY(0)" : "translateY(100%)",
-            transition: `transform ${duration}ms ${easing}`,
-          }}
+      <div
+        role="region"
+        aria-label="Announcement"
+        className={cx(
+          "relative bg-white shadow-sm-even shadow-black/20",
+          e("py-3 pl-4 pr-9", { desktop: "px-10" })
+        )}
+        style={{
+          transform: open ? "translateY(0)" : "translateY(100%)",
+          transition: `transform ${duration}ms ${easing}`,
+        }}
+      >
+        <p
+          className={e("text-text text-sm text-center leading-relaxed", {
+            desktop: "text-base",
+          })}
         >
-          <p
-            className={e("text-text text-sm text-center leading-relaxed", {
-              desktop: "text-base",
-            })}
+          <strong className="font-semibold">{title}</strong> — {message}
+        </p>
+        {phase !== "hidden" && (
+          <button
+            aria-label="Close announcement"
+            onClick={() => setPhase("closing")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text"
           >
-            <strong className="font-semibold">{title}</strong> — {message}
-          </p>
-          {phase !== "hidden" && (
-            <button
-              aria-label="Close announcement"
-              onClick={() => setPhase("closing")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text"
-            >
-              <CloseIcon aria-hidden className="h-4 w-4" />
-            </button>
-          )}
-        </div>
+            <CloseIcon aria-hidden className="h-4 w-4" />
+          </button>
+        )}
       </div>
     </div>
   );
