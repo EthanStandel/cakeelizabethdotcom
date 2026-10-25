@@ -4,11 +4,17 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { e } from "easy-tailwind";
 import cx from "classnames";
+import Image from "next/image";
 import CloseIcon from "../GrClose.svg";
 
 // Temporary, hard-coded announcement. Remove once it's no longer needed.
+const title = "Away This Week";
+const signOff = "Kristina, Owner & Operator";
 const message =
   "Due to the death of my beloved grandmother, I will be absent for most of this week to grieve and attend her funeral.  For those of you with orders for this week, I will be reaching out to work out timing of pickups and deliveries with you.  I apologize for any inconveniences and thank you for your patience.";
+
+// Never shown from midnight at the end of Sunday, Nov 1 (Eastern) onward
+const hideAt = new Date("2026-11-02T00:00:00-05:00").getTime();
 
 const centeredDuration = 4000;
 const cardOutDuration = 200;
@@ -27,21 +33,23 @@ type Phase =
   | "closing"
   | "closed";
 
-const bannerTextClassName = e("text-text text-sm text-center leading-relaxed", {
+const textClassName = e("text-text text-sm leading-relaxed", {
   desktop: "text-base",
 });
 
 /**
  * Starts as a card in the center of the screen. After a few seconds the card
  * fades out and the message slides down from behind the navigation bar as a
- * sticky strip, where it can be closed.
+ * sticky strip, where it can be closed. Renders only on the client so the
+ * expiry check uses the visitor's clock rather than a pre-rendered page.
  */
-export const AbsenceBanner = () => {
+export const AbsenceBanner = ({ logo }: { logo: string }) => {
   const [mounted, setMounted] = useState(false);
   const [phase, setPhase] = useState<Phase>("intro");
   const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
+    if (Date.now() >= hideAt) return;
     setMounted(true);
     setReduceMotion(
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -68,11 +76,10 @@ export const AbsenceBanner = () => {
     return () => clearTimeout(timeout);
   }, [phase, reduceMotion]);
 
-  if (phase === "closed") return null;
+  if (!mounted || phase === "closed") return null;
 
   const cardMounted =
-    mounted &&
-    (phase === "intro" || phase === "centered" || phase === "leaving");
+    phase === "intro" || phase === "centered" || phase === "leaving";
   const cardVisible = phase === "centered";
   const cardTransition = (property: string) =>
     `${property} ${motion(cardOutDuration)}ms ${
@@ -114,7 +121,9 @@ export const AbsenceBanner = () => {
                   : `transform ${motion(stripInDuration)}ms ${easeOut}`,
             }}
           >
-            <p className={bannerTextClassName}>{message}</p>
+            <p className={cx(textClassName, "text-center")}>
+              <strong className="font-semibold">{title}</strong> — {message}
+            </p>
             {stripSettled && (
               <button
                 aria-label="Close announcement"
@@ -142,7 +151,7 @@ export const AbsenceBanner = () => {
               }}
             />
             <div
-              className="relative w-full max-w-xl rounded bg-white py-8 px-6 shadow-even shadow-black/20"
+              className="relative w-full max-w-xl overflow-hidden rounded bg-white shadow-even shadow-black/20"
               style={{
                 opacity: cardVisible ? 1 : 0,
                 transform: cardVisible ? "scale(1)" : "scale(0.97)",
@@ -151,7 +160,29 @@ export const AbsenceBanner = () => {
                 )}`,
               }}
             >
-              <p className={bannerTextClassName}>{message}</p>
+              <div className="flex justify-center bg-primary py-4">
+                <Image
+                  src={logo}
+                  height={130}
+                  width={225}
+                  alt=""
+                  className="h-[65px] w-[113px]"
+                />
+              </div>
+              <div className={e("py-6 px-6", { desktop: "px-8" })}>
+                <h2
+                  className={e(
+                    "text-text text-lg text-center font-medium uppercase tracking-widest",
+                    { desktop: "text-xl" }
+                  )}
+                >
+                  {title}
+                </h2>
+                <p className={cx(textClassName, "mt-4")}>{message}</p>
+                <p className={cx(textClassName, "mt-4 italic text-right")}>
+                  {signOff}
+                </p>
+              </div>
             </div>
           </div>,
           document.body
