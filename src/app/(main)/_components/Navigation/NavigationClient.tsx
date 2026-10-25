@@ -104,7 +104,7 @@ export const NavigationClient = ({
           mobileOpen={mobileMenuOpen}
           closeMobile={() => setMobileMenuOpen(false)}
         />
-        <AbsenceBanner logo={logo} />
+        <AbsenceBanner />
       </div>
     </>
   );
