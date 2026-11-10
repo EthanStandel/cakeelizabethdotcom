@@ -1,0 +1,1 @@
+export { VerticalStepperModule } from "./VerticalStepperModule";
