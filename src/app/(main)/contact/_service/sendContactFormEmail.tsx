@@ -13,7 +13,7 @@ export const sendContactFormEmail = async (
     return false;
   }
 
-  if (process.env.NO_MAIL) return true;
+  if (process.env.NO_MAIL === "true") return true;
 
   try {
     const [response] = await mailer.send({
