@@ -8,6 +8,7 @@ import { Metadata, Viewport } from "next";
 import { LiveContentData } from "../../utils/LiveContentData";
 import { FooterClient } from "./_components/Footer/FooterClient";
 import { draftMode } from "next/headers";
+import { AnnouncementBanner } from "./_components/AnnouncementBanner";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -19,6 +20,7 @@ const Layout = async ({ children }: { children: ReactNode }) => (
     <body className="flex flex-col relative min-h-screen overflow-y-scroll">
       <Navigation />
       <main className="flex-grow">{children}</main>
+      <AnnouncementBanner />
       <LiveContentData
         component={Footer}
         clientWrapper={FooterClient}
